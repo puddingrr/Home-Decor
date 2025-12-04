@@ -33,9 +33,9 @@ struct orderCard: View {
     var body: some View {
         VStack(spacing: 6) {
             HStack {
-                TextSwifUI(title: "Order: \(model.status)", size: 13, weight: .light)
+                TextSwifUI(title: "Order: \(model.status)", size: .small, weight: .light)
                 Spacer()
-                TextSwifUI(title: model.date, size: 13, weight: .light)
+                TextSwifUI(title: model.date, size: .small, weight: .light)
             }
             Divider()
                 .frame(maxWidth: .infinity)
@@ -48,8 +48,8 @@ struct orderCard: View {
                 VStack {
                     HStack(alignment: .top) {
                         VStack(alignment: .leading) {
-                            TextSwifUI(title: model.title, size: 15, color: .selectPink, weight: .medium)
-                            TextSwifUI(title: model.subTitle, size: 12, weight: .light)
+                            TextSwifUI(title: model.title, size: .medium, color: .selectPink, weight: .medium)
+                            TextSwifUI(title: model.subTitle, size: .small, weight: .light)
                         }
                         Spacer()
                         HStack {

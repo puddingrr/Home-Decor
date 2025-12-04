@@ -35,7 +35,7 @@ struct SearchView: View {
                             .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 5))
                         }
                     
-                    TextSwifUI(title: "Top Searches", size: 20, color: .selectPink, weight: .bold)
+                    TextSwifUI(title: "Top Searches", size: .large, color: .selectPink, weight: .bold)
                         .padding(EdgeInsets(top: 30, leading: 0, bottom: 10, trailing: 0))
                     ForEach(0..<list.count, id: \.self) { i in
                         RoundedRectangle(cornerRadius: 24)
@@ -45,7 +45,7 @@ struct SearchView: View {
                                 HStack(spacing: 16) {
                                     Image(.search)
                                         .frame(width: 26, height: 26)
-                                    TextSwifUI(title: list[i], size: 16)
+                                    TextSwifUI(title: list[i], size: .medium)
                                     Spacer()
                                 }
                                 .padding(.horizontal, 16)

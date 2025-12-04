@@ -12,14 +12,21 @@ struct HomeView: View {
     var isSelected: Bool = false
     @State var search: Bool = false
     @StateObject var viewModel = HomeViewModel()
+    @State var isLogin: Bool = false
     var body: some View {
         ScrollView(showsIndicators: false) {
             VStack(alignment: .leading, spacing: 16) {
                 HStack {
-                    VStack(alignment: .leading) {
-                        TextSwifUI(title: "Hi, Welcome Back", size: 22, color: .main, weight: Font.Weight.bold)
-                        TextSwifUI(title: "Create spaces that bring joy", size: 13, color: .black)
+                    CustomButton(title: "Login", width: 80, height: 30) {
+                        isLogin = true
                     }
+                    CustomButton(title: "SignUp", width: 80, height: 30) {
+                        isLogin = true
+                    }
+//                    VStack(alignment: .leading) {
+//                        TextSwifUI(title: "Hi, Welcome Back", size: .huge, color: .main, weight: Font.Weight.bold)
+//                        TextSwifUI(title: "Create spaces that bring joy", size: .small, color: .black)
+//                    }
                     Spacer()
                     Button {
                         search.toggle()
@@ -61,7 +68,7 @@ struct HomeView: View {
                     .frame(height: 6)
                     .padding(.bottom, 8)
                 }
-                TextSwifUI(title: "Categories", size: 18, color: .selectPink, weight: .bold)
+                TextSwifUI(title: "Categories", size: .large, color: .selectPink, weight: .bold)
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 16) {
                         ForEach(0..<viewModel.list.count, id: \.self) { i in
@@ -73,15 +80,18 @@ struct HomeView: View {
                         }
                     }
                 }
-                TextSwifUI(title: "Best Seller", size: 16, color: .selectPink, weight: .bold)
+                TextSwifUI(title: "Best Seller", size: .medium, color: .selectPink, weight: .bold)
                 bestSeller
-                TextSwifUI(title: "New Collection", size: 16, color: .selectPink, weight: .bold)
+                TextSwifUI(title: "New Collection", size: .medium, color: .selectPink, weight: .bold)
                 collectionView
             }
             .padding(16)
         }
         .navigationDestination(isPresented: $search) {
             SearchView()
+        }
+        .navigationDestination(isPresented: $isLogin) {
+            LoginView()
         }
     }
     @ViewBuilder
@@ -105,8 +115,8 @@ struct HomeView: View {
         ZStack(alignment: .topTrailing) {
             HStack {
                 VStack(alignment: .leading, spacing: 12) {
-                    TextSwifUI(title: "Kitchen Cart", size: 17, color: .black)
-                    TextSwifUI(title: "Lorem ipsum dolor sit amet, \nconsectetur adipiscing elit", size: 14, color: .black)
+                    TextSwifUI(title: "Kitchen Cart", size: .large, color: .black)
+                    TextSwifUI(title: "Lorem ipsum dolor sit amet, \nconsectetur adipiscing elit", size: .medium, color: .black)
                     HStack {
                         Rectangle()
                             .fill(Color.white)
@@ -122,7 +132,7 @@ struct HomeView: View {
                                     TextSwifUI(title: "4.5", color: .black, weight: .bold)
                                 }
                             }
-                        TextSwifUI(title: "Shop Now", size: 10, color: .black)
+                        TextSwifUI(title: "Shop Now", size: .small, color: .black)
                             .padding(4)
                             .background(Color.white.cornerRadius(8))
                             .padding(.leading, 16)
@@ -150,13 +160,13 @@ struct HomeView: View {
                         .resizable()
                         .frame(height: 142)
                         .scaledToFill()
-                    TextSwifUI(title: viewModel.collectList[i].title, size: 15, weight: .medium)
-                    TextSwifUI(title: viewModel.collectList[i].subTitle, size: 12, weight: .light)
+                    TextSwifUI(title: viewModel.collectList[i].title, size: .large, weight: .medium)
+                    TextSwifUI(title: viewModel.collectList[i].subTitle, size: .small, weight: .light)
                     Divider()
                         .frame(height: 1)
                         .background(Color.main)
                     HStack {
-                        TextSwifUI(title: "$\(viewModel.collectList[i].price)", size: 15, color: .selectPink, weight: .bold)
+                        TextSwifUI(title: "$\(viewModel.collectList[i].price)", size: .large, color: .selectPink, weight: .bold)
                         Spacer(minLength: 0)
                         Button {
                             

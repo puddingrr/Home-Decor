@@ -23,8 +23,8 @@ struct EditProfileView: View {
                                 .frame(width: 40, height: 40)
                         }
                     VStack {
-                        TextSwifUI(title: "Madison Smith", size: 20, weight: .bold)
-                        TextSwifUI(title: "ID: 25030024", size: 13)
+                        TextSwifUI(title: "Madison Smith", size: .large, weight: .bold)
+                        TextSwifUI(title: "ID: 25030024", size: .small)
                     }
                     .padding(.vertical, 16)
                     .frame(maxWidth: .infinity)
@@ -62,7 +62,7 @@ struct EditProfileView: View {
                     }
                 }
                 .padding(16)
-                TextSwifUI(title: "Update Profile", size: 16, color: .selectPink, weight: .semibold)
+                TextSwifUI(title: "Update Profile", size: .medium, color: .selectPink, weight: .semibold)
                     .padding(.horizontal, 16)
                     .frame(height: 35)
                     .background(Color.main.cornerRadius(14))

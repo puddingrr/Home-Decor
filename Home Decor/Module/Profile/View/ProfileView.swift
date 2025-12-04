@@ -25,8 +25,8 @@ struct ProfileView: View {
                                 .frame(width: 40, height: 40)
                         }
                     VStack {
-                        TextSwifUI(title: "Madison Smith", size: 20, weight: .bold)
-                        TextSwifUI(title: "ID: 25030024", size: 13)
+                        TextSwifUI(title: "Madison Smith", size: .huge, weight: .bold)
+                        TextSwifUI(title: "ID: 25030024", size: .small)
                     }
                     HStack {
                         menuCard(image: .myprofile, text: "Profile") {}
@@ -68,7 +68,7 @@ struct ProfileView: View {
                 Image(image)
                     .resizable()
                     .frame(width: 26, height: 26)
-                TextSwifUI(title: text, size: 13, weight: .regular)
+                TextSwifUI(title: text, size: .small, weight: .regular)
             }
             .frame(maxWidth: .infinity)
         }
@@ -91,7 +91,7 @@ struct ProfileView: View {
                             .frame(width: 20, height: 20)
                     }
             }
-            TextSwifUI(title: text, size: 18)
+            TextSwifUI(title: text, size: .large)
             Spacer()
         }
         .padding(.horizontal, 12)
