@@ -12,16 +12,17 @@ struct HomeView: View {
     var isSelected: Bool = false
     @State var search: Bool = false
     @StateObject var viewModel = HomeViewModel()
-    @State var isLogin: Bool = false
+    @State var isNavLogin: Bool = false
+    @State var isNavRegister: Bool = false
     var body: some View {
         ScrollView(showsIndicators: false) {
             VStack(alignment: .leading, spacing: 16) {
                 HStack {
                     CustomButton(title: "Login", width: 80, height: 30) {
-                        isLogin = true
+                        isNavLogin = true
                     }
                     CustomButton(title: "SignUp", width: 80, height: 30) {
-                        isLogin = true
+                        isNavRegister = true
                     }
 //                    VStack(alignment: .leading) {
 //                        TextSwifUI(title: "Hi, Welcome Back", size: .huge, color: .main, weight: Font.Weight.bold)
@@ -90,8 +91,11 @@ struct HomeView: View {
         .navigationDestination(isPresented: $search) {
             SearchView()
         }
-        .navigationDestination(isPresented: $isLogin) {
+        .navigationDestination(isPresented: $isNavLogin) {
             LoginView()
+        }
+        .navigationDestination(isPresented: $isNavRegister) {
+            RegisterView()
         }
     }
     @ViewBuilder

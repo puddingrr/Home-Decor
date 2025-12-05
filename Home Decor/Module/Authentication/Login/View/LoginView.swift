@@ -9,8 +9,11 @@ import SwiftUI
 
 struct LoginView:View {
     @StateObject var loginVM = LoginViewModel()
+    //State
     @State var maxLimitChar: Int = maxLimitEmail
     @State var keyboardtype: UIKeyboardType = .emailAddress
+    @State var isNavfromLoginToRegister: Bool = false
+    @State var isRememberMe: Bool = false
     var body: some View {
         VStack {
             ScrollView(showsIndicators: false) {
@@ -39,7 +42,17 @@ struct LoginView:View {
                                           isAutoCapitalize: .none
                         )
                     }
-                    TextSwifUI(title: "Remember Me", size: .medium, color: .gray.opacity(0.7))
+                    HStack {
+                        Button {
+                            isRememberMe.toggle()
+                        } label: {
+                            Image(isRememberMe ? .remembermeActive : .remembermeIcon)
+                                .resizable()
+                                .frame(width: 24, height: 24)
+                        }
+                        TextSwifUI(title: "Remember Me", size: .medium, color: .gray.opacity(0.7))
+                        Spacer()
+                    }
                     CustomButton(title: "Login", isDisabled: loginVM.isValidateButton()) {
                         loginVM.login()
                     }
@@ -47,7 +60,7 @@ struct LoginView:View {
                         Spacer()
                         TextSwifUI(title: "Don’t have an account?")
                         Button {
-                            
+                            isNavfromLoginToRegister = true
                         } label: {
                             TextSwifUI(title: "Sign Up", color: .main)
                         }
@@ -57,5 +70,8 @@ struct LoginView:View {
             }
         }
         .padding(.all, 12)
+        .navigationDestination(isPresented: $isNavfromLoginToRegister) {
+            RegisterView()
+        }
     }
 }
