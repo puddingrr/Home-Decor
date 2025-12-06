@@ -10,7 +10,7 @@ struct ProfileView: View {
     @StateObject var viewModel = ProfileViewModel()
     var body: some View {
         VStack {
-            CustomNavBar(title: "My Profile", tinhColor: .main, trailingBtnIcon: "edit", isBack: false, actionTrailingIcon: {
+            CustomNavBar(title: "My Profile", tinhColor: .main, trailingBtnIcon: .edit, isBack: false, actionTrailingIcon: {
                 viewModel.isSelectedEdit.toggle()
             })
             

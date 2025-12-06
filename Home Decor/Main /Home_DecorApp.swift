@@ -25,6 +25,7 @@ struct Home_DecorApp: App {
             NavigationStack {
                 MainTabView()
             }
+            .navigationBarBackButtonHidden(true)
             .navigationViewStyle(StackNavigationViewStyle())
             .preferredColorScheme(.light)
         }

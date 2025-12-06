@@ -19,7 +19,7 @@ class HomeViewModel : ObservableObject {
         .init(icon: .chair, activeIcon: .chairActive)
     ]
     
-    let collectList: [collectionList] = [
+    let collectList: [ListMenu] = [
         .init(image: .chair1, title: "Aluminum chair", subTitle: "Lorem ipsum dolor sit amet, consectetur adipiscing elit", price: "120.00"),
         .init(image: .chair2, title: "Stylish chair", subTitle: "Lorem ipsum dolor sit amet, consectetur adipiscing elit", price: "120.00")
     ]

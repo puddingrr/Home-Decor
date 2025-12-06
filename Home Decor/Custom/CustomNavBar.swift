@@ -11,7 +11,7 @@ struct CustomNavBar: View {
     var title: String = ""
     var tinhColor: Color = Color.selectPink
     var background: Color?
-    var trailingBtnIcon: String?
+    var trailingBtnIcon: ImageResource?
     var isBack: Bool = true
     var action: (() -> Void)?
     var actionLogin: (() -> Void)?
@@ -68,6 +68,6 @@ struct CustomNavBar: View {
         .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 4)
         .background(background.ignoresSafeArea())
         .frame(width: UIScreen.main.bounds.width)
-        .navigationBarBackButtonHidden(true)
+        .navigationBarBackButtonHidden(isBack)
     }
 }
