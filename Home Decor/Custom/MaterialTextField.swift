@@ -158,15 +158,15 @@ struct MaterialTextField<Leading: View, Trailing: View>: View {
     var borderColor: Color {
         if isError { return .red }
 //        if focused { return .blue }
-        return .gray.opacity(0.5)
+        return .selectPink.opacity(0.5)
     }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             ZStack(alignment: .leading) {
-                RoundedRectangle(cornerRadius: 4)
-                    .stroke(borderColor, lineWidth: 1)
-                    .background(Color(backgroundColor).cornerRadius(4))
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(borderColor.opacity(0.5), lineWidth: 1)
+                    .background(Color(backgroundColor).cornerRadius(10))
                 
                 if labelFloating {
                     Text(placeholder)
@@ -227,7 +227,7 @@ struct MaterialTextField<Leading: View, Trailing: View>: View {
                 }
                 .padding(.horizontal, 8)
             }
-            .frame(height: 50)
+            .frame(height: 42)
             
             if isError {
                 Text(errorText)

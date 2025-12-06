@@ -20,14 +20,14 @@ struct RegisterView:View {
                     TextSwifUI(title: "Please enter your details to proceed.", size: .normal)
                     
                     VStack(alignment: .leading, spacing: 24) {
-                        MaterialTextField(text: $registerVM.email,
+                        MaterialTextField(text: $registerVM.fullName,
                                           placeholder: "Full Name",
                                           keyboardType: keyboardtype,
                                           fieldtype: .email,
                                           isDisable: false,
                                           isError: false,
-                                          errorText: "",
-                                          backgroundColor: .lightOrange.opacity(0.5),
+                                          errorText: registerVM.errorMessage,
+                                          backgroundColor: .lightOrange,
                                           isAutoCapitalize: .none
                         )
                         MaterialTextField(text: $registerVM.email,
@@ -36,46 +36,47 @@ struct RegisterView:View {
                                           fieldtype: .emailOrPhone,
                                           isDisable: false,
                                           isError: false,
-                                          errorText: "",
-                                          backgroundColor: .lightOrange.opacity(0.5),
+                                          errorText: registerVM.errorMessage,
+                                          backgroundColor: .lightOrange,
                                           isAutoCapitalize: .none
                         )
-                        MaterialTextField(text: $registerVM.email,
+                        MaterialTextField(text: $registerVM.mobileNumber,
                                           placeholder: "Mobile Number",
                                           keyboardType: keyboardtype,
                                           fieldtype: .emailOrPhone,
                                           isDisable: false,
                                           isError: false,
-                                          errorText: "",
-                                          backgroundColor: .lightOrange.opacity(0.5),
+                                          errorText: registerVM.errorMessage,
+                                          backgroundColor: .lightOrange,
                                           isAutoCapitalize: .none
                         )
-                        MaterialTextField(text: $registerVM.email,
+                        MaterialTextField(text: $registerVM.dateOfBirth,
                                           placeholder: "Date of Birth",
                                           keyboardType: keyboardtype,
                                           fieldtype: .emailOrPhone,
                                           isDisable: false,
                                           isError: false,
-                                          errorText: "",
-                                          backgroundColor: .lightOrange.opacity(0.5),
+                                          errorText: registerVM.errorMessage,
+                                          backgroundColor: .lightOrange,
                                           isAutoCapitalize: .none
                         )
                         MaterialTextField(text: $registerVM.password,
                                           placeholder: "Password",
                                           charLimit: maxLimitPassowrd,
                                           fieldtype: .password,
-                                          backgroundColor: .lightOrange.opacity(0.5),
+                                          backgroundColor: .lightOrange,
                                           isAutoCapitalize: .none
                         )
-                        MaterialTextField(text: $registerVM.comformPassword,
+                        MaterialTextField(text: $registerVM.confirmPassword,
                                           placeholder: "Confirm Password",
                                           charLimit: maxLimitPassowrd,
                                           fieldtype: .password,
-                                          backgroundColor: .lightOrange.opacity(0.5),
+                                          backgroundColor: .lightOrange,
                                           isAutoCapitalize: .none
                         )
                     }
                     CustomButton(title: "Sign Up", isDisabled: registerVM.isValidateButton()) {
+                        print("Register tapped!")
                         registerVM.register()
                     }
                     HStack {
