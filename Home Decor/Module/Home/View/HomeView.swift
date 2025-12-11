@@ -97,6 +97,9 @@ struct HomeView: View {
         .navigationDestination(isPresented: $isNavRegister) {
             RegisterView()
         }
+//        .task {
+//            await ProductSeeder.seedSampleProducts()
+//        }
     }
     @ViewBuilder
     func menuList(icon: ImageResource, activeIcon: ImageResource, isSelected: Bool, action: (() -> Void)? = nil) -> some View {

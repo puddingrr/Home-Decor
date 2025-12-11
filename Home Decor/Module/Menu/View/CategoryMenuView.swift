@@ -40,7 +40,7 @@ struct CategoryMenuView: View {
             SearchView()
         }
         .navigationDestination(isPresented: $viewMenuList) {
-            MenuListView()
+            MenuListView(title: "Decorative Light")
         }
     }
 }

@@ -10,26 +10,39 @@ import SwiftUI
 struct MenuListView: View {
     @StateObject var categoryVM = CategoryViewModel()
     @State var isTabIndex: Bool = false
+    // varible
+    var title: String
+    let itemsTab = ["Beds", "Chairs", "Tables" , "Sofa", "Cupboard", "Desk", "Auxiliary furniture", "Dining Table"]
     var body: some View {
         VStack {
+            headerView
             HStack {
                 TabView(selection: $categoryVM.indexTab) {
-                    CategoryTabView(categoryVM: categoryVM, title: "Decorative Light")
+                    ForEach(itemsTab.indices, id: \.self) { index in
+                        CategoryTabView(categoryVM: categoryVM)
+                            .tag(index)
+                    }
                 }
+                .tabViewStyle(.page(indexDisplayMode: .never))
             }
+            .padding(.horizontal, 16)
         }
     }
 }
+extension MenuListView {
+    var headerView: some View {
+        VStack(spacing: 0) {
+            CustomNavBar(title: title, trailingBtnIcon: .search)
 
-enum ListItem: String {
-    case decorativeLight = "Decorative Light"
-    case beds = "Beds"
-    case chairs = "Chairs"
-    case sofa = "Sofa"
-    case tables = "Tables"
-    case cupboard = "Cupboard"
-    case livingRoom = "Living Room"
-    case auxiliaryFurniture = "Auxiliary furniture"
-    case diningTable = "Dining Table"
-    case desk = "Desk"
+            HStack(spacing: 12) {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    CustomMenuTab(index: $categoryVM.indexTab , items: itemsTab)
+                }
+            }
+            .padding(EdgeInsets(top: 16, leading: 8, bottom: 0, trailing: 0))
+            RoundedRectangle(cornerRadius: 0)
+                .frame(height: 1)
+                .foregroundColor(Color.gray.opacity(0.3))
+        }
+    }
 }

@@ -8,7 +8,6 @@
 import SwiftUI
 struct CategoryTabView: View {
     @StateObject var categoryVM: CategoryViewModel
-    var title: String
     
     let columns = [
           GridItem(.flexible()),
@@ -17,8 +16,7 @@ struct CategoryTabView: View {
     
     var body: some View {
         VStack {
-            CustomNavBar(title: title, trailingBtnIcon: .search)
-            ScrollView {
+            ScrollView(showsIndicators: false) {
                 LazyVGrid(columns: columns, spacing: 16) {
                     ForEach(categoryVM.list.indices, id: \.self) { item in
                         let i = categoryVM.list[item]
@@ -29,7 +27,6 @@ struct CategoryTabView: View {
                         )
                     }
                 }
-                .padding()
             }
         }
     }
@@ -42,6 +39,7 @@ struct CardViewMenu: View {
     var price: String = ""
     var actionFav: (()-> Void)?
     var actionAdd: (()-> Void)?
+    var onClick: (()-> Void)?
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             Image(image)
@@ -71,5 +69,8 @@ struct CardViewMenu: View {
             }
         }
         .frame(maxWidth: .infinity)
+        .onTapGesture {
+            onClick?()
+        }
     }
 }
