@@ -9,8 +9,8 @@ import SwiftUI
 
 struct MenuListView: View {
     @StateObject var categoryVM = CategoryViewModel()
-    @State var isTabIndex: Bool = false
     // varible
+    let id: Int
     var title: String
     let itemsTab = ["Beds", "Chairs", "Tables" , "Sofa", "Cupboard", "Desk", "Auxiliary furniture", "Dining Table"]
     var body: some View {
@@ -27,6 +27,9 @@ struct MenuListView: View {
             }
             .padding(.horizontal, 16)
         }
+        .onAppear {
+          categoryVM.indexTab = id
+       }
     }
 }
 extension MenuListView {
@@ -34,12 +37,12 @@ extension MenuListView {
         VStack(spacing: 0) {
             CustomNavBar(title: title, trailingBtnIcon: .search)
 
-            HStack(spacing: 12) {
+            HStack(spacing: 16) {
                 ScrollView(.horizontal, showsIndicators: false) {
                     CustomMenuTab(index: $categoryVM.indexTab , items: itemsTab)
                 }
             }
-            .padding(EdgeInsets(top: 16, leading: 8, bottom: 0, trailing: 0))
+            .padding(EdgeInsets(top: 8, leading: 16, bottom: 0, trailing: 16))
             RoundedRectangle(cornerRadius: 0)
                 .frame(height: 1)
                 .foregroundColor(Color.gray.opacity(0.3))

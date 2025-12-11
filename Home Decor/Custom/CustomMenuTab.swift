@@ -12,7 +12,7 @@ struct CustomMenuTab: View {
     var items: [String]
     var tabInclude: String = "3"
     var body: some View {
-        HStack(spacing: 12) {
+        HStack(spacing: 16) {
             ForEach(0..<items.count, id: \.self) { i in
                 Button {
                     withAnimation {
@@ -21,7 +21,8 @@ struct CustomMenuTab: View {
                 } label: {
                     VStack {
                         let title = items[i]
-                        TextSwifUI(title: (i == 1) && !tabInclude.isEmpty ? "\(title)\(tabInclude)" : title, size: .normal, color: index == i ? Color.selectPink : Color.gray)
+                        TextSwifUI(title: (i == 1) && !tabInclude.isEmpty ? "\(title)\(tabInclude)" : title, size: .other(16),
+                                   color: index == i ? Color.selectPink : Color.gray, weight: index == i ? .bold : .regular)
                             .frame(maxWidth: .infinity)
                         if index == i {
                             Color.selectPink
