@@ -9,17 +9,21 @@ import SwiftUI
 
 struct MenuListView: View {
     @StateObject var categoryVM = CategoryViewModel()
+    @State var isNavigationDetail: Bool = false
+    @State private var selectedItem: ListMenu?
     // varible
     let id: Int
     var title: String
-    let itemsTab = ["Beds", "Chairs", "Tables" , "Sofa", "Cupboard", "Desk", "Auxiliary furniture", "Dining Table"]
     var body: some View {
         VStack {
             headerView
             HStack {
                 TabView(selection: $categoryVM.indexTab) {
-                    ForEach(itemsTab.indices, id: \.self) { index in
-                        CategoryTabView(categoryVM: categoryVM)
+                    ForEach(categoryVM.itemsTab.indices, id: \.self) { index in
+                        CategoryTabView(categoryVM: categoryVM, id: index, title: title) { item in
+                            selectedItem = item
+                            isNavigationDetail = true
+                        }
                             .tag(index)
                     }
                 }
@@ -29,7 +33,12 @@ struct MenuListView: View {
         }
         .onAppear {
           categoryVM.indexTab = id
-       }
+        }
+        .navigationDestination(isPresented: $isNavigationDetail) {
+            if selectedItem != nil {
+                CategoryDetailView(categoryVM: categoryVM, title: title, item: selectedItem)
+            }
+        }
     }
 }
 extension MenuListView {
@@ -39,7 +48,7 @@ extension MenuListView {
 
             HStack(spacing: 16) {
                 ScrollView(.horizontal, showsIndicators: false) {
-                    CustomMenuTab(index: $categoryVM.indexTab , items: itemsTab)
+                    CustomMenuTab(index: $categoryVM.indexTab , items: categoryVM.itemsTab)
                 }
             }
             .padding(EdgeInsets(top: 8, leading: 16, bottom: 0, trailing: 16))

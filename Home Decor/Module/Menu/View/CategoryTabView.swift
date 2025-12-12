@@ -8,6 +8,9 @@
 import SwiftUI
 struct CategoryTabView: View {
     @StateObject var categoryVM: CategoryViewModel
+    var id: Int
+    var title: String
+    var onClick: ((ListMenu)-> Void)?
     
     let columns = [
           GridItem(.flexible()),
@@ -18,13 +21,15 @@ struct CategoryTabView: View {
         VStack {
             ScrollView(showsIndicators: false) {
                 LazyVGrid(columns: columns, spacing: 16) {
-                    ForEach(categoryVM.list.indices, id: \.self) { item in
-                        let i = categoryVM.list[item]
+                    ForEach(categoryVM.list.indices, id: \.self) { index in
+                        let i = categoryVM.list[index]
                         CardViewMenu(image: i.image,
                                      title: i.title,
                                      subTitle: i.subTitle,
-                                     price: i.price
-                        )
+                                     price: i.price,
+                                     onClick: {
+                            onClick?(i)
+                        })
                     }
                 }
             }

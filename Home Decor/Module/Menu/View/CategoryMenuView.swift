@@ -9,7 +9,6 @@ import SwiftUI
 
 struct CategoryMenuView: View {
     @State var search: Bool = false
-    @State var selectTitle: String = ""
     @State private var route: CategoryRoute? = nil
     var body: some View {
         VStack {
