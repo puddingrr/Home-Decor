@@ -23,7 +23,7 @@ struct TextSwifUI: View {
         let displayText = isAsterisk ? "\(title)*" : title
 
         let text = Text(displayText)
-            .font(.system(size: size.fontSize, weight: weight))
+            .font(.customFont(size: size.fontSize, weight: weight))
             .underline(isUnderline, color: gradientColor == nil ? color : .clear)
             .multilineTextAlignment(textAlignment)
             .lineLimit(lineLimit)
@@ -35,11 +35,11 @@ struct TextSwifUI: View {
                 .foregroundColor(.clear)
                 .overlay(gradient)
                 .mask(
-                    Text(displayText)
-                        .font(.system(size: size.fontSize, weight: weight))
-                        .underline(isUnderline, color: .clear)
-                        .multilineTextAlignment(textAlignment)
+                    Text(title)
+                        .font(.customFont(size: size.fontSize, weight: weight))
+                        .underline(isUnderline, color: color)
                         .minimumScaleFactor(isScale ? 0.5 : 1)
+                        .multilineTextAlignment(textAlignment)
                 )
         } else {
             text.foregroundColor(color)

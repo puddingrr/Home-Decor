@@ -9,6 +9,7 @@ import SwiftUI
 
 class MainViewModel: ObservableObject {
     @Published var tabIndex: Int = 0
+    @Published var isLoggedIn: Bool = false
     
     let mainTabList: [TabItemModel] = [
         .init(icon: .homeIcon, activeIcon: .homeActive),
@@ -17,4 +18,7 @@ class MainViewModel: ObservableObject {
         .init(icon: .wishlistIcon, activeIcon: .wishlistActive),
         .init(icon: .profileIcon, activeIcon: .profileActive)
     ]
+    func checkLogin() {
+        isLoggedIn = UserPreference.shared.getLoginData() != nil
+    }
 }

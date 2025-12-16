@@ -4,7 +4,7 @@
 //
 //  Created by Dalynn on 8/29/25.
 //
-
+import FirebaseAuth
 import Foundation
 import SwiftUI
 
@@ -16,15 +16,6 @@ class ProfileViewModel: ObservableObject {
         .init(title: "Date of birth", subTittle: "01 / 04 / 199X")
     ]
     @Published var inputText = ""
-    
-    let listMenu: [MenuList] = [
-        .init(image: .keyPrivacy, text: "Privacy Policy"),
-        .init(image: .payment, text: "Payment Methods"),
-        .init(image: .notification, text: "Notification"),
-        .init(image: .setting, text: "Setting"),
-        .init(image: .help, text: "Help"),
-        .init(image: .logout, text: "Logout")
-    ]
     @Published var isSelected: Int? = nil
     @Published var isSelectedEdit: Bool = false
     @Published var isOrder: Bool = false
@@ -36,4 +27,36 @@ class ProfileViewModel: ObservableObject {
         .init(status: "Delivered", date: "June 12", image: .bedGreen, title: "green Bed", subTitle: "In a laoreet purus. Integer turpis quam, laoreet id orci nec, ultrices...", price: "285", item: "2", totalPrice: "285"),
         .init(status: "Delivered", date: "June 12", image: .bedGreen, title: "green Bed", subTitle: "In a laoreet purus. Integer turpis quam, laoreet id orci nec, ultrices...", price: "285", item: "2", totalPrice: "285")
     ]
+    
+    let profileInfoList: [ItemModel] = [
+        .init(image: .keyPrivacy, title: "Privacy Policy"),
+        .init(image: .payment, title: "Payment Methods"),
+        .init(image: .notification, title: "Notification"),
+        .init(image: .setting, title: "Setting"),
+        .init(image: .help, title: "Help"),
+    ]
+    let otherList: [ItemModel] = [
+        .init(image: .logout, title: "Logout")
+    ]
+    
+    func logout() {
+        do {
+            try Auth.auth().signOut()
+        } catch let signOutError as NSError {
+            print("Error signing out: %@", signOutError)
+        }
+
+        // Clear saved user data
+        UserPreference.shared.clearLoginData()
+    }
 }
+
+//enum ButtonNavigationType: String {
+//    
+//    @ViewBuilder
+//    func destinationView(completion: @escaping () -> String) -> some View {
+//        switch self {
+//            
+//        }
+//    }
+//}

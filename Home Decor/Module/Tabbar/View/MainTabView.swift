@@ -10,6 +10,7 @@ import SwiftUI
 struct MainTabView: View {
     @StateObject var mainVM = MainViewModel()
     @Namespace private var underlineAnimation
+    @State private var showLogin = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -36,12 +37,21 @@ struct MainTabView: View {
                         namespace: underlineAnimation
                     ) {
                         withAnimation(.easeInOut(duration: 0.5)) {
-                            mainVM.tabIndex = index
-                        }
+                            if (index == 2 || index == 4) && !mainVM.isLoggedIn {
+                                showLogin = true
+                            } else {
+                                mainVM.tabIndex = index
+                            }                        }
                     }
                 }
             }
             .background(Color.white.ignoresSafeArea())
+        }
+        .navigationDestination(isPresented: $showLogin) {
+            LoginView()
+        }
+        .onAppear {
+            mainVM.checkLogin()
         }
         .ignoresSafeArea(.keyboard, edges: .bottom)
     }

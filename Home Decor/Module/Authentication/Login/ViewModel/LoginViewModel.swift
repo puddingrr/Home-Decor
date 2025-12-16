@@ -38,10 +38,6 @@ class LoginViewModel: ObservableObject {
         }
     }
 
-    func logout() {
-        try? Auth.auth().signOut()
-        isLoggedIn = false
-    }
     func isValidateButton() -> Bool {
         if email.isEmpty {
             return true
