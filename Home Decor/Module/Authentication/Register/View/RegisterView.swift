@@ -12,6 +12,7 @@ struct RegisterView:View {
     @State var maxLimitChar: Int = maxLimitEmail
     @State var keyboardtype: UIKeyboardType = .emailAddress
     @State var isNavfromRegisterToLogin: Bool = false
+    @Environment(\.presentationMode) var presentationMode
     var body: some View {
         VStack {
             ScrollView(showsIndicators: false) {
@@ -40,26 +41,6 @@ struct RegisterView:View {
                                           backgroundColor: .lightOrange,
                                           isAutoCapitalize: .none
                         )
-                        MaterialTextField(text: $registerVM.mobileNumber,
-                                          placeholder: "Mobile Number",
-                                          keyboardType: keyboardtype,
-                                          fieldtype: .emailOrPhone,
-                                          isDisable: false,
-                                          isError: false,
-                                          errorText: registerVM.errorMessage,
-                                          backgroundColor: .lightOrange,
-                                          isAutoCapitalize: .none
-                        )
-                        MaterialTextField(text: $registerVM.dateOfBirth,
-                                          placeholder: "Date of Birth",
-                                          keyboardType: keyboardtype,
-                                          fieldtype: .emailOrPhone,
-                                          isDisable: false,
-                                          isError: false,
-                                          errorText: registerVM.errorMessage,
-                                          backgroundColor: .lightOrange,
-                                          isAutoCapitalize: .none
-                        )
                         MaterialTextField(text: $registerVM.password,
                                           placeholder: "Password",
                                           charLimit: maxLimitPassowrd,
@@ -76,13 +57,15 @@ struct RegisterView:View {
                         )
                     }
                     CustomButton(title: "Sign Up", isDisabled: registerVM.isValidateButton()) {
-                        registerVM.register()
+                        registerVM.register {
+                            presentationMode.wrappedValue.dismiss()
+                        }
                     }
                     HStack {
                         Spacer()
                         TextSwifUI(title: "Already havea an account?")
                         Button {
-                            isNavfromRegisterToLogin = true
+                            isNavfromRegisterToLogin.toggle()
                         } label: {
                             TextSwifUI(title: "Login", color: .main)
                         }
