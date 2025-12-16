@@ -11,6 +11,7 @@ struct ProfileView: View {
     @StateObject var profileVM = ProfileViewModel()
     @State var isNavigated: Bool = false
     @State var selectedButton: String = ""
+    @EnvironmentObject var mainVM: MainViewModel
 
     var body: some View {
         VStack {
@@ -56,7 +57,9 @@ struct ProfileView: View {
                     ProfileSectionView(title: "Profile Info",
                                        items: profileVM.profileInfoList, isNavigated: $isNavigated, selectedButton: $selectedButton)
                     ProfileSectionView(title: "Seting", items: profileVM.otherList, isNavigated: $isNavigated, selectedButton: $selectedButton) {
-                        profileVM.logout()
+                        profileVM.logout {
+                            mainVM.tabIndex = 0
+                        }
                     }
                     let lougout = "\(Constant.env) \("version") \(Constant.appVersion ?? "")(\(Constant.appBuildNumber ?? ""))"
                     TextSwifUI(title: lougout, size: .small, weight: .light)

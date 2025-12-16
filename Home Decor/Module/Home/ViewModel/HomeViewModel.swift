@@ -9,7 +9,7 @@ import Foundation
 
 class HomeViewModel : ObservableObject {
     @Published var selectedIndex: Int = 0
-    let animeList: [String] = ["animeList" , "animeList" , "animeList" ]
+    let animeList: [String] = ["animeList" , "banner1" , "banner2" ]
     
     let list: [categoryList] = [
         .init(icon: .sofa, activeIcon: .sofaActive),

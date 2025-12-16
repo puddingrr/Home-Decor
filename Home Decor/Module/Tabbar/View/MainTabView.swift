@@ -23,6 +23,7 @@ struct MainTabView: View {
                 EmptyView()
             case 4:
                 ProfileView()
+                    .environmentObject(mainVM)
             default:
                 HomeView()
             }

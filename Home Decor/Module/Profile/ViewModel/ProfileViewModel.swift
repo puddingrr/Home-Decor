@@ -39,7 +39,7 @@ class ProfileViewModel: ObservableObject {
         .init(image: .logout, title: "Logout")
     ]
     
-    func logout() {
+    func logout(completion: @escaping () -> Void) {
         do {
             try Auth.auth().signOut()
         } catch let signOutError as NSError {
@@ -48,6 +48,7 @@ class ProfileViewModel: ObservableObject {
 
         // Clear saved user data
         UserPreference.shared.clearLoginData()
+        completion()
     }
 }
 
