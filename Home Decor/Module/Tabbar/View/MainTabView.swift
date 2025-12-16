@@ -12,12 +12,12 @@ struct MainTabView: View {
     @Namespace private var underlineAnimation
 
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             switch mainVM.tabIndex {
             case 1:
                 CategoryMenuView()
             case 2:
-                EmptyView()
+                CartView()
             case 3:
                 EmptyView()
             case 4:
@@ -41,6 +41,7 @@ struct MainTabView: View {
                     }
                 }
             }
+            .background(Color.white.ignoresSafeArea())
         }
         .ignoresSafeArea(.keyboard, edges: .bottom)
     }

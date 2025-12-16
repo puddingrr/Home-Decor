@@ -29,7 +29,7 @@ struct CategoryDetailView: View {
                         RoundedRectangle(cornerRadius: 10)
                             .frame(height: 270)
                             .foregroundColor(Color.lightOrange)
-                        if let image = item?.image {
+                        if  let image = item?.image {
                             Image(image)
                                 .scaledToFit()
                                 .frame(height: 240)

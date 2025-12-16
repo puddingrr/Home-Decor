@@ -12,16 +12,29 @@ class LoginViewModel: ObservableObject {
     @Published var email: String = ""
     @Published var password: String = ""
     @Published var isLoggedIn: Bool = false
-    @Published var errorMessage: String = ""
+    @Published var errorMessage: String = "Email or Password is incorrect"
+    @Published var isNavigate = false
 
-    func login() {
+    func login(completion: @escaping (_ user: User) -> Void) {
         Auth.auth().signIn(withEmail: email, password: password) { result, error in
-            if error != nil {
-                self.errorMessage = "Error"
-                print("🔥 Firebase Auth Error:", "error")
+            if let error = error {
+                Utilize.shared.showAlert(message: self.errorMessage)
+                print("🔥 Firebase Auth Error:", error)
                 return
             }
-            self.isLoggedIn = true
+            
+            if let user = result?.user {
+                self.isLoggedIn = true
+                let loginData = LoginDataModel(
+                    id: nil,
+                    email: user.email,
+                    createdAt: user.metadata.creationDate?.description
+                )
+                
+                // Save user login info
+                UserPreference.shared.saveLoginData(loginData)
+                completion(user)
+            }
         }
     }
 
@@ -36,6 +49,15 @@ class LoginViewModel: ObservableObject {
             return true
         } else {
             return false
+        }
+    }
+    func checkValidateTextField() -> Bool {
+        if email.isValidEmail() == false {
+            errorMessage = "Email Address is incorrect"
+            return false
+        } else {
+            errorMessage = ""
+            return true
         }
     }
 }

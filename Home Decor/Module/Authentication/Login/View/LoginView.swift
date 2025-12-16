@@ -9,6 +9,9 @@ import SwiftUI
 
 struct LoginView:View {
     @StateObject var loginVM = LoginViewModel()
+    @State var loginData: LoginDataModel?
+    @AppStorage("email") var email: String = ""
+    @Environment(\.presentationMode) var presentationMode
     //State
     @State var maxLimitChar: Int = maxLimitEmail
     @State var keyboardtype: UIKeyboardType = .emailAddress
@@ -54,7 +57,16 @@ struct LoginView:View {
                         Spacer()
                     }
                     CustomButton(title: "Login", isDisabled: loginVM.isValidateButton()) {
-                        loginVM.login()
+                        if loginVM.checkValidateTextField() {
+                            loginVM.login { data in
+                                if isRememberMe {
+                                    email = loginVM.email
+                                } else {
+                                    email = ""
+                                }
+                                presentationMode.wrappedValue.dismiss()
+                            }
+                        }
                     }
                     HStack {
                         Spacer()

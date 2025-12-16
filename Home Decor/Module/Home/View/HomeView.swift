@@ -14,79 +14,90 @@ struct HomeView: View {
     @StateObject var viewModel = HomeViewModel()
     @State var isNavLogin: Bool = false
     @State var isNavRegister: Bool = false
+    @State private var isLoggedIn: Bool = false
     var body: some View {
-        ScrollView(showsIndicators: false) {
-            VStack(alignment: .leading, spacing: 16) {
-                HStack {
-                    CustomButton(title: "Login", width: 80, height: 30) {
-                        isNavLogin = true
-                    }
-                    CustomButton(title: "SignUp", width: 80, height: 30) {
-                        isNavRegister = true
-                    }
-//                    VStack(alignment: .leading) {
-//                        TextSwifUI(title: "Hi, Welcome Back", size: .huge, color: .main, weight: Font.Weight.bold)
-//                        TextSwifUI(title: "Create spaces that bring joy", size: .small, color: .black)
-//                    }
-                    Spacer()
-                    Button {
-                        search.toggle()
-                    } label: {
-                        Image(.search)
-                            .resizable()
-                            .frame(width: 31, height: 31)
-                    }
-                }
-                VStack {
-                    TabView(selection: $pageIndex) {
-                        ForEach(0..<viewModel.animeList.count, id: \.self) { i in
-                            HStack {
-                                Image(viewModel.animeList[i])
-                                    .resizable()
-                                    .frame(maxWidth: .infinity)
-                                    .frame(height: 140)
-                            }
-                            .tag(i)
-                        }
-                    }
-                    .frame(height: 140)
-                    .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-                    .onReceive(Timer.publish(every: 2, on: .main, in: .common).autoconnect()) { _ in
-                        if pageIndex < viewModel.animeList.count - 1 {
-                            pageIndex += 1
-                        } else {
-                            pageIndex = 0
-                        }
-                    }
+        VStack {
+            ScrollView(showsIndicators: false) {
+                VStack(alignment: .leading, spacing: 16) {
                     HStack {
-                        ForEach(0..<viewModel.animeList.count, id: \.self) { i in
-                            Capsule()
-                                .fill(pageIndex == i ? Color.black : Color.main)
-                                .frame(width: pageIndex == i ? 25 : 25)
-                                .animation(.easeInOut(duration: 0.6), value: pageIndex)
+                        if !isLoggedIn {
+                            CustomButton(title: "Login", width: 80, height: 30) {
+                                isNavLogin = true
+                            }
+                            CustomButton(title: "SignUp", width: 80, height: 30) {
+                                isNavRegister = true
+                            }
+                        } else {
+                            VStack(alignment: .leading) {
+                                TextSwifUI(title: "Hi, Welcome Back", size: .huge, color: .main, weight: Font.Weight.bold)
+                                TextSwifUI(title: "Create spaces that bring joy", size: .small, color: .black)
+                            }
+                        }
+                        Spacer()
+                        Button {
+                            search.toggle()
+                        } label: {
+                            Image(.search)
+                                .resizable()
+                                .frame(width: 31, height: 31)
                         }
                     }
-                    .frame(height: 6)
-                    .padding(.bottom, 8)
-                }
-                TextSwifUI(title: "Categories", size: .large, color: .selectPink, weight: .bold)
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 16) {
-                        ForEach(0..<viewModel.list.count, id: \.self) { i in
-                            menuList(icon: viewModel.list[i].icon,
-                                     activeIcon: viewModel.list[i].activeIcon,
-                                     isSelected: viewModel.selectedIndex == i) {
-                                viewModel.selectedIndex = i
+                    VStack {
+                        TabView(selection: $pageIndex) {
+                            ForEach(0..<viewModel.animeList.count, id: \.self) { i in
+                                HStack {
+                                    Image(viewModel.animeList[i])
+                                        .resizable()
+                                        .frame(maxWidth: .infinity)
+                                        .frame(height: 140)
+                                }
+                                .tag(i)
+                            }
+                        }
+                        .frame(height: 140)
+                        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+                        .onReceive(Timer.publish(every: 2, on: .main, in: .common).autoconnect()) { _ in
+                            if pageIndex < viewModel.animeList.count - 1 {
+                                pageIndex += 1
+                            } else {
+                                pageIndex = 0
+                            }
+                        }
+                        HStack {
+                            ForEach(0..<viewModel.animeList.count, id: \.self) { i in
+                                Capsule()
+                                    .fill(pageIndex == i ? Color.black : Color.main)
+                                    .frame(width: pageIndex == i ? 25 : 25)
+                                    .animation(.easeInOut(duration: 0.6), value: pageIndex)
+                            }
+                        }
+                        .frame(height: 6)
+                        .padding(.bottom, 8)
+                    }
+                    TextSwifUI(title: "Categories", size: .large, color: .selectPink, weight: .bold)
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 16) {
+                            ForEach(0..<viewModel.list.count, id: \.self) { i in
+                                menuList(icon: viewModel.list[i].icon,
+                                         activeIcon: viewModel.list[i].activeIcon,
+                                         isSelected: viewModel.selectedIndex == i) {
+                                    viewModel.selectedIndex = i
+                                }
                             }
                         }
                     }
+                    TextSwifUI(title: "Best Seller", size: .medium, color: .selectPink, weight: .bold)
+                    bestSeller
+                    TextSwifUI(title: "New Collection", size: .medium, color: .selectPink, weight: .bold)
+                    collectionView
                 }
-                TextSwifUI(title: "Best Seller", size: .medium, color: .selectPink, weight: .bold)
-                bestSeller
-                TextSwifUI(title: "New Collection", size: .medium, color: .selectPink, weight: .bold)
-                collectionView
+                .padding(16)
             }
-            .padding(16)
+        }
+        .onAppear {
+            if let _ = UserPreference.shared.getLoginData() {
+                isLoggedIn = true
+            }
         }
         .navigationDestination(isPresented: $search) {
             SearchView()

@@ -76,7 +76,6 @@ struct RegisterView:View {
                         )
                     }
                     CustomButton(title: "Sign Up", isDisabled: registerVM.isValidateButton()) {
-                        print("Register tapped!")
                         registerVM.register()
                     }
                     HStack {

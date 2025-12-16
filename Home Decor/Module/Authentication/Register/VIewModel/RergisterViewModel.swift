@@ -21,50 +21,29 @@ class RergisterViewModel: ObservableObject {
     
     func register() {
         errorMessage = ""
-        
-        // VALIDATION
-        if fullName.isEmpty {
-            errorMessage = "Full name is required"
-            return
-        }
-        
-        if email.isEmpty {
-            errorMessage = "Email is required"
-            return
-        }
-        
-        if mobileNumber.isEmpty {
-            errorMessage = "Mobile number is required"
-            return
-        }
-        
-        if dateOfBirth.isEmpty {
-            errorMessage = "Date of birth is required"
-            return
-        }
-        
-        if password.isEmpty {
-            errorMessage = "Password is required"
-            return
-        }
-        
-        if password != confirmPassword {
-            errorMessage = "Passwords do not match"
-            return
-        }
-        
+
+        guard !fullName.isEmpty else { errorMessage = "Full name is required"; return }
+        guard email.contains("@") else { errorMessage = "Invalid email"; return }
+        guard password.count >= 6 else { errorMessage = "Password must be at least 6 characters"; return }
+        guard password == confirmPassword else { errorMessage = "Passwords do not match"; return }
+
         isLoading = true
-        
-        // FIREBASE REGISTER
+
         Auth.auth().createUser(withEmail: email, password: password) { result, error in
             DispatchQueue.main.async {
                 self.isLoading = false
-                
-                if let error = error {
-                    self.errorMessage = error.localizedDescription
+
+                if error != nil {
+                    Utilize.shared.showAlert(message: self.errorMessage)
                     return
                 }
-                
+
+                if let user = result?.user {
+                    let changeRequest = user.createProfileChangeRequest()
+                    changeRequest.displayName = self.fullName
+                    changeRequest.commitChanges()
+                }
+
                 self.isLoggedIn = true
             }
         }
