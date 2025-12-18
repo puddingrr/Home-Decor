@@ -11,9 +11,10 @@ struct LoginDataModel: Codable {
     let id: Int?
     let email: String?
     let createdAt: String?
+    let fullName: String?
 
     enum CodingKeys: String, CodingKey {
-        case id, email
+        case id, email, fullName
         case createdAt = "created_at"
     }
 }

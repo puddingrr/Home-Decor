@@ -53,20 +53,20 @@ class UserPreference {
     }
     
     func saveLoginData(_ data: LoginDataModel) {
-         let encoder = JSONEncoder()
-         if let encoded = try? encoder.encode(data) {
-             defaults.set(encoded, forKey: loginKeyData)
-         }
-     }
+        let encoder = JSONEncoder()
+        if let encoded = try? encoder.encode(data) {
+            defaults.set(encoded, forKey: loginKeyData)
+        }
+    }
      
      // Retrieve user data
-     func getLoginData() -> LoginDataModel? {
-         guard let savedData = defaults.data(forKey: loginKeyData) else {
-             return nil
-         }
-         let decoder = JSONDecoder()
-         return try? decoder.decode(LoginDataModel.self, from: savedData)
-     }
+    func getLoginData() -> LoginDataModel? {
+        guard let savedData = defaults.data(forKey: loginKeyData) else {
+            return nil
+        }
+        let decoder = JSONDecoder()
+        return try? decoder.decode(LoginDataModel.self, from: savedData)
+    }
      
      // Clear user data on logout
      func clearLoginData() {

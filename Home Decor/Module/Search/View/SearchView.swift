@@ -17,14 +17,21 @@ struct SearchView: View {
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 16) {
                     RoundedRectangle(cornerRadius: 16)
-                        .fill(Color.white)
-                        .stroke(Color.selectPink, lineWidth: 1)
                         .frame(height: 35)
+                        .background(
+                            RoundedRectangle(cornerRadius: 16)
+                                .fill(Color.white)
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 16)
+                                .stroke(Color.selectPink, lineWidth: 1)
+                        )
                         .overlay {
                             HStack {
                                 TextField("Search", text: $searchText)
                                     .textFieldStyle(.plain)
-                                    .foregroundStyle(.black)
+                                    .foregroundColor(.black)
+
                                 Button {
                                     isfillter.toggle()
                                 } label: {
@@ -32,7 +39,8 @@ struct SearchView: View {
                                         .frame(width: 26, height: 26)
                                 }
                             }
-                            .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 5))
+                            .padding(.leading, 16)
+                            .padding(.trailing, 5)
                         }
                     
                     TextSwifUI(title: "Top Searches", size: .large, color: .selectPink, weight: .bold)

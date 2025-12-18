@@ -95,7 +95,7 @@ struct SheetContent<Content: View>: View {
                     .onAppear {
                         contentHeight = geometry.size.height
                     }
-                    .onChange(of: geometry.size.height) {
+                    .onChange(of: geometry.size.height) { _ in
                         contentHeight = geometry.size.height
                     }
             }

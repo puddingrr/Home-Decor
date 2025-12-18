@@ -46,7 +46,8 @@ class RergisterViewModel: ObservableObject {
                 let loginData = LoginDataModel(
                     id: nil,
                     email: user.email,
-                    createdAt: user.metadata.creationDate?.description
+                    createdAt: user.metadata.creationDate?.description,
+                    fullName: user.displayName
                 )
                 
                 UserPreference.shared.saveLoginData(loginData)

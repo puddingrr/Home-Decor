@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FA5C11092EF28A7B003D8DFA /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = FA5C11082EF28A7B003D8DFA /* FirebaseStorage */; };
+		FA5C110B2EF28B40003D8DFA /* FirebaseAppDistribution-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = FA5C110A2EF28B40003D8DFA /* FirebaseAppDistribution-Beta */; };
 		FAB1AAB82EE0132400E40D7F /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = FAB1AAB72EE0132400E40D7F /* FirebaseAnalytics */; };
 		FAB1AABA2EE0132400E40D7F /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = FAB1AAB92EE0132400E40D7F /* FirebaseAuth */; };
 		FAB1AABC2EE0132400E40D7F /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = FAB1AABB2EE0132400E40D7F /* FirebaseCore */; };
@@ -33,7 +35,9 @@
 				FAB1AAB82EE0132400E40D7F /* FirebaseAnalytics in Frameworks */,
 				FAB1AABE2EE0132400E40D7F /* FirebaseFirestore in Frameworks */,
 				FAB1AABC2EE0132400E40D7F /* FirebaseCore in Frameworks */,
+				FA5C11092EF28A7B003D8DFA /* FirebaseStorage in Frameworks */,
 				FAB1AABA2EE0132400E40D7F /* FirebaseAuth in Frameworks */,
+				FA5C110B2EF28B40003D8DFA /* FirebaseAppDistribution-Beta in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -80,6 +84,8 @@
 				FAB1AAB92EE0132400E40D7F /* FirebaseAuth */,
 				FAB1AABB2EE0132400E40D7F /* FirebaseCore */,
 				FAB1AABD2EE0132400E40D7F /* FirebaseFirestore */,
+				FA5C11082EF28A7B003D8DFA /* FirebaseStorage */,
+				FA5C110A2EF28B40003D8DFA /* FirebaseAppDistribution-Beta */,
 			);
 			productName = "Home Decor";
 			productReference = FAF3B8792E5C4F2400FEC400 /* Home Decor.app */;
@@ -284,7 +290,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -316,7 +322,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -365,6 +371,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		FA5C11082EF28A7B003D8DFA /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FAB1AAB62EE0132400E40D7F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
+		FA5C110A2EF28B40003D8DFA /* FirebaseAppDistribution-Beta */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FAB1AAB62EE0132400E40D7F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = "FirebaseAppDistribution-Beta";
+		};
 		FAB1AAB72EE0132400E40D7F /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = FAB1AAB62EE0132400E40D7F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

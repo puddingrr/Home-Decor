@@ -34,7 +34,7 @@ struct CustomButton: View {
                 }
                 Text(title)
                     .font(.system(size: font.fontSize))
-                    .foregroundColor(isOutline ? .main : textColor)
+                    .foregroundColor(isDisabled ? .white : (isOutline ? .main : textColor))
                     .minimumScaleFactor(0.5)
                     .lineLimit(lineLimit)
             }

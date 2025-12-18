@@ -51,7 +51,7 @@ struct CategoryMenuView: View {
         .navigationDestination(isPresented: $search) {
             SearchView()
         }
-        .navigationDestination(item: $route) { route in
+        .navigationDestination(for: CategoryRoute.self) { route in
             switch route {
             case .search:
                 SearchView()

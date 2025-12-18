@@ -22,17 +22,26 @@ struct ProfileView: View {
             ScrollView(showsIndicators: false) {
                 VStack(spacing: 16) {
                     VStack(spacing: 16) {
-                        Circle()
-                            .fill(Color.gray.opacity(0.3))
-                            .frame(width: 100, height: 100)
-                            .overlay {
-                                Image(.myprofile)
-                                    .resizable()
-                                    .frame(width: 40, height: 40)
-                            }
+                        if let image = profileVM.localProfileImage {
+                            Image(uiImage: image)
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 70, height: 70)
+                                .clipShape(Circle())
+                                .overlay(Circle().stroke(Color.white, lineWidth: 2))
+                        } else {
+                            Circle()
+                                .fill(Color.gray.opacity(0.3))
+                                .frame(width: 100, height: 100)
+                                .overlay {
+                                    Image(.myprofile)
+                                        .resizable()
+                                        .frame(width: 40, height: 40)
+                                }
+                        }
                         VStack {
-                            TextSwifUI(title: "Madison Smith", size: .huge, weight: .bold)
-                            TextSwifUI(title: "ID: 25030024", size: .small)
+                            TextSwifUI(title: profileVM.currentUser?.fullName ?? "Guest", size: .huge, weight: .bold)
+                            TextSwifUI(title: profileVM.currentUser?.email ?? "No Email", size: .small)
                         }
                         HStack {
                             menuCard(image: .myprofile, text: "Profile") {}
@@ -67,6 +76,9 @@ struct ProfileView: View {
                 Spacer()
             }
             .padding(16)
+        }
+        .onAppear {
+            profileVM.loadUser()  
         }
         .navigationDestination(isPresented: $profileVM.isOrder) {
             MyOrderView(viewModel: profileVM)

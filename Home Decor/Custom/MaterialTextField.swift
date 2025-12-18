@@ -166,8 +166,8 @@ struct MaterialTextField<Leading: View, Trailing: View>: View {
             ZStack(alignment: .leading) {
                 RoundedRectangle(cornerRadius: 10)
                     .stroke(borderColor.opacity(0.5), lineWidth: 1)
-                    .background(Color(backgroundColor).cornerRadius(10))
-                
+                    .background(backgroundColor.cornerRadius(10))
+
                 if labelFloating {
                     Text(placeholder)
                         .font(.system(size: 14))
@@ -235,19 +235,17 @@ struct MaterialTextField<Leading: View, Trailing: View>: View {
                     .foregroundColor(.red)
             }
         }
-        .onChange(of: text) { oldValue, newValue in
-            // Call external callback
+        .onChange(of: text) { newValue in
             onTextChanged?(newValue)
 
-            // Character limit logic
             if charLimit > 0 && newValue.count > charLimit {
                 text = String(newValue.prefix(charLimit))
             }
         }
-
-        .onChange(of: keyboardType) { oldValue, newValue in
+        .onChange(of: keyboardType) { _ in
             keepFloating = true
             Utilize.hideKeyboard()
+
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 focused = true
                 keepFloating = false
