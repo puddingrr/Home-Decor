@@ -5,16 +5,20 @@
 //  Created by Dalynn on 12/18/25.
 //
 
+import FirebaseFirestore
+import FirebaseStorage
 import FirebaseAuth
 
 class EditProfileViewModel: ObservableObject {
-
+    @Published var list: [ProfileIconModel] = []
+    @Published var imageURLs: [String: URL] = [:]
     @Published var fullName: String = ""
     @Published var email: String = ""
     @Published var password: String = ""
     @Published var confirmPassword: String = ""
     @Published var isLoading = false
     @Published var errorMessage = ""
+    @Published var selectedProfileImageURL: String?
 
     private var profileVM: ProfileViewModel?
 
@@ -103,5 +107,63 @@ class EditProfileViewModel: ObservableObject {
                email.isEmpty ||
                password.isEmpty ||
                confirmPassword.isEmpty
+    }
+    
+//    private func loadImages() async {
+//        for icon in list {
+//            do {
+//                let ref = Storage.storage().reference(withPath: icon.imagePath)
+//                let url = try await ref.downloadURL()
+//
+//                await MainActor.run {
+//                    imageURLs[icon.id] = url
+//                }
+//            } catch {
+//                print("❌ Image load error:", error.localizedDescription)
+//            }
+//        }
+//    }
+    func saveProfileImage(url: String) async {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+
+        do {
+            try await Firestore.firestore()
+                .collection("users")
+                .document(uid)
+                .updateData([
+                    "profileImageUrl": url
+                ])
+
+            await MainActor.run {
+                self.selectedProfileImageURL = url
+            }
+
+        } catch {
+            print("❌ Failed to save profile image:", error.localizedDescription)
+        }
+    }
+
+
+    func fetchIcons() {
+        Task {
+            do {
+                let snapshot = try await Firestore.firestore()
+                    .collection("products") // must match seeder
+                    .getDocuments()
+
+                let icons = snapshot.documents.map { doc in
+                    ProfileIconModel(
+                        id: doc.documentID,
+                        imageURLs: doc["imageURLs"] as? [String] ?? []
+                    )
+                }
+
+                await MainActor.run {
+                    self.list = icons
+                }
+            } catch {
+                print("❌ Firestore error:", error.localizedDescription)
+            }
+        }
     }
 }

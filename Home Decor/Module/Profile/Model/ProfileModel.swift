@@ -13,3 +13,9 @@ struct orderList {
     let title, subTitle: String
     let price, item, totalPrice: String
 }
+
+struct ProfileIconModel: Identifiable {
+    let id: String
+    let imageURLs: [String]
+}
+

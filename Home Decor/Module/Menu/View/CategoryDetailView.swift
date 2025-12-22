@@ -11,9 +11,6 @@ struct CategoryDetailView: View {
     @StateObject var categoryVM: CategoryViewModel
     var title: String
     var item: ListMenu?
-//    var titleCategory: String
-//    var subTitleCategory: String
-//    var priceCategory: String
     var actionFav: (()-> Void)?
     var actionAdd: (()-> Void)?
     var body: some View {

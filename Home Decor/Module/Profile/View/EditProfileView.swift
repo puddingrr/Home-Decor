@@ -23,37 +23,32 @@ struct EditProfileView: View {
                         viewModel.showPortraitSheet = true
                     } label: {
                         ZStack {
-                            if let image = viewModel.localProfileImage {
-                                Image(uiImage: image)
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: 100, height: 100)
-                                    .clipShape(Circle())
-                                    .overlay(Circle().stroke(Color.white, lineWidth: 2))
-                            } else if let urlString = viewModel.profileImageUrl, let url = URL(string: urlString) {
+                            if let urlString = editVM.selectedProfileImageURL,
+                               let url = URL(string: urlString) {
+
                                 AsyncImage(url: url) { img in
-                                    img.resizable()
-                                        .scaledToFill()
+                                    img.resizable().scaledToFill()
                                 } placeholder: {
                                     Circle().fill(Color.gray.opacity(0.3))
                                 }
                                 .frame(width: 100, height: 100)
                                 .clipShape(Circle())
-                                .overlay(Circle().stroke(Color.white, lineWidth: 2))
+
+                            } else if let image = viewModel.localProfileImage {
+                                Image(uiImage: image)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 100, height: 100)
+                                    .clipShape(Circle())
+
                             } else {
                                 Circle()
                                     .fill(Color.gray.opacity(0.3))
                                     .frame(width: 100, height: 100)
-                                    .overlay {
-                                        Image(.myprofile)
-                                            .resizable()
-                                            .frame(width: 40, height: 40)
-                                    }
                             }
                             Image(.editProfile)
                                 .resizable()
                                 .scaledToFit()
-                                .frame(width: 16, height: 16)
                                 .frame(width: 31, height: 31)
                                 .background(Color.gray)
                                 .clipShape(Circle())
@@ -62,7 +57,7 @@ struct EditProfileView: View {
                         }
                     }
                     VStack {
-                        TextSwifUI(title: "Madison Smith", size: .large, weight: .bold)
+                        TextSwifUI(title: editVM.fullName, size: .large, weight: .bold)
                     }
                     .padding(.vertical, 16)
                     .frame(maxWidth: .infinity)
@@ -134,28 +129,41 @@ struct EditProfileView: View {
             }
             Spacer()
         }
-        .actionSheet(isPresented: $viewModel.showPortraitSheet) {
-            ActionSheet(
-                title: Text("Choose Optione"),
-                buttons: [
-                    .cancel(Text("Cancel")) {},
-                    .default(
-                        Text("Gallery"),
-                        action: {
-                            mediaType = .gallery
-                            viewModel.showGalarryPicker.toggle()
-                        }
-                    ),
-                    .default(
-                        Text("Camera"),
-                        action: {
-                            mediaType = .camera
-                            viewModel.showCameraPicker.toggle()
-                        }
-                    )
-                ]
-            )
+        .sheet(isPresented: $viewModel.showPortraitSheet) {
+            ProfileIconView(viewModel: editVM) { selectedURL in
+                Task {
+                    await editVM.saveProfileImage(url: selectedURL)
+                    viewModel.profileImageUrl = selectedURL // ⭐ update main VM
+                    viewModel.showPortraitSheet = false
+                }
+            }
         }
+//        .fullScreenCover(isPresented: $viewModel.showPortraitSheet) {
+//            MediaPicker(mediaType: $mediaType, selectedMedia: $viewModel.localProfileImage, selectedFileURLs: $viewModel.selectedFileURLs, isSingleSelection: true)
+//                .ignoresSafeArea()
+//        }
+//        .actionSheet(isPresented: $viewModel.showPortraitSheet) {
+//            ActionSheet(
+//                title: Text("Choose Optione"),
+//                buttons: [
+//                    .cancel(Text("Cancel")) {},
+//                    .default(
+//                        Text("Gallery"),
+//                        action: {
+//                            mediaType = .gallery
+//                            viewModel.showGalarryPicker.toggle()
+//                        }
+//                    ),
+//                    .default(
+//                        Text("Camera"),
+//                        action: {
+//                            mediaType = .camera
+//                            viewModel.showCameraPicker.toggle()
+//                        }
+//                    )
+//                ]
+//            )
+//        }
 //        .sheet(isPresented: $viewModel.showGalarryPicker) {
 //            MediaPicker(mediaType: $mediaType, selectedMedia: $viewModel.localProfileImage, selectedFileURLs: $viewModel.selectedFileURLs, isSingleSelection: true)
 //        }

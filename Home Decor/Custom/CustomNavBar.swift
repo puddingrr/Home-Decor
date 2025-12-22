@@ -43,7 +43,7 @@ struct CustomNavBar: View {
                     } label: {
                         Image(trailing)
                             .imageScale(.large)
-                            .frame(width: 19, height: 19)
+                            .frame(width: 16, height: 16)
                     }
                     .padding(.trailing, 16)
                 }
@@ -56,7 +56,7 @@ struct CustomNavBar: View {
                 .padding(.horizontal, 50)
             )
             .padding(.horizontal, 16)
-            .frame(width: UIScreen.main.bounds.width, height: 46)
+            .frame(width: UIScreen.main.bounds.width, height: 35)
             .frame(maxWidth: .infinity)
             
             .background(

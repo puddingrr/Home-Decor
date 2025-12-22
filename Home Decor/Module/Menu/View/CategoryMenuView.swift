@@ -8,56 +8,56 @@
 import SwiftUI
 
 struct CategoryMenuView: View {
-    @State var search: Bool = false
-    @State private var route: CategoryRoute? = nil
+    @StateObject var viewModel = CategoryViewModel()
     var body: some View {
         VStack {
             CustomNavBar(title: "Bedroom", trailingBtnIcon: .search, isBack: false, actionTrailingIcon: {
-                search.toggle()
+                viewModel.navigate(.search)
             })
-            VStack {
+            ScrollView(showsIndicators: false) {
                 VStack {
                     HStack {
                         VStack {
-                            menuCustom(title: "Beds", high: 100, action: {
-                                route = .menuList(id: 0, title: "Beds")
-                            })
-                            menuCustom(title: "Light", high: 200) {
-                                route = .menuList(id: 1 , title: "Light")
+                            menuCustom(title: "Beds", high: 100) {
+                                viewModel.navigate(.menuList(id: 0, title: "Beds"))
                             }
-                            menuCustom(title: "Chairs", high: 130){
-                                route = .menuList(id: 2 , title: "Chairs")
+                            menuCustom(title: "Light", high: 200) {
+                                viewModel.navigate(.menuList(id: 1, title: "Light"))
+                            }
+                            menuCustom(title: "Chairs", high: 130) {
+                                viewModel.navigate(.menuList(id: 2, title: "Chairs"))
                             }
                         }
+                        
                         VStack {
                             menuCustom(title: "Sofa", high: 130) {
-                                route = .menuList(id: 3 , title: "Sofa")
+                                viewModel.navigate(.menuList(id: 3, title: "Sofa"))
                             }
                             menuCustom(title: "Tables", high: 130) {
-                                route = .menuList(id: 4 , title: "Tables")
+                                viewModel.navigate(.menuList(id: 4, title: "Tables"))
                             }
                             menuCustom(title: "Cupboard", high: 170) {
-                                route = .menuList(id: 5 , title: "Cupboard")
+                                viewModel.navigate(.menuList(id: 5, title: "Cupboard"))
                             }
                         }
                     }
                     menuCustom(title: "Decor", high: 120) {
-                        route = .menuList(id: 6 , title: "Decor")
+                        viewModel.navigate(.menuList(id: 6, title: "Decor"))
                     }
                 }
+                .padding(16)
             }
-            .padding(16)
         }
-        .navigationDestination(isPresented: $search) {
-            SearchView()
-        }
-        .navigationDestination(for: CategoryRoute.self) { route in
-            switch route {
+        .navigationDestination(isPresented: $viewModel.isNavigated) {
+            switch viewModel.navType {
             case .search:
                 SearchView()
-
+                
             case .menuList(let id, let title):
                 MenuListView(id: id, title: title)
+                
+            case .none:
+                EmptyView()
             }
         }
     }
