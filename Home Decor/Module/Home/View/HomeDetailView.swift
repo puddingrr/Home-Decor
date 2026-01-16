@@ -6,15 +6,15 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct HomeDetailView:View {
     var item: ListMenu?
     var actionFav: (()-> Void)?
     var actionAdd: (()-> Void)?
     var body: some View {
-        VStack {
             VStack(spacing: 0) {
-                CustomNavBar(title: "Product Detail", trailingBtnIcon: .search)
+                CustomNavBar(title: "Product Detail")
                 RoundedRectangle(cornerRadius: 0)
                     .frame(height: 1)
                     .foregroundColor(Color.gray.opacity(0.3))
@@ -26,11 +26,11 @@ struct HomeDetailView:View {
                                 .foregroundColor(Color.lightOrange)
                             if  let image = item?.image {
                                 GeometryReader { geo in
-                                    Image(image)
+                                    WebImage(url: URL(string: image))
                                         .resizable()
                                         .scaledToFill()
                                         .frame(width: geo.size.width, height: geo.size.height)
-                                        .clipped() 
+                                        .clipped()
                                         .cornerRadius(10)
                                 }
                             }
@@ -63,13 +63,14 @@ struct HomeDetailView:View {
                             StarRatingView(rating: 4)
                         }
                         
-                        CustomButton(title: "Add to Cart")
+                        CustomButton(title: "Add to Cart") {
+                            
+                        }
                             .padding(.top, 32)
                     }
                     .padding(16)
                 }
                 Spacer()
             }
-        }
     }
 }

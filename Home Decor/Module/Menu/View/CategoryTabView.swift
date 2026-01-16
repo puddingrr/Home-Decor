@@ -6,8 +6,10 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
+
 struct CategoryTabView: View {
-    @StateObject var categoryVM: CategoryViewModel
+    @StateObject var cateegoryVM: MenuViewModel
     var id: Int
     var title: String
     var onClick: ((ListMenu)-> Void)?
@@ -21,14 +23,13 @@ struct CategoryTabView: View {
         VStack {
             ScrollView(showsIndicators: false) {
                 LazyVGrid(columns: columns, spacing: 16) {
-                    ForEach(categoryVM.list.indices, id: \.self) { index in
-                        let i = categoryVM.list[index]
-                        CardViewMenu(image: i.image,
-                                     title: i.title,
-                                     subTitle: i.subTitle,
-                                     price: i.price,
+                    ForEach(cateegoryVM.menuList) { index in
+                        CardViewMenu(image: index.image,
+                                     title: index.title ?? "",
+                                     subTitle: index.subTitle ?? "",
+                                     price: index.price ?? "",
                                      onClick: {
-                            onClick?(i)
+                            onClick?(index)
                         })
                     }
                 }
@@ -38,7 +39,7 @@ struct CategoryTabView: View {
 }
 
 struct CardViewMenu: View {
-    var image: ImageResource
+    var image: String?
     var title: String = ""
     var subTitle: String = ""
     var price: String = ""
@@ -47,10 +48,14 @@ struct CardViewMenu: View {
     var onClick: (()-> Void)?
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Image(image)
+            WebImage(url: URL(string: image ?? ""))
                 .resizable()
-                .frame(height: 142)
+
                 .scaledToFill()
+                .frame(height: 142)
+                .clipped()
+                .cornerRadius(10)
+            
             TextSwifUI(title: title, size: .large, weight: .medium)
             TextSwifUI(title: subTitle, size: .small, weight: .light)
             Divider()

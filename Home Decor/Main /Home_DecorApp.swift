@@ -23,9 +23,13 @@ struct Home_DecorApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationStack {
-                MainTabView()
+                Group {
+                    MainTabView()
+//                        .task {
+//                            await ProductSeeder.seedMenu()
+//                        }
+                }
             }
-            .navigationBarBackButtonHidden(true)
             .navigationViewStyle(StackNavigationViewStyle())
             .preferredColorScheme(.light)
         }

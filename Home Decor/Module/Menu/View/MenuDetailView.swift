@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct CategoryDetailView: View {
-    @StateObject var categoryVM: CategoryViewModel
+struct MenuDetailView: View {
+    @StateObject var categoryVM: MenuViewModel
     var title: String
     var item: ListMenu?
     var actionFav: (()-> Void)?

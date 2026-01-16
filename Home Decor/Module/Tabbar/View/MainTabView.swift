@@ -9,6 +9,7 @@ import SwiftUI
 
 struct MainTabView: View {
     @StateObject var mainVM = MainViewModel()
+    @StateObject var menuVM = MenuViewModel()
     @Namespace private var underlineAnimation
     @State private var showLogin = false
 
@@ -16,7 +17,7 @@ struct MainTabView: View {
         VStack(spacing: 0) {
             switch mainVM.tabIndex {
             case 1:
-                CategoryMenuView()
+                MenuView()
             case 2:
                 CartView()
             case 3:
@@ -26,6 +27,7 @@ struct MainTabView: View {
                     .environmentObject(mainVM)
             default:
                 HomeView()
+                    .environmentObject(menuVM)
             }
             Spacer(minLength: 0)
             
@@ -53,6 +55,9 @@ struct MainTabView: View {
         }
         .onAppear {
             mainVM.checkLogin()
+            Task {
+                    await menuVM.fetchCategory("chair")
+                }
         }
         .ignoresSafeArea(.keyboard, edges: .bottom)
     }

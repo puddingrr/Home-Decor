@@ -109,20 +109,6 @@ class EditProfileViewModel: ObservableObject {
                confirmPassword.isEmpty
     }
     
-//    private func loadImages() async {
-//        for icon in list {
-//            do {
-//                let ref = Storage.storage().reference(withPath: icon.imagePath)
-//                let url = try await ref.downloadURL()
-//
-//                await MainActor.run {
-//                    imageURLs[icon.id] = url
-//                }
-//            } catch {
-//                print("❌ Image load error:", error.localizedDescription)
-//            }
-//        }
-//    }
     func saveProfileImage(url: String) async {
         guard let uid = Auth.auth().currentUser?.uid else { return }
 

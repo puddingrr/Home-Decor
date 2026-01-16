@@ -6,50 +6,55 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct HomeCollectionView: View {
     @StateObject var viewModel: HomeViewModel
+    @EnvironmentObject var menuVM: MenuViewModel
+    
     @State var selectedItem: ListMenu?
     @State var showDetail = false
+    
+    let columns = [
+          GridItem(.flexible()),
+          GridItem(.flexible())
+      ]
+    
     var body: some View {
         VStack(alignment: .leading) {
             TextSwifUI(title: "New Collection", size: .medium, color: .selectPink, weight: .bold)
-            HStack(spacing: 24) {
-                ForEach(viewModel.collectList, id: \.id) { item in
+            LazyVGrid(columns: columns, spacing: 16) {
+                ForEach(menuVM.menuList) { item in
                     VStack(alignment: .leading, spacing: 10) {
-                        Image(item.image)
+                        WebImage(url: URL(string: item.image ?? ""))
                             .resizable()
-                            .frame(height: 142)
+                            .indicator(.activity)
                             .scaledToFill()
-                        TextSwifUI(title: item.title, size: .large, weight: .medium)
-                        TextSwifUI(title: item.subTitle, size: .small, weight: .light)
+                            .frame(height: 142)
+                            .clipped()
+                            .cornerRadius(10)
+
+                        TextSwifUI(title: item.title ?? "", size: .large, weight: .medium)
+                        TextSwifUI(title: item.subTitle ?? "", size: .small, weight: .light)
+
                         Divider()
                             .frame(height: 1)
                             .background(Color.main)
+
                         HStack {
-                            TextSwifUI(title: "$\(item.price)", size: .large, color: .selectPink, weight: .bold)
-                            Spacer(minLength: 0)
-                            Button {
-                                
-                            } label: {
-                                Image(.iconFav)
-                                    .frame(width: 20, height: 20)
-                            }
-                            Button {
-                                
-                            } label: {
-                                Image(.iconAdd)
-                                    .frame(width: 20, height: 20)
-                            }
+                            TextSwifUI(title: "$\(item.price ?? "")", size: .large, color: .selectPink, weight: .bold)
+                            Spacer()
+                            Image(.iconFav)
+                            Image(.iconAdd)
                         }
                     }
-                    .frame(maxWidth: .infinity)
                     .onTapGesture {
                         selectedItem = item
                         showDetail = true
                     }
                 }
             }
+
         }
         .navigationDestination(isPresented: $showDetail) {
             if let item = selectedItem {

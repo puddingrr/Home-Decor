@@ -17,7 +17,7 @@ struct CustomNavBar: View {
     var actionLogin: (() -> Void)?
     var actionTrailingIcon: (() -> Void)?
     @Environment(\.presentationMode) var presentationMode
-    
+
     var body: some View {
         VStack(spacing: 0) {
             HStack(spacing: 10) {
@@ -42,10 +42,10 @@ struct CustomNavBar: View {
                         actionTrailingIcon?()
                     } label: {
                         Image(trailing)
-                            .imageScale(.large)
-                            .frame(width: 16, height: 16)
+                            .resizable()
+                            .contentShape(Rectangle())
+                            .frame(width: 24, height: 24)
                     }
-                    .padding(.trailing, 16)
                 }
             }
             .overlay(
@@ -56,14 +56,8 @@ struct CustomNavBar: View {
                 .padding(.horizontal, 50)
             )
             .padding(.horizontal, 16)
-            .frame(width: UIScreen.main.bounds.width, height: 35)
+            .frame(width: UIScreen.main.bounds.width, height: 38)
             .frame(maxWidth: .infinity)
-            
-            .background(
-                background
-                    .ignoresSafeArea()
-                    .frame(width: UIScreen.main.bounds.width)
-            )
         }
         .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 4)
         .background(background.ignoresSafeArea())

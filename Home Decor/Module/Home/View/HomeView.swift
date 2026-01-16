@@ -10,6 +10,7 @@ import SwiftUI
 struct HomeView: View {
     var isSelected: Bool = false
     @StateObject var viewModel = HomeViewModel()
+    @EnvironmentObject var menuVM: MenuViewModel
     
     let columns = [
           GridItem(.flexible()),
@@ -126,6 +127,7 @@ struct HomeView: View {
                         .padding(.top, 25)
                     }
                     HomeCollectionView(viewModel: viewModel)
+                        .environmentObject(menuVM)
                 }
                 .padding(.vertical, 8)
                 .padding(.horizontal)
@@ -150,8 +152,5 @@ struct HomeView: View {
                 EmptyView()
             }
         }
-//        .task {
-//            await ProductSeeder.seedSampleProducts()
-//        }
     }
 }

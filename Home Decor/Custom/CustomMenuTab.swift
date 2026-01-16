@@ -10,7 +10,6 @@ struct CustomMenuTab: View {
 //    @Binding var isLoginRequired: Bool
     @Binding var index: Int?
     var items: [String]
-    var tabInclude: String = "3"
     var body: some View {
         HStack(spacing: 16) {
             ForEach(0..<items.count, id: \.self) { i in
@@ -20,8 +19,7 @@ struct CustomMenuTab: View {
                     }
                 } label: {
                     VStack {
-                        let title = items[i]
-                        TextSwifUI(title: (i == 1) && !tabInclude.isEmpty ? "\(title)\(tabInclude)" : title, size: .other(16),
+                        TextSwifUI(title: items[i], size: .other(16),
                                    color: index == i ? Color.selectPink : Color.gray, weight: index == i ? .bold : .regular)
                             .frame(maxWidth: .infinity)
                         if index == i {
