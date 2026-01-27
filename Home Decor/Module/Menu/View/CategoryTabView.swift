@@ -50,8 +50,6 @@ struct CardViewMenu: View {
         VStack(alignment: .leading, spacing: 10) {
             WebImage(url: URL(string: image ?? ""))
                 .resizable()
-
-                .scaledToFill()
                 .frame(height: 142)
                 .clipped()
                 .cornerRadius(10)

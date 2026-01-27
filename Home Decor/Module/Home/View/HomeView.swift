@@ -11,6 +11,7 @@ struct HomeView: View {
     var isSelected: Bool = false
     @StateObject var viewModel = HomeViewModel()
     @EnvironmentObject var menuVM: MenuViewModel
+    @EnvironmentObject var cartVM: CartViewModel
     
     let columns = [
           GridItem(.flexible()),
@@ -128,6 +129,7 @@ struct HomeView: View {
                     }
                     HomeCollectionView(viewModel: viewModel)
                         .environmentObject(menuVM)
+                        .environmentObject(cartVM)
                 }
                 .padding(.vertical, 8)
                 .padding(.horizontal)

@@ -9,12 +9,14 @@ import SwiftUI
 
 struct CustomNavBar: View {
     var title: String = ""
-    var tinhColor: Color = Color.selectPink
-    var background: Color?
+    var tinhColor: Color?
+    var background: Color? = Color.commonBackground
     var trailingBtnIcon: ImageResource?
     var isBack: Bool = true
+    var isBGImg: Bool = false
+    var isScaleTitle: Bool = false
+    var isShadow: Bool = false
     var action: (() -> Void)?
-    var actionLogin: (() -> Void)?
     var actionTrailingIcon: (() -> Void)?
     @Environment(\.presentationMode) var presentationMode
 
@@ -29,10 +31,10 @@ struct CustomNavBar: View {
                             action?()
                         }
                     }, label: {
-                        Image(.backIcon)
-                            .resizable()
-                            .contentShape(Rectangle())
-                            .frame(width: 19, height: 16)
+                        Image(tinhColor != nil ? .whiteArrowLeft : .arrowLeft)
+                        .resizable()
+                        .contentShape(Rectangle())
+                        .frame(width: 30, height: 30)
                     })
                 }
                 Spacer(minLength: 0)
@@ -43,25 +45,43 @@ struct CustomNavBar: View {
                     } label: {
                         Image(trailing)
                             .resizable()
-                            .contentShape(Rectangle())
                             .frame(width: 24, height: 24)
                     }
                 }
             }
             .overlay(
                 TextSwifUI(title: title,
-                           size: .huge,
-                           color: tinhColor,
-                            weight: .bold, lineLimit: 1)
+                            size: .medium,
+                            color: tinhColor ?? Color.commonText,
+                            weight: .bold, lineLimit: 1, isScale: isScaleTitle)
                 .padding(.horizontal, 50)
             )
             .padding(.horizontal, 16)
-            .frame(width: UIScreen.main.bounds.width, height: 38)
+            .padding(.bottom, isBGImg ? 35 : 0)
+            .frame(width: UIScreen.main.bounds.width, height: isBGImg ? 80 : 46)
             .frame(maxWidth: .infinity)
+            
+            .background(
+                Group {
+                    if isBGImg {
+                        ZStack {
+                            Image(.banner2)
+                                .resizable()
+                                .scaledToFill()
+                                .ignoresSafeArea()
+                                .frame(width: UIScreen.main.bounds.width, height: 80)
+                        }
+                    } else {
+                        background
+                            .ignoresSafeArea()
+                            .frame(width: UIScreen.main.bounds.width)
+                    }
+                }
+            )
         }
-        .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 4)
+        .shadow(color: isShadow ? .black.opacity(0.1) : .clear, radius: 4, x: 0, y: 4)
         .background(background.ignoresSafeArea())
         .frame(width: UIScreen.main.bounds.width)
-        .navigationBarBackButtonHidden(isBack)
+        .navigationBarBackButtonHidden(true)
     }
 }

@@ -8,10 +8,12 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct MenuView: View {
-    @StateObject var menuVM = MenuViewModel() // single source of truth
+    @StateObject var menuVM = MenuViewModel()
+    @EnvironmentObject var cartVM: CartViewModel
     
     @State private var selectedItem: ListMenu? = nil
     @State private var isNavigationDetail: Bool = false
+    @State private var isNavSearch: Bool = false
     
     var body: some View {
         VStack {
@@ -45,7 +47,11 @@ struct MenuView: View {
         .navigationDestination(isPresented: $isNavigationDetail) {
             if let item = selectedItem {
                 MenuDetailView(categoryVM: menuVM, title: selectedItem?.title ?? "", item: item)
+                    .environmentObject(cartVM)
             }
+        }
+        .navigationDestination(isPresented: $isNavSearch) {
+           SearchView()
         }
     }
 }
@@ -54,9 +60,9 @@ struct MenuView: View {
 extension MenuView {
     var headerView: some View {
         VStack(spacing: 0) {
-            CustomNavBar(title: "Bedroom", trailingBtnIcon: .search, isBack: false) {
-                menuVM.navigate(.search)
-            }
+            CustomNavBar(title: "Bedroom", background: Color.clear, trailingBtnIcon: .search, isBack: false, actionTrailingIcon: {
+                isNavSearch = true
+            })
             
             HStack(spacing: 16) {
                 ScrollView(.horizontal, showsIndicators: false) {
@@ -78,27 +84,12 @@ extension MenuView {
     func mapTabIndexToCategoryKey(_ index: Int) -> String {
         switch index {
         case 0: return "bed"
-        case 1: return "chair"
-        case 2: return "sofa"
+        case 1: return "sofa"
+        case 2: return "chair"
         case 3: return "Table"
-        case 4: return "desk"
-        case 5: return "auxiliary"
+        case 4: return "auxiliary"
+        case 5: return "desk"
         default: return "bed"
         }
-    }
-}
-
-// MARK: Custom menu button
-func menuCustom(title: String, high: CGFloat, action: (() -> Void)? = nil) -> some View {
-    Button {
-        action?()
-    } label: {
-        VStack {
-            TextSwifUI(title: title, color: .white)
-        }
-        .padding(4)
-        .frame(maxWidth: .infinity)
-        .frame(height: high)
-        .background(Color.main.cornerRadius(12))
     }
 }

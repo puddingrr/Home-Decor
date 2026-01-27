@@ -8,10 +8,11 @@
 import Foundation
 import SwiftUI
 
-struct ListMenu: Identifiable {
+struct ListMenu: Identifiable, Codable, Hashable {
     let id: UUID
     let image: String?
     let title: String?
     let subTitle: String?
     let price: String?
+    var quantity: Int?
 }

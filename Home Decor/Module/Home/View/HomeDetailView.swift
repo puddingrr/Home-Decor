@@ -9,9 +9,14 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct HomeDetailView:View {
+    @EnvironmentObject var cartVM: CartViewModel
+    
+    @State var showAlreadyAddedAlert = false
+
     var item: ListMenu?
     var actionFav: (()-> Void)?
     var actionAdd: (()-> Void)?
+        
     var body: some View {
             VStack(spacing: 0) {
                 CustomNavBar(title: "Product Detail")
@@ -64,9 +69,21 @@ struct HomeDetailView:View {
                         }
                         
                         CustomButton(title: "Add to Cart") {
-                            
+                            if let productItem = item {  
+                                   Task {
+                                       let added = await cartVM.addToCart(productItem)
+                                       if !added {
+                                           showAlreadyAddedAlert = true
+                                       }
+                                   }
+                               }
                         }
-                            .padding(.top, 32)
+                        .padding(.top, 32)
+                        .alert("Already in Cart 💜", isPresented: $showAlreadyAddedAlert) {
+                            Button("OK", role: .cancel) { }
+                        } message: {
+                            Text("This product is already added to your cart.")
+                        }
                     }
                     .padding(16)
                 }

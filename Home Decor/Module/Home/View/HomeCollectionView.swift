@@ -11,6 +11,7 @@ import SDWebImageSwiftUI
 struct HomeCollectionView: View {
     @StateObject var viewModel: HomeViewModel
     @EnvironmentObject var menuVM: MenuViewModel
+    @EnvironmentObject var cartVM: CartViewModel
     
     @State var selectedItem: ListMenu?
     @State var showDetail = false
@@ -59,6 +60,7 @@ struct HomeCollectionView: View {
         .navigationDestination(isPresented: $showDetail) {
             if let item = selectedItem {
                 HomeDetailView(item: item)
+                    .environmentObject(cartVM)
             }
         }
     }

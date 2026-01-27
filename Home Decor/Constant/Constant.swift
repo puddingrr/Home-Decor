@@ -126,3 +126,17 @@ enum TextFieldType {
     case otp
     case withTrailingButton
 }
+
+struct DictionaryEncoder {
+    static func encode<T: Codable>(_ value: T) throws -> [String: Any] {
+        let data = try JSONEncoder().encode(value)
+        return try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] ?? [:]
+    }
+}
+
+struct DictionaryDecoder {
+    static func decode<T: Codable>(_ type: T.Type, from dict: [String: Any]) throws -> T {
+        let data = try JSONSerialization.data(withJSONObject: dict, options: [])
+        return try JSONDecoder().decode(T.self, from: data)
+    }
+}

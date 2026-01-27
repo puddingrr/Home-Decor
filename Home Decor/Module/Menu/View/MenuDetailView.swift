@@ -6,19 +6,21 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct MenuDetailView: View {
     @StateObject var categoryVM: MenuViewModel
+    @EnvironmentObject var cartVM: CartViewModel
+    
+    @State var showAlreadyAddedAlert = false
+    
     var title: String
     var item: ListMenu?
     var actionFav: (()-> Void)?
     var actionAdd: (()-> Void)?
     var body: some View {
         VStack(spacing: 0) {
-            CustomNavBar(title: title, trailingBtnIcon: .search)
-            RoundedRectangle(cornerRadius: 0)
-                .frame(height: 1)
-                .foregroundColor(Color.gray.opacity(0.3))
+            CustomNavBar(title: title,trailingBtnIcon: .search, isShadow: true)
             
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 16) {
@@ -27,10 +29,9 @@ struct MenuDetailView: View {
                             .frame(height: 270)
                             .foregroundColor(Color.lightOrange)
                         if  let image = item?.image {
-                            Image(image)
-                                .scaledToFit()
-                                .frame(height: 240)
-                                .padding(16)
+                            WebImage(url: URL(string: image))
+                                .resizable()
+                                .frame(height: 230)
                         }
                     }
                     TextSwifUI(title: item?.title ?? "", size: .large, weight: .medium)
@@ -60,12 +61,23 @@ struct MenuDetailView: View {
                         StarRatingView(rating: 4)
                     }
                     
-                    CustomButton(title: "Add to Cart")
-                        .padding(.top, 32)
-                }
-                .padding(16)
+                    CustomButton(title: "Add to Cart") {
+                        if let productItem = item {
+                            Task {
+                                let added = await cartVM.addToCart(productItem)
+                                if !added {
+                                    showAlreadyAddedAlert = true
+                                }
+                            }
+                        }
+                    }
+                    .alert("Already in Cart 💜", isPresented: $showAlreadyAddedAlert) {
+                        Button("OK", role: .cancel) { }
+                    } message: {
+                        Text("This product is already added to your cart.")
+                    }
+                }.padding(16)
             }
-            Spacer()
         }
     }
 }
