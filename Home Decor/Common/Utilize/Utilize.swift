@@ -68,5 +68,57 @@ public class Utilize {
             topmostViewController.present(alert, animated: true, completion: nil)
         }
     }
+    
+    func saveDataKeychain(_ token: String, for account: String) -> Bool {
+        guard let token = token.data(using: .utf8) else { return false }
+
+        // First, delete any existing item
+        let deleteQuery: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: account
+        ]
+        SecItemDelete(deleteQuery as CFDictionary)
+
+        // Now, save new item
+        let saveQuery: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: account,
+            kSecValueData as String: token
+        ]
+
+        let status = SecItemAdd(saveQuery as CFDictionary, nil)
+        return status == errSecSuccess
+    }
+    
+    func getDataKeychain(for account: String) -> String? {
+        let getQuery: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: account,
+            kSecReturnData as String: true,
+            kSecMatchLimit as String: kSecMatchLimitOne
+        ]
+
+        var item: AnyObject?
+        let status = SecItemCopyMatching(getQuery as CFDictionary, &item)
+
+        guard status == errSecSuccess,
+              let data = item as? Data,
+              let password = String(data: data, encoding: .utf8)
+        else {
+            return nil
+        }
+
+        return password
+    }
+    
+    func deleteDataKeychain(for account: String) -> Bool {
+        let deleteQuery: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: account
+        ]
+
+        let status = SecItemDelete(deleteQuery as CFDictionary)
+        return status == errSecSuccess || status == errSecItemNotFound
+    }
 }
 

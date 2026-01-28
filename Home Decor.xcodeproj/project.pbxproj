@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FA05B9AE2F29CF8100F3980A /* DeviceKit in Frameworks */ = {isa = PBXBuildFile; productRef = FA05B9AD2F29CF8100F3980A /* DeviceKit */; };
 		FA5355292EF52AA9005DDE8B /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = FA5355282EF52AA9005DDE8B /* SDWebImageSwiftUI */; };
 		FA5C11092EF28A7B003D8DFA /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = FA5C11082EF28A7B003D8DFA /* FirebaseStorage */; };
 		FA5C110B2EF28B40003D8DFA /* FirebaseAppDistribution-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = FA5C110A2EF28B40003D8DFA /* FirebaseAppDistribution-Beta */; };
@@ -34,6 +35,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA5355292EF52AA9005DDE8B /* SDWebImageSwiftUI in Frameworks */,
+				FA05B9AE2F29CF8100F3980A /* DeviceKit in Frameworks */,
 				FAB1AAB82EE0132400E40D7F /* FirebaseAnalytics in Frameworks */,
 				FAB1AABE2EE0132400E40D7F /* FirebaseFirestore in Frameworks */,
 				FAB1AABC2EE0132400E40D7F /* FirebaseCore in Frameworks */,
@@ -49,8 +51,8 @@
 		FAF3B8702E5C4F2400FEC400 = {
 			isa = PBXGroup;
 			children = (
-				FAF3B87B2E5C4F2400FEC400 /* Home Decor */,
 				FAF3B87A2E5C4F2400FEC400 /* Products */,
+				FAF3B87B2E5C4F2400FEC400 /* Home Decor */,
 			);
 			sourceTree = "<group>";
 		};
@@ -89,6 +91,7 @@
 				FA5C11082EF28A7B003D8DFA /* FirebaseStorage */,
 				FA5C110A2EF28B40003D8DFA /* FirebaseAppDistribution-Beta */,
 				FA5355282EF52AA9005DDE8B /* SDWebImageSwiftUI */,
+				FA05B9AD2F29CF8100F3980A /* DeviceKit */,
 			);
 			productName = "Home Decor";
 			productReference = FAF3B8792E5C4F2400FEC400 /* Home Decor.app */;
@@ -121,6 +124,7 @@
 			packageReferences = (
 				FAB1AAB62EE0132400E40D7F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				FA5355272EF52AA9005DDE8B /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
+				FA05B9AC2F29CF8100F3980A /* XCRemoteSwiftPackageReference "DeviceKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = FAF3B87A2E5C4F2400FEC400 /* Products */;
@@ -366,6 +370,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		FA05B9AC2F29CF8100F3980A /* XCRemoteSwiftPackageReference "DeviceKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/devicekit/DeviceKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.0;
+			};
+		};
 		FA5355272EF52AA9005DDE8B /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI.git";
@@ -385,6 +397,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		FA05B9AD2F29CF8100F3980A /* DeviceKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA05B9AC2F29CF8100F3980A /* XCRemoteSwiftPackageReference "DeviceKit" */;
+			productName = DeviceKit;
+		};
 		FA5355282EF52AA9005DDE8B /* SDWebImageSwiftUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = FA5355272EF52AA9005DDE8B /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;

@@ -20,6 +20,11 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 @main
 struct Home_DecorApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    
+    init() {
+        LogWriter.shared.log("App launched")
+    }
+    
     var body: some Scene {
         WindowGroup {
             NavigationStack {

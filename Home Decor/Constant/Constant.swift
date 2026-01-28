@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import DeviceKit
 
 let minLimitPassowrd = 6
 let maxLimitPassowrd = 16
@@ -83,7 +84,7 @@ enum FontName {
     }
 }
 
-class Constant {
+struct Constant {
     static let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
     static let appBuildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String
     static let appName = Bundle.main.infoDictionary?["CFBundleDisplayName"] as? String
@@ -117,6 +118,77 @@ class Constant {
     }
 }
 
+enum AppEnvironment {
+    case dev
+    case sit
+    case uat
+    case production
+
+    #if Dev
+    static let current: AppEnvironment = .dev
+    #elseif SIT
+    static let current: AppEnvironment = .sit
+    #elseif UAT
+    static let current: AppEnvironment = .uat
+    #else
+    static let current: AppEnvironment = .production
+    #endif
+
+    static let logEnableEnvironments: [AppEnvironment] =  [.dev, .sit, .uat]
+
+    /// Human-readable name for printing
+    var description: String {
+        switch self {
+        case .dev: return "Development"
+        case .sit: return "SIT"
+        case .uat: return "UAT"
+        case .production: return "Production"
+        }
+    }
+
+    /// All environment-specific configuration in one place
+    var config: EnvironmentConfig {
+        switch self {
+        case .dev:
+            return EnvironmentConfig(
+                merchantCode: "M54452",
+                baseUrl: "https://gateway-game-dev.kkr88819.com",
+                domain: "https://web-dev.kkr88819.com",
+                googleService: "GoogleService-Info_K8_Dev"
+            )
+        case .sit:
+            return EnvironmentConfig(
+                merchantCode: "M34794",
+                baseUrl: "https://test-gateway.kkr88819.com",
+                domain: "https://test-h5.kkr88819.com",
+                googleService: "GoogleService-Info_K8_Sit"
+            )
+        case .uat:
+            return EnvironmentConfig(
+                merchantCode: "M21353",
+                baseUrl: "https://uat-gateway.kkr88819.com",
+                domain: "https://uat-h5.kkr88819.com",
+                googleService: "GoogleService-Info_K8_Uat"
+            )
+        case .production:
+            return EnvironmentConfig(
+                merchantCode: "M21353",
+                baseUrl: "https://k8newaaap.com",
+                domain: "https://k8newaaap.com",
+                googleService: "GoogleService-Info"
+            )
+        }
+    }
+}
+
+/// Holds all environment-specific values together
+struct EnvironmentConfig {
+    let merchantCode: String
+    let baseUrl: String
+    let domain: String
+    let googleService: String
+}
+
 enum TextFieldType {
     case emailOrPhone
     case email
@@ -138,5 +210,63 @@ struct DictionaryDecoder {
     static func decode<T: Codable>(_ type: T.Type, from dict: [String: Any]) throws -> T {
         let data = try JSONSerialization.data(withJSONObject: dict, options: [])
         return try JSONDecoder().decode(T.self, from: data)
+    }
+}
+
+struct AppInfo {
+    static var displayName: String {
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ??
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String ?? "Unknown"
+    }
+    
+    static var bundleIdentifier: String {
+        Bundle.main.bundleIdentifier ?? "Unknown"
+    }
+    
+    static var version: String {
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "Unknown"
+    }
+    
+    static var build: String {
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "Unknown"
+    }
+    
+    static var gitBranch: String {
+        Bundle.main.object(forInfoDictionaryKey: "GIT_BRANCH") as? String ?? "Unknown"
+    }
+}
+
+struct DeviceInfo {
+    static var osVersion: String { UIDevice.current.systemVersion }
+    static var model: String { UIDevice.current.model }
+    static var name = Device.current.description
+}
+
+struct AppInfoLogger {
+//    static func log(_ env: AppEnvironment) {
+    static func log() {
+        // Git branch (only works if you set it at build time)
+        print("""
+        ============================================================
+        ================= 📱 App Info=================
+        📝 Display Name        : \(AppInfo.displayName)
+        📦 Version             : \(AppInfo.version)
+        🏗️ Build               : \(AppInfo.build)
+        📦 Bundle Identifier   : \(AppInfo.bundleIdentifier)
+        🌿 gitBranch           : \(AppInfo.gitBranch)
+
+        ================= 🔧 Environment Details =================
+        🌍 Current Environment : \("")
+        🏦 Merchant Code       : \("")
+        🔗 Base URL            : \("")
+
+        ================= 📱 Device Info =================
+        Device Token           : \(ConfigurationDataManager.shared.deviceToken)
+        Device ID              : \(Utilize.shared.getDataKeychain(for: Constant.bundleIdkey) ?? "")
+        Device Model           : \(DeviceInfo.model)
+        Device Name            : \(DeviceInfo.name)
+        iOS Version            : \(DeviceInfo.osVersion)
+        ===================================================\n
+        """)
     }
 }
