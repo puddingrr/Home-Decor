@@ -10,7 +10,7 @@ import SwiftUI
 struct CustomNavBar: View {
     var title: String = ""
     var tinhColor: Color?
-    var background: Color? = Color.commonBackground
+    var background: Color? = Color.clear
     var trailingBtnIcon: ImageResource?
     var isBack: Bool = true
     var isBGImg: Bool = false
@@ -31,7 +31,7 @@ struct CustomNavBar: View {
                             action?()
                         }
                     }, label: {
-                        Image(tinhColor != nil ? .whiteArrowLeft : .arrowLeft)
+                        Image(.arrowLeft)
                         .resizable()
                         .contentShape(Rectangle())
                         .frame(width: 30, height: 30)

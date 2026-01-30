@@ -188,7 +188,9 @@ struct EnvironmentConfig {
     let domain: String
     let googleService: String
 }
-
+enum AppTheme: String {
+    case system, light, dark
+}
 enum TextFieldType {
     case emailOrPhone
     case email
