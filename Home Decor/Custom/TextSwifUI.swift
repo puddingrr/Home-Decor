@@ -38,6 +38,8 @@ struct TextSwifUI: View {
                     Text(title)
                         .font(.customFont(size: size.fontSize, weight: weight))
                         .underline(isUnderline, color: color)
+                        .lineLimit(lineLimit)
+                        .fixedSize(horizontal: false, vertical: true)
                         .minimumScaleFactor(isScale ? 0.5 : 1)
                         .multilineTextAlignment(textAlignment)
                 )

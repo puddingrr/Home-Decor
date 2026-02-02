@@ -14,48 +14,29 @@ struct MainTabView: View {
 
     @Namespace private var underlineAnimation
     @State private var showLogin = false
-
+    @State private var selectedTab: Tab = .home
+    
     var body: some View {
         VStack(spacing: 0) {
-            switch mainVM.tabIndex {
-            case 1:
-                MenuView()
-                    .environmentObject(cartVM)
-            case 2:
-                CartView()
-                    .environmentObject(menuVM)
-                    .environmentObject(cartVM)
-            case 3:
-                EmptyView()
-            case 4:
-                ProfileView()
-                    .environmentObject(mainVM)
-            default:
+            switch selectedTab {
+            case .home:
                 HomeView()
                     .environmentObject(menuVM)
                     .environmentObject(cartVM)
+            case .shop:
+                MenuView()
+            case .cart:
+                CartView()
+                    .environmentObject(menuVM)
+                    .environmentObject(cartVM)
+            case .profile:
+                ProfileView()
+                    .environmentObject(mainVM)
             }
-            Spacer(minLength: 0)
             
-            HStack(spacing: 5) {
-                ForEach(0..<mainVM.mainTabList.count, id: \.self) { index in
-                    TabItemWidget(
-                        icon: mainVM.mainTabList[index].icon,
-                        activeIcon: mainVM.mainTabList[index].activeIcon,
-                        isSelected: mainVM.tabIndex == index,
-                        namespace: underlineAnimation
-                    ) {
-                        withAnimation(.easeInOut(duration: 0.5)) {
-                            if (index == 2 || index == 4) && !mainVM.isLoggedIn {
-                                showLogin = true
-                            } else {
-                                mainVM.tabIndex = index
-                            }                        }
-                    }
-                }
-            }
-            .background(Color.white.ignoresSafeArea())
+            TabsLayoutView(selectedTab: $selectedTab)
         }
+        .edgesIgnoringSafeArea(.bottom)
         .navigationDestination(isPresented: $showLogin) {
             LoginView()
         }

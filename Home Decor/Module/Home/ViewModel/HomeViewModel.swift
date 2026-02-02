@@ -8,6 +8,8 @@
 import Foundation
 
 class HomeViewModel : ObservableObject {
+    
+    @Published var indexTab: Int? = 0
     @Published var selectedIndex: Int = 0
     @Published var pageIndex: Int = 0
     
@@ -20,6 +22,8 @@ class HomeViewModel : ObservableObject {
     @Published var isLoggedIn: Bool = false
 
     let animeList: [String] = ["animeList" , "banner1" , "banner2" ]
+    
+    let itemsTab = ["Explore", "Fashion", "Trendy Toys", "Home", "Sports & Outdoors"]
     
     let list: [categoryList] = [
         .init(icon: .sofa, activeIcon: .sofaActive),

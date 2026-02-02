@@ -26,36 +26,35 @@ struct HomeCollectionView: View {
             TextSwifUI(title: "New Collection", size: .medium, color: .selectPink, weight: .bold)
             LazyVGrid(columns: columns, spacing: 16) {
                 ForEach(menuVM.menuList) { item in
-                    VStack(alignment: .leading, spacing: 10) {
+                    VStack {
                         WebImage(url: URL(string: item.image ?? ""))
                             .resizable()
                             .indicator(.activity)
                             .scaledToFill()
-                            .frame(height: 142)
+                            .frame(height: 150)
+                            .cornerRadius(10, corners: [.topLeft, .topRight])
                             .clipped()
-                            .cornerRadius(10)
 
-                        TextSwifUI(title: item.title ?? "", size: .large, weight: .medium)
-                        TextSwifUI(title: item.subTitle ?? "", size: .small, weight: .light)
-
-                        Divider()
-                            .frame(height: 1)
-                            .background(Color.main)
-
-                        HStack {
-                            TextSwifUI(title: "$\(item.price ?? "")", size: .large, color: .selectPink, weight: .bold)
-                            Spacer()
-                            Image(.iconFav)
-                            Image(.iconAdd)
+                        VStack(alignment: .leading, spacing: 5) {
+                            TextSwifUI(title: item.title ?? "", size: .medium, weight: .medium)
+                            TextSwifUI(title: item.subTitle ?? "", size: .small, weight: .light, lineLimit: 1, isScale: false)
+                            
+                            HStack {
+                                TextSwifUI(title: "$\(item.price ?? "")", size: .large, color: .main, weight: .bold)
+                                Spacer()
+                            }
                         }
+                        .padding(EdgeInsets(top: 0, leading: 10, bottom: 10, trailing: 10))
                     }
+                    .background(Color.white.cornerRadius(10))
+                    .shadow(color: .black.opacity(0.05),
+                            radius: 2, x: 0, y: 2)
                     .onTapGesture {
                         selectedItem = item
                         showDetail = true
                     }
                 }
             }
-
         }
         .navigationDestination(isPresented: $showDetail) {
             if let item = selectedItem {

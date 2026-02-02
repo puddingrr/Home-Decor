@@ -107,6 +107,58 @@ extension View {
     func navigationBarColor(backgroundColor: Color, titleColor: UIColor?) -> some View {
         self.modifier(NavigationBarModifier(backgroundColor: backgroundColor, titleColor: titleColor))
     }
+    func scrollToOffset(contentOffset: Binding<CGPoint?>) -> some View {
+        return self.background {
+            InternalScrollViewHelper(contentOffset: contentOffset)
+        }
+    }
+}
+struct InternalScrollViewHelper: UIViewRepresentable {
+    @Binding var contentOffset: CGPoint?
+
+    class Coordinator {
+        var scrollView: UIScrollView?
+    }
+
+    func makeCoordinator() -> Coordinator {
+        return Coordinator()
+    }
+
+    func makeUIView(context: Context) -> UIView {
+        let view = ScrollViewIdentifier()
+        view.scrollViewCompletion = { scrollView in
+            context.coordinator.scrollView = scrollView
+        }
+        return view
+    }
+
+    func updateUIView(_ uiView: UIView, context: Context) {
+        if let offset = contentOffset {
+            // Always scroll, even to same value
+            DispatchQueue.main.async {
+                context.coordinator.scrollView?.setContentOffset(offset, animated: true)
+            }
+        }
+    }
+}
+
+final class ScrollViewIdentifier: UIView {
+    var scrollViewCompletion: ((UIScrollView) -> Void)?
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+
+    override func didMoveToWindow() {
+        guard let scrollView = superview?.superview?.superview as? UIScrollView else {
+            return
+        }
+        self.scrollViewCompletion?(scrollView)
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
 }
 
 struct NavigationBarModifier: ViewModifier {

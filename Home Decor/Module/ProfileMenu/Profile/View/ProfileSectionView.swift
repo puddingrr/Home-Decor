@@ -21,20 +21,33 @@ struct ProfileSectionView: View {
                 CustomLabelView(leadingText: title)
             }
             VStack(spacing: 0) {
-                ForEach(items, id: \.title) { item in
+                ForEach(items.indices, id: \.self) { index in
+                    let item = items[index]
+                    let isLastItem = index == items.count - 1
+
                     if item.title == "EnableBiometric" || item.title == "DisableBiometric" {
-                        Profilebutton(buttonImage: item.image,
-                                      buttonTitle: enableBioMetric ? item.secondTitle ?? "" : item.title,
-                                      hideNavigateButton: true)
-                        } else {
-                            Profilebutton(buttonImage: item.image, buttonTitle: item.title) {
-                                if item.title == "Logout" {
-                                    showLogoutAlert()
-                                } else {
-                                    isNavigated = true
-                                    selectedButton = item.title
-                                }
+                        Profilebutton(
+                            buttonImage: item.image,
+                            buttonTitle: enableBioMetric ? item.secondTitle ?? "" : item.title,
+                            hideNavigateButton: true
+                        )
+                    } else {
+                        Profilebutton(
+                            buttonImage: item.image,
+                            buttonTitle: item.title
+                        ) {
+                            if item.title == "Logout" {
+                                showLogoutAlert()
+                            } else {
+                                isNavigated = true
+                                selectedButton = item.title
                             }
+                        }
+                    }
+
+                    if !isLastItem {
+                        Divider()
+                            .padding(.horizontal, 22)
                     }
                 }
             }
