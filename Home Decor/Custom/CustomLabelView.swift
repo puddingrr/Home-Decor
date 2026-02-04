@@ -10,12 +10,12 @@ struct CustomLabelView: View {
     var leadingText: String
     var leadingSize: FontSize = .medium
     var leadingColor: Color = .commonText
-    var leadingWeight: Font.Weight = .semibold
+    var leadingWeight: FontName = .semiBold
     
     var trailingText: String = ""
     var trailingSize: FontSize = .normal
     var trailingColor: Color = .personalText
-    var trailingWeight: Font.Weight = .medium
+    var trailingWeight: FontName = .medium
     var body: some View {
         HStack {
             TextSwifUI(title: leadingText, size: leadingSize, weight: leadingWeight)

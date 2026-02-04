@@ -11,58 +11,48 @@ struct ProfileView: View {
     
     @StateObject var profileVM = ProfileViewModel()
     @EnvironmentObject var mainVM: MainViewModel
-
+    
     //State
     @State var isNavigated: Bool = false
     @State var selectedButton: String = ""
     @State var contentOffset: CGPoint?
-
+    
     var body: some View {
-        VStack(spacing: 0) {
-            ScrollViewReader { proxy in
+        ZStack(alignment: .top) {
+            Color.appBackground.ignoresSafeArea()
+            VStack(spacing: 0) {
+                navBarTop
                 ScrollView(showsIndicators: false) {
-                    GeometryReader { geo in
-                        Color.clear
-                            .onChange(of: geo.frame(in: .global).minY) { scrollOffset in
-                                contentOffset = nil // reset it to make action scroll to offset work
+                    VStack(alignment: .leading, spacing: 16) {
+                        HStack {
+                            menuCard(image: "wallet.bifold", text: "Pay") {}
+                            menuCard(image: "shippingbox", text: "Ship") {}
+                            menuCard(image: "truck.box", text: "Recive") {
+                                profileVM.isOrder.toggle()
                             }
-                    }
-                    .frame(height: 0)
-                    LazyVStack(spacing: 7, pinnedViews: [.sectionHeaders]) {
-                        navBarTop
-                        Section {
-                            VStack {
-                                ProfileSectionView(title: "Profile Info",
-                                                   items: profileVM.profileInfoList, isNavigated: $isNavigated, selectedButton: $selectedButton)
-                                ProfileSectionView(title: "Profile Info",
-                                                   items: profileVM.profileInfoList, isNavigated: $isNavigated, selectedButton: $selectedButton)
-                                ProfileSectionView(title: "Seting", items: profileVM.otherList, isNavigated: $isNavigated, selectedButton: $selectedButton) {
-                                    profileVM.logout {
-                                        mainVM.tabIndex = 0
-                                    }
-                                }
-                                let lougout = "\(Constant.env) \("version") \(Constant.appVersion ?? "")(\(Constant.appBuildNumber ?? ""))"
-                                TextSwifUI(title: lougout, size: .small, weight: .light)
-                            }
-                            .padding(.horizontal, 16)
-                        } header: {
-                            HStack {
-                                menuCard(image: .myprofile, text: "Profile") {}
-                                menuCard(image: .wishlistActive, text: "Wishlist") {}
-                                menuCard(image: .myOrder, text: "My Orders", isLast: false) {
-                                    profileVM.isOrder.toggle()
+                            menuCard(image: "ellipsis.bubble", text: "Review") {}
+                            menuCard(image: "arrow.trianglehead.rectanglepath", text: "Refunds") {}
+                        }
+                        .padding(.trailing, 10)
+                        VStack(spacing: 16) {
+                            ProfileSectionView(title: "Profile Info",
+                                               items: profileVM.profileInfoList, isNavigated: $isNavigated, selectedButton: $selectedButton)
+                            ProfileSectionView(title: "Seting", items: profileVM.otherList, isNavigated: $isNavigated, selectedButton: $selectedButton) {
+                                profileVM.logout {
+                                    mainVM.tabIndex = 0
                                 }
                             }
-                            .frame(height: 81)
-                            .background(Color.main)
+                            let lougout = "\(Constant.env) \("version") \(Constant.appVersion ?? "")(\(Constant.appBuildNumber ?? ""))"
+                            TextSwifUI(title: lougout, size: .small, weight: .light)
                         }
                     }
-                     .scrollToOffset(contentOffset: $contentOffset)
+                    .padding(.top, 16)
+                    .padding(.horizontal)
                 }
             }
         }
         .onAppear {
-            profileVM.loadUser()  
+            profileVM.loadUser()
         }
         .navigationDestination(isPresented: $profileVM.isOrder) {
             MyOrderView(viewModel: profileVM)
@@ -70,26 +60,29 @@ struct ProfileView: View {
         .navigationDestination(isPresented: $profileVM.isSelectedEdit) {
             EditProfileView(viewModel: profileVM)
         }
+        .navigationDestination(isPresented: $isNavigated) {
+            if let selectedType = getButtonNavigationType(for: selectedButton) {
+                selectedType.destinationView()
+            }
+        }
     }
     
     @ViewBuilder
-    func menuCard(image: ImageResource, text: String, isLast: Bool = true, action: (()-> Void)?) -> some View {
-        Button {
-            action?()
-        } label: {
-            VStack(spacing: 8) {
-                Image(image)
-                    .resizable()
-                    .frame(width: 26, height: 26)
-                TextSwifUI(title: text, size: .small, weight: .regular)
+    func menuCard(image: String, text: String, action: (()-> Void)?) -> some View {
+        VStack {
+            Button {
+                action?()
+            } label: {
+                VStack(spacing: 8) {
+                    Image(systemName: image)
+                        .resizable()
+                        .foregroundColor(.black)
+                        .frame(width: 32, height: 32)
+                    TextSwifUI(title: text, color: .black.opacity(0.7))
+                }
             }
-            .frame(maxWidth: .infinity)
         }
-        if isLast {
-            Divider()
-                .frame(width: 1)
-                .background(Color.white)
-        }
+        .frame(maxWidth: .infinity)
     }
     @ViewBuilder
     func menuList(image: ImageResource, text: String, isLast: Bool = false, action: (() -> Void)?) -> some View {
@@ -123,31 +116,80 @@ struct ProfileView: View {
 
 extension ProfileView {
     var navBarTop: some View {
-        VStack(spacing: 0) {
-            if let image = profileVM.localProfileImage {
-                Image(uiImage: image)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 70, height: 70)
-                    .clipShape(Circle())
-                    .overlay(Circle().stroke(Color.white, lineWidth: 2))
-            } else {
-                Circle()
-                    .fill(Color.gray.opacity(0.3))
-                    .frame(width: 100, height: 100)
-                    .overlay {
-                        Image(.myprofile)
+        ZStack {
+            Color.main.ignoresSafeArea()
+            VStack(spacing: 16) {
+                HStack(spacing: 16) {
+                    if let image = profileVM.localProfileImage {
+                        Image(uiImage: image)
                             .resizable()
+                            .scaledToFill()
                             .frame(width: 40, height: 40)
+                            .clipShape(Circle())
+                            .overlay(Circle().stroke(Color.white, lineWidth: 2))
+                    } else {
+                        Circle()
+                            .fill(Color.gray.opacity(0.3))
+                            .frame(width: 50, height: 50)
+                            .overlay {
+                                Image(systemName: "person.crop.circle")
+                                    .resizable()
+                                    .foregroundColor(.white)
+                                    .frame(width: 50, height: 50)
+                            }
                     }
+                    VStack(alignment: .leading, spacing: 8) {
+                        TextSwifUI(title: profileVM.currentUser?.fullName ?? "Guest", size: .huge, color: .white, weight: .bold)
+                        TextSwifUI(title: profileVM.currentUser?.email ?? "No Email", size: .small, color: .white)
+                    }
+                    Spacer(minLength: 0)
+                    HStack(alignment: .top) {
+                        VStack(spacing: 6) {
+                            Image(systemName: "network")
+                                .resizable()
+                                .foregroundColor(.white)
+                                .frame(width: 24, height: 24)
+                            TextSwifUI(title: "Language", color: .white)
+                        }
+                        VStack(spacing: 6) {
+                            Image(systemName: "gearshape")
+                                .resizable()
+                                .foregroundColor(.white)
+                                .frame(width: 24, height: 24)
+                            TextSwifUI(title: "Setting", color: .white)
+                        }
+                    }
+                }
+                HStack(spacing: 8) {
+                    TextSwifUI(title: "My Orders", size: .medium)
+                    Spacer(minLength: 0)
+                    TextSwifUI(title: "View")
+                    Image(.arrowRight)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 8, height: 14)
+                }
+                .padding(16)
+                .background(Color.white)
+                .cornerRadius(12)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(Color.gray.opacity(0.5), lineWidth: 0.5)
+                )
+                .padding(.top, 10)
             }
-            VStack {
-                TextSwifUI(title: profileVM.currentUser?.fullName ?? "Guest", size: .huge, weight: .bold)
-                TextSwifUI(title: profileVM.currentUser?.email ?? "No Email", size: .small)
-            }
+            .padding(.horizontal, 16)
         }
-        .background(.main)
-        .ignoresSafeArea(edges: .top)
+        .frame(height: 150)
+    }
+    
+    func getButtonNavigationType(for selectedButton: String) -> ButtonNavigationType? {
+        switch selectedButton {
+        case "Appearance":
+            return .appearance
+        default:
+            return nil
+        }
     }
 }
 
@@ -157,7 +199,7 @@ struct MenuList {
 }
 
 struct ItemModel {
-    let image: ImageResource
+    let image: String
     let title: String
     var secondTitle: String?
 }

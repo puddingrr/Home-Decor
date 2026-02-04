@@ -20,6 +20,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 @main
 struct Home_DecorApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    @AppStorage("appTheme") private var appTheme = 0
     
     init() {
         LogWriter.shared.log("App launched")
@@ -36,7 +37,9 @@ struct Home_DecorApp: App {
                 }
             }
             .navigationViewStyle(StackNavigationViewStyle())
-            .preferredColorScheme(.light)
+            .preferredColorScheme(
+                appTheme == 0 ? nil : (appTheme == 1 ? .light : .dark)
+            )
         }
     }
 }

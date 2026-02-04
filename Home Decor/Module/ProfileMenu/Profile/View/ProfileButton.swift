@@ -8,24 +8,22 @@
 import SwiftUI
 
 struct Profilebutton: View {
-    var buttonImage: ImageResource
+    var buttonImage: String
     var buttonTitle: String
     var hideNavigateButton: Bool = false
     var action: (() -> Void)?
     @State private var selectedlanguage: String = ""
-    
-    @AppStorage("enableBioMetric") var enableBioMetric: Bool = false
-    
+        
     var body: some View {
         VStack {
                 HStack {
-                    Image(buttonImage)
+                    Image(systemName: buttonImage)
                         .resizable()
                         .scaledToFit()
                         .frame(width: 24, height: 24)
-                    TextSwifUI(title: buttonTitle, color: buttonTitle == "logout" ? .red : .commonText)
+                    TextSwifUI(title: buttonTitle, color: buttonTitle == "Logout" ? .red : .commonText, weight: buttonTitle == "Logout" ? .bold: .regular)
                     Spacer()
-                    if buttonTitle == "language" {
+                    if buttonTitle == "Language" {
                         TextSwifUI(title: selectedlanguage, size: .small, weight: .light)
                     }
                     

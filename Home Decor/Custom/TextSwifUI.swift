@@ -11,7 +11,7 @@ struct TextSwifUI: View {
     var title: String
     var size: FontSize = .normal
     var color: Color = .primary
-    var weight: Font.Weight = .regular
+    var weight: FontName = .regular
     var textAlignment: TextAlignment = .leading
     var isUnderline: Bool = false
     var lineLimit: Int? = nil

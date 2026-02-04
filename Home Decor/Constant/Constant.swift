@@ -62,25 +62,25 @@ enum FontName {
     var name: String {
         switch self {
         case .regular:
-            return "Lexend-Regular"
+            return "Roboto-Regular"
         case .thin:
-            return "Lexend-Thin"
+            return "Roboto-Thin"
         case .extraLight:
-            return "Lexend-ExtraLight"
+            return "Roboto-ExtraLight"
         case .light:
-            return "Lexend-Light"
+            return "Roboto-Light"
         case .medium:
-            return "Lexend-Medium"
+            return "Roboto-Medium"
         case .semiBold:
-            return "Lexend-SemiBold"
+            return "Roboto-Medium"
         case .bold:
-            return "Lexend-Bold"
+            return "Roboto-Bold"
         case .extraBold:
-            return "Lexend-ExtraBold"
+            return "Roboto-ExtraBold"
         case .black:
-            return "Lexend-Black"
-        default:
-            return "Lexend-Regular"
+            return "Roboto-Black"
+        case .other(let name):
+            return name
         }
     }
 }

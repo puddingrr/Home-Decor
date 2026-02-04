@@ -50,7 +50,9 @@ struct HomeView: View {
                                             .environmentObject(menuVM)
                                             .environmentObject(cartVM)
                                     }
-                                    .padding(16)
+                                    .padding(.top, 16)
+                                    .padding(.horizontal, 16)
+                                    .padding(.bottom, viewModel.isLoggedIn == false ? 60 : 16)
                                 } header: {
                                     VStack(spacing: 8) {
                                         HomeCatecgoryView(viewModel: viewModel)
@@ -70,6 +72,10 @@ struct HomeView: View {
                         }
                     }
                 }
+            }
+            VStack(spacing: 0) {
+                Spacer()
+                panelAuthView
             }
         }
         .onAppear {
@@ -97,20 +103,9 @@ struct HomeView: View {
 extension HomeView {
     var homeHeader: some View {
         HStack {
-            if !viewModel.isLoggedIn {
-                CustomButton(title: "Login", width: 80, height: 30) {
-                    viewModel.navType = .login
-                    viewModel.isHomeNavigation = true
-                }
-                CustomButton(title: "SignUp", width: 80, height: 30) {
-                    viewModel.navType = .register
-                    viewModel.isHomeNavigation = true
-                }
-            } else {
-                VStack(alignment: .leading) {
-                    TextSwifUI(title: "Hi, Welcome Back", size: .huge, color: .white, weight: Font.Weight.bold)
-                    TextSwifUI(title: "Create spaces that bring joy", size: .small, color: .white)
-                }
+            VStack(alignment: .leading) {
+                TextSwifUI(title: "Hi, Welcome Back", size: .huge, color: .white, weight: .bold)
+                TextSwifUI(title: "Create spaces that bring joy", size: .small, color: .white)
             }
             Spacer()
             Button {

@@ -51,7 +51,7 @@ struct CustomNavBar: View {
             }
             .overlay(
                 TextSwifUI(title: title,
-                            size: .medium,
+                            size: .large,
                             color: tinhColor ?? Color.commonText,
                             weight: .bold, lineLimit: 1, isScale: isScaleTitle)
                 .padding(.horizontal, 50)

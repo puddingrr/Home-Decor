@@ -8,11 +8,7 @@
 import SwiftUI
 
 extension Font {
-    static func customFont(
-        size: CGFloat,
-        weight: Font.Weight = .regular,
-        fontName: String = "Roboto"
-    ) -> Font {
-        return Font.custom(fontName, size: size).weight(weight)
+    static func customFont(size: CGFloat, weight: FontName = .regular) -> Font {
+        .custom(weight.name, size: size)
     }
 }
