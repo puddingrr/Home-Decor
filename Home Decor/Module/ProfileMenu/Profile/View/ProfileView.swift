@@ -11,6 +11,7 @@ struct ProfileView: View {
     
     @StateObject var profileVM = ProfileViewModel()
     @EnvironmentObject var mainVM: MainViewModel
+    @EnvironmentObject var configData: ConfigurationDataManager
     
     //State
     @State var isNavigated: Bool = false
@@ -24,16 +25,7 @@ struct ProfileView: View {
                 navBarTop
                 ScrollView(showsIndicators: false) {
                     VStack(alignment: .leading, spacing: 16) {
-                        HStack {
-                            menuCard(image: "wallet.bifold", text: "Pay") {}
-                            menuCard(image: "shippingbox", text: "Ship") {}
-                            menuCard(image: "truck.box", text: "Recive") {
-                                profileVM.isOrder.toggle()
-                            }
-                            menuCard(image: "ellipsis.bubble", text: "Review") {}
-                            menuCard(image: "arrow.trianglehead.rectanglepath", text: "Refunds") {}
-                        }
-                        .padding(.trailing, 10)
+                       
                         VStack(spacing: 16) {
                             ProfileSectionView(title: "Profile Info",
                                                items: profileVM.profileInfoList, isNavigated: $isNavigated, selectedButton: $selectedButton)
@@ -76,48 +68,20 @@ struct ProfileView: View {
                 VStack(spacing: 8) {
                     Image(systemName: image)
                         .resizable()
-                        .foregroundColor(.black)
-                        .frame(width: 32, height: 32)
-                    TextSwifUI(title: text, color: .black.opacity(0.7))
+                        .foregroundColor(configData.highlightColor.color)
+                        .frame(width: 24, height: 24)
+                    TextSwifUI(title: text, color: .authBg)
                 }
             }
         }
         .frame(maxWidth: .infinity)
-    }
-    @ViewBuilder
-    func menuList(image: ImageResource, text: String, isLast: Bool = false, action: (() -> Void)?) -> some View {
-        VStack {
-            HStack(spacing: 16) {
-                ZStack {
-                    Circle()
-                        .fill(Color.main)
-                        .frame(width: 34, height: 34)
-                        .overlay {
-                            Image(image)
-                                .resizable()
-                                .frame(width: 20, height: 20)
-                        }
-                }
-                TextSwifUI(title: text, size: .large)
-                Spacer()
-            }
-            if isLast {
-                Divider()
-            }
-        }
-        .padding(.horizontal, 12)
-        .frame(maxWidth: .infinity)
-        .contentShape(Rectangle())
-        .onTapGesture {
-            action?()
-        }
     }
 }
 
 extension ProfileView {
     var navBarTop: some View {
         ZStack {
-            Color.main.ignoresSafeArea()
+            configData.highlightColor.color.ignoresSafeArea()
             VStack(spacing: 16) {
                 HStack(spacing: 16) {
                     if let image = profileVM.localProfileImage {
@@ -160,17 +124,26 @@ extension ProfileView {
                         }
                     }
                 }
-                HStack(spacing: 8) {
-                    TextSwifUI(title: "My Orders", size: .medium)
-                    Spacer(minLength: 0)
-                    TextSwifUI(title: "View")
-                    Image(.arrowRight)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 8, height: 14)
+//                HStack(spacing: 8) {
+//                    TextSwifUI(title: "My Orders", size: .medium)
+//                    Spacer(minLength: 0)
+//                    TextSwifUI(title: "View")
+//                    Image(.arrowRight)
+//                        .resizable()
+//                        .scaledToFit()
+//                        .frame(width: 8, height: 14)
+//                }
+                HStack {
+                    menuCard(image: "wallet.bifold", text: "Pay") {}
+                    menuCard(image: "shippingbox", text: "Ship") {}
+                    menuCard(image: "truck.box", text: "Recive") {
+                        profileVM.isOrder.toggle()
+                    }
+                    menuCard(image: "ellipsis.bubble", text: "Review") {}
+                    menuCard(image: "arrow.trianglehead.rectanglepath", text: "Refunds") {}
                 }
                 .padding(16)
-                .background(Color.white)
+                .background(Color.darkCardBG)
                 .cornerRadius(12)
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
@@ -180,7 +153,7 @@ extension ProfileView {
             }
             .padding(.horizontal, 16)
         }
-        .frame(height: 150)
+        .frame(height: 170)
     }
     
     func getButtonNavigationType(for selectedButton: String) -> ButtonNavigationType? {
@@ -191,11 +164,6 @@ extension ProfileView {
             return nil
         }
     }
-}
-
-struct MenuList {
-    let image: ImageResource
-    let text: String
 }
 
 struct ItemModel {

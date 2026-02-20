@@ -10,43 +10,67 @@ import SwiftUI
 struct AppearanceView: View {
     
     @AppStorage("appTheme") private var appTheme: Int = 0
+    @AppStorage("highlightColor") private var highlightRaw: String = UIThemeColor.red.rawValue
     
-     var isDarkMode: Bool {
-        switch appTheme {
-        case 2:
-            return true
-        case 1:
-            return false
-        default:
-            return UITraitCollection.current.userInterfaceStyle == .dark
-        }
+    @State private var selectedTheme: TypeUITheme = .system
+    
+    private var selectedHighlight: UIThemeColor {
+        UIThemeColor(rawValue: highlightRaw) ?? .red
     }
     
     var body: some View {
         ZStack(alignment: .top) {
-            
             Color.appBackground.ignoresSafeArea()
             
             VStack(spacing: 0) {
                 CustomNavBar(title: "App Appearance", isShadow: true)
                 VStack(alignment: .leading) {
-                    TextSwifUI(title: "Theme", size: .medium)
-                    VStack(alignment: .leading) {
+                    TextSwifUI(title: "Theme".uppercased(), size: .medium)
+                    VStack(alignment: .leading, spacing: 16) {
                         TextSwifUI(title: "Mode", size: .medium)
                         HStack {
-                            UIScreenView(typeUITheme: .light)
+                            ForEach(TypeUITheme.allCases, id: \.self) { theme in
+                                UIScreenView(
+                                    typeUITheme: theme,
+                                    isSelected: selectedTheme == theme,
+                                    highlight: selectedHighlight.color
+                                )
                                 .frame(maxWidth: .infinity)
-                            UIScreenView(typeUITheme: .dark)
-                                .frame(maxWidth: .infinity)
-                            UIScreenView(isSelected: true, typeUITheme: .system)
-                                .frame(maxWidth: .infinity)
+                                .onTapGesture {
+                                    selectedTheme = theme
+                                    appTheme = theme.storageValue
+                                }
+                            }
                         }
+                        
                         Divider()
+                            .padding(.vertical, 16)
+                        
                         TextSwifUI(title: "Highlight Color", size: .medium)
+                        HStack {
+                            ForEach(UIThemeColor.allCases, id: \.self) { item in
+                                Circle()
+                                    .fill(item.color)
+                                    .frame(width: 30, height: 30)
+                                    .overlay(
+                                        ZStack {
+                                            Circle()
+                                                .stroke(selectedHighlight == item ? Color.white : Color.clear, lineWidth: 2)
+                                            Circle()
+                                                .stroke(selectedHighlight == item ? item.color : Color.clear, lineWidth: 1)
+                                                .frame(width: 37, height: 37)
+                                        }
+                                    )
+                                    .onTapGesture {
+                                        highlightRaw = item.rawValue
+                                    }
+                            }
+                            .frame(maxWidth: .infinity)
+                        }
                     }
                     .padding(16)
                     .frame(maxWidth: .infinity)
-                    .background(Color.white)
+                    .background(Color.darkCardBG)
                     .cornerRadius(12)
                     .overlay(
                         RoundedRectangle(cornerRadius: 12)
@@ -56,87 +80,38 @@ struct AppearanceView: View {
                 .padding(16)
             }
         }
+        .onAppear {
+            switch appTheme {
+            case 1:
+                selectedTheme = .light
+            case 2:
+                selectedTheme = .dark
+            default:
+                selectedTheme = .system
+            }
+        }
     }
 }
 
 struct UIScreenView : View {
     
-//    let item: UIThemeColor
-//    let selected: UIThemeColor?
-    var isSelected: Bool = false
-    var typeUITheme: TypeUITheme = .system
+    let typeUITheme: TypeUITheme
+    let isSelected: Bool
+    let highlight: Color
     
     private let screenHeight: CGFloat = 150
     
     var body: some View {
         VStack {
-            ZStack(alignment: .top) {
-                ZStack {
-                    VStack(spacing: 0) {
-                        if typeUITheme == .light {
-                            Color.gray.opacity(0.1)
-                                .frame(width: screenHeight / 2, height: screenHeight * 0.4)
-                            
-                            Color.gray.opacity(0.001)
-                                .frame(width: screenHeight / 2, height: screenHeight * 0.6)
-                        } else if typeUITheme == .dark {
-                            Color.gray.opacity(0.3)
-                                .frame(width: screenHeight / 2, height: screenHeight * 0.4)
-                            
-                            Color.black
-                                .frame(width: screenHeight / 2, height: screenHeight * 0.6)
-                        } else {
-                            HStack(spacing: 0) {
-                                Color.gray.opacity(0.1)
-                                    .frame(width: screenHeight / 4, height: screenHeight * 0.4)
-                                
-                                Color.gray.opacity(0.3)
-                                    .frame(width: screenHeight / 4, height: screenHeight * 0.4)
-                            }
-                            HStack(spacing: 0) {
-                                Color.gray.opacity(0.01)
-                                    .frame(width: screenHeight / 4, height: screenHeight * 0.6)
-                                
-                                Color.black
-                                    .frame(width: screenHeight / 4, height: screenHeight * 0.6)
-                            }
-                        }
-                    }
-                    .cornerRadius(5)
-                    .frame(height: screenHeight)
-                    
-                    VStack(spacing: 32) {
-                        VStack(spacing: 2) {
-                            RoundedRectangle(cornerRadius: 2)
-                                .foregroundColor(Color.gray.opacity(0.5))
-                                .frame(width: screenHeight / 3.5 , height: screenHeight / 15)
-                            RoundedRectangle(cornerRadius: 10)
-                                .foregroundColor(Color.gray.opacity(0.5))
-                                .frame(width: screenHeight / 6, height: screenHeight / 25)
-                        }
-                        
-                        HStack(spacing: 3) {
-                            ForEach(0..<5) { _ in
-                                RoundedRectangle(cornerRadius: 10)
-                                    .foregroundColor(Color.gray.opacity(0.5))
-                                    .frame(width: screenHeight / 20, height: screenHeight / 20)
-                            }
-                        }
-                        .padding(.horizontal, 3)
-                        .padding(.top, 10)
-                        
-                        RoundedRectangle(cornerRadius: 2)
-                            .foregroundColor(isSelected ? Color.purple : Color.gray.opacity(0.5))
-                            .frame(width: screenHeight / 2.5, height: screenHeight / 10)
-                            .padding(.top, 10)
-                    }
-                }
-                .padding(4)
+            ZStack {
+                backgroundView
+                contentView
             }
+            .padding(4)
             .cornerRadius(10)
             .overlay {
                 RoundedRectangle(cornerRadius: 10)
-                    .stroke(isSelected ? Color.purple : Color.clear, lineWidth: 1)
+                    .stroke(isSelected ? highlight : .clear, lineWidth: 1)
             }
             TextSwifUI(title: typeUITheme.title)
                 .padding(.top, 4)
@@ -144,31 +119,63 @@ struct UIScreenView : View {
     }
 }
 
-enum TypeUITheme {
-    case dark
-    case light
-    case system
-    
-    var title: String {
-        switch self {
-        case .dark: return "Dark"
-        case .light: return "Light"
-        case .system: return "System"
+extension UIScreenView {
+    var backgroundView: some View {
+        VStack(spacing: 0) {
+            switch typeUITheme {
+            case .light:
+                Color.gray.opacity(0.1)
+                    .frame(height: screenHeight * 0.4)
+                Color.gray.opacity(0.01)
+                    .frame(height: screenHeight * 0.6)
+                
+            case .dark:
+                Color.gray.opacity(0.3)
+                    .frame(height: screenHeight * 0.4)
+                Color.black
+                    .frame(height: screenHeight * 0.6)
+                
+            case .system:
+                HStack(spacing: 0) {
+                    Color.gray.opacity(0.1)
+                    Color.gray.opacity(0.3)
+                }
+                .frame(height: screenHeight * 0.4)
+
+                HStack(spacing: 0) {
+                    Color.gray.opacity(0.01)
+                    Color.black
+                }
+                .frame(height: screenHeight * 0.6)
+            }
         }
+        .frame(width: screenHeight / 2, height: screenHeight)
+        .cornerRadius(10)
     }
-}
-
-enum UIThemeColor: CaseIterable, Equatable {
-    case red, blue, green, yellow, purple, clear
-
-    var color: Color {
-        switch self {
-        case .red: return .red
-        case .blue: return .blue
-        case .green: return .green
-        case .yellow: return .yellow
-        case .purple: return .purple
-        case .clear: return .clear
+    
+    var contentView: some View {
+        VStack(spacing: 32) {
+            VStack(spacing: 2) {
+                RoundedRectangle(cornerRadius: 2)
+                    .foregroundColor(Color.gray.opacity(0.5))
+                    .frame(width: screenHeight / 3.5 , height: screenHeight / 15)
+                RoundedRectangle(cornerRadius: 10)
+                    .foregroundColor(Color.gray.opacity(0.5))
+                    .frame(width: screenHeight / 6, height: screenHeight / 25)
+            }
+            
+            HStack(spacing: 3) {
+                ForEach(0..<5) { _ in
+                    RoundedRectangle(cornerRadius: 10)
+                        .foregroundColor(Color.gray.opacity(0.5))
+                        .frame(width: screenHeight / 20, height: screenHeight / 20)
+                }
+            }
+            .padding(.horizontal, 3)
+            
+            RoundedRectangle(cornerRadius: 2)
+                .fill(isSelected ? highlight : Color.gray.opacity(0.5))
+                .frame(width: screenHeight / 2.5, height: screenHeight / 10)
         }
     }
 }

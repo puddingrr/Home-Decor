@@ -10,7 +10,7 @@ import SwiftUI
 struct TextSwifUI: View {
     var title: String
     var size: FontSize = .normal
-    var color: Color = .primary
+    var color: Color = .authBg
     var weight: FontName = .regular
     var textAlignment: TextAlignment = .leading
     var isUnderline: Bool = false

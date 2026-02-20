@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct MainTabView: View {
+    
+    @StateObject var configData = ConfigurationDataManager.shared
     @StateObject var mainVM = MainViewModel()
     @StateObject var menuVM = MenuViewModel()
     @StateObject var cartVM = CartViewModel()
@@ -23,18 +25,24 @@ struct MainTabView: View {
                 HomeView()
                     .environmentObject(menuVM)
                     .environmentObject(cartVM)
+                    .environmentObject(configData)
             case .shop:
                 MenuView()
+                    .environmentObject(cartVM)
+                    .environmentObject(configData)
             case .cart:
                 CartView()
                     .environmentObject(menuVM)
                     .environmentObject(cartVM)
+                    .environmentObject(configData)
             case .profile:
                 ProfileView()
                     .environmentObject(mainVM)
+                    .environmentObject(configData)
             }
             
             TabsLayoutView(selectedTab: $selectedTab)
+                .environmentObject(configData)
         }
         .edgesIgnoringSafeArea(.bottom)
         .navigationDestination(isPresented: $showLogin) {

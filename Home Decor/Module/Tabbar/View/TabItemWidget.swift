@@ -40,6 +40,8 @@ struct TabItemModel {
 }
 
 struct TabsLayoutView: View {
+    
+    @EnvironmentObject var configData: ConfigurationDataManager
     @Binding var selectedTab: Tab
     @Namespace var namespace
     var action: (()-> Void)?
@@ -47,9 +49,8 @@ struct TabsLayoutView: View {
     var body: some View {
         HStack {
             ForEach(Tab.allCases) { tab in
-                TabButton(tab: tab, selectedTab: $selectedTab, namespace: namespace) {
-                    action?()
-                }
+                TabButton(tab: tab, selectedTab: $selectedTab, namespace: namespace, action: {action?()})
+                    .environmentObject(configData)
             }
         }
         .padding(16)
@@ -62,6 +63,7 @@ struct TabsLayoutView: View {
     }
     
      struct TabButton: View {
+         @EnvironmentObject var configData: ConfigurationDataManager
         let tab: Tab
         @Binding var selectedTab: Tab
         var namespace: Namespace.ID
@@ -95,13 +97,13 @@ struct TabsLayoutView: View {
                 ZStack {
                     if isSelected {
                         Capsule()
-                            .fill(tab.color.opacity(0.2))
+                            .fill(configData.highlightColor.color.opacity(0.2))
                             .matchedGeometryEffect(id: "Selected Tab", in: namespace)
                     }
                     HStack(spacing: 10) {
                         Image(systemName: tab.icon)
                             .font(.system(size: 20, weight: .semibold, design: .rounded))
-                            .foregroundColor(isSelected ? tab.color : .black.opacity(0.6))
+                            .foregroundColor(isSelected ? configData.highlightColor.color : .black.opacity(0.6))
                             .rotationEffect(.degrees(rotationAngle))
                             .scaleEffect(isSelected ? 1 : 0.9)
                             .animation(.easeInOut, value: rotationAngle)
@@ -114,7 +116,7 @@ struct TabsLayoutView: View {
                         if isSelected {
                             Text(tab.title)
                                 .font(.system(size: 20, weight: .semibold, design: .rounded))
-                                .foregroundColor(tab.color)
+                                .foregroundColor(configData.highlightColor.color)
                                 .padding(.trailing, 20)
                         }
                     }

@@ -18,7 +18,7 @@ struct CartView: View {
         VStack(spacing: 0) {
             CustomNavBar(
                 title: "My Cart",
-                trailingBtnIcon: editMode == .active ? .edit : .edit,
+                trailingBtnIcon: editMode == .active ? "pencil.and.list.clipboard" : "pencil.and.list.clipboard",
                 isBack: false,
                 isShadow: true,
                 actionTrailingIcon: {

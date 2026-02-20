@@ -27,7 +27,7 @@ struct SearchView: View {
     var body: some View {
         VStack(spacing: 0) {
             if !isSearchFocused {
-                CustomNavBar(title: "Search",trailingBtnIcon: .filtter, isShadow: true, actionTrailingIcon: {
+                CustomNavBar(title: "Search",trailingBtnIcon: "slider.horizontal.3", isShadow: true, actionTrailingIcon: {
                     isfillter.toggle()
                 })
             }

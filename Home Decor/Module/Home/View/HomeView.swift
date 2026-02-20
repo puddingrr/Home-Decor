@@ -12,6 +12,7 @@ struct HomeView: View {
     @StateObject var viewModel = HomeViewModel()
     @EnvironmentObject var menuVM: MenuViewModel
     @EnvironmentObject var cartVM: CartViewModel
+    @EnvironmentObject var configData: ConfigurationDataManager
     
     let columns = [
           GridItem(.flexible()),
@@ -24,7 +25,7 @@ struct HomeView: View {
         ZStack(alignment: .top) {
             Color.appBackground.ignoresSafeArea()
             ZStack(alignment: .top) {
-                Color.main.ignoresSafeArea()
+                configData.highlightColor.color.ignoresSafeArea()
                     .frame(height: 150)
                     .frame(maxWidth: .infinity)
                 VStack(spacing: 0) {
@@ -40,13 +41,13 @@ struct HomeView: View {
                             .frame(height: 0)
                             LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
                                 ZStack(alignment: .top) {
-                                    Color.main.ignoresSafeArea()
+                                    configData.highlightColor.color.ignoresSafeArea()
                                     BannerView(images: viewModel.animeList)
                                 }
                                 Section {
                                     VStack(spacing: 16) {
                                         bestCeller
-                                        HomeCollectionView(viewModel: viewModel)
+                                        HomeCollectionView(viewModel: viewModel, menuList: menuVM.menuList)
                                             .environmentObject(menuVM)
                                             .environmentObject(cartVM)
                                     }
@@ -65,7 +66,7 @@ struct HomeView: View {
                                     }
                                     .padding(.horizontal, 16)
                                     .padding(.vertical, 12)
-                                    .background(Color.main)
+                                    .background(configData.highlightColor.color)
                                 }
                             }
                             .scrollToOffset(contentOffset: $contentOffset)
@@ -112,20 +113,21 @@ extension HomeView {
                 viewModel.navType = .serach
                 viewModel.isHomeNavigation = true
             } label: {
-                Image(.search)
+                Image(systemName: "magnifyingglass")
                     .resizable()
-                    .frame(width: 31, height: 31)
+                    .foregroundColor(.white)
+                    .frame(width: 24, height: 24)
             }
         }
         .padding(.horizontal, 16)
         .frame(width: UIScreen.main.bounds.width, height: 45)
         .frame(maxWidth: .infinity)
-        .background(.main)
+        .background(configData.highlightColor.color)
     }
     
     var bestCeller: some View {
         VStack(alignment: .leading) {
-            TextSwifUI(title: "Best Seller", size: .medium, color: .selectPink, weight: .bold)
+            TextSwifUI(title: "Best Seller", size: .medium, color: .black, weight: .bold)
             ZStack(alignment: .topTrailing) {
                 HStack {
                     VStack(alignment: .leading, spacing: 12) {
@@ -155,7 +157,7 @@ extension HomeView {
                     .padding(12)
                     Spacer()
                 }
-                .background(Color.darkPink.cornerRadius(12))
+                .background(configData.highlightColor.color.cornerRadius(12))
                 .frame(maxWidth: .infinity)
                 .frame(height: 100)
                 

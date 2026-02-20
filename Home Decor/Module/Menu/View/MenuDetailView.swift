@@ -20,7 +20,7 @@ struct MenuDetailView: View {
     var actionAdd: (()-> Void)?
     var body: some View {
         VStack(spacing: 0) {
-            CustomNavBar(title: title,trailingBtnIcon: .search, isShadow: true)
+            CustomNavBar(title: title,trailingBtnIcon: "magnifyingglass", isShadow: true)
             
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 16) {

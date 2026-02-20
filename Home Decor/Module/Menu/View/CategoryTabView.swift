@@ -12,6 +12,7 @@ struct CategoryTabView: View {
     @StateObject var cateegoryVM: MenuViewModel
     var id: Int
     var title: String
+    let menuList: [ListMenu]
     var onClick: ((ListMenu)-> Void)?
     
     let columns = [

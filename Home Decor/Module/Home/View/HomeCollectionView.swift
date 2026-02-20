@@ -13,8 +13,14 @@ struct HomeCollectionView: View {
     @EnvironmentObject var menuVM: MenuViewModel
     @EnvironmentObject var cartVM: CartViewModel
     
+    let menuList: [ListMenu]
     @State var selectedItem: ListMenu?
+//    var onClick: ((ListMenu)-> Void)?
     @State var showDetail = false
+    
+    var actionFav: (()-> Void)?
+    var actionAdd: (()-> Void)?
+    var action: (()-> Void)?
     
     let columns = [
           GridItem(.flexible()),
@@ -23,9 +29,9 @@ struct HomeCollectionView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            TextSwifUI(title: "New Collection", size: .medium, color: .selectPink, weight: .bold)
+            TextSwifUI(title: "New Collection", size: .medium, color: .black, weight: .bold)
             LazyVGrid(columns: columns, spacing: 16) {
-                ForEach(menuVM.menuList) { item in
+                ForEach(menuList) { item in
                     VStack {
                         WebImage(url: URL(string: item.image ?? ""))
                             .resizable()
@@ -36,8 +42,8 @@ struct HomeCollectionView: View {
                             .clipped()
 
                         VStack(alignment: .leading, spacing: 5) {
-                            TextSwifUI(title: item.title ?? "", size: .medium, weight: .medium)
-                            TextSwifUI(title: item.subTitle ?? "", size: .small, weight: .light, lineLimit: 1, isScale: false)
+                            TextSwifUI(title: item.title ?? "", size: .medium, color: .authBg, weight: .medium)
+                            TextSwifUI(title: item.subTitle ?? "", size: .small, color: .authBg, weight: .light, lineLimit: 1, isScale: false)
                             
                             HStack {
                                 TextSwifUI(title: "$\(item.price ?? "")", size: .large, color: .main, weight: .bold)
@@ -46,8 +52,8 @@ struct HomeCollectionView: View {
                         }
                         .padding(EdgeInsets(top: 0, leading: 10, bottom: 10, trailing: 10))
                     }
-                    .background(Color.white.cornerRadius(10))
-                    .shadow(color: .black.opacity(0.05),
+                    .background(Color.darkCardBG.cornerRadius(10))
+                    .shadow(color: .authBg.opacity(0.05),
                             radius: 2, x: 0, y: 2)
                     .onTapGesture {
                         selectedItem = item

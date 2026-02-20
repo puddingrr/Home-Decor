@@ -42,7 +42,7 @@ struct ProfileSectionView: View {
                     }
                 }
             }
-            .background(Color.white)
+            .background(Color.darkCardBG)
             .cornerRadius(12)
             .overlay(
                 RoundedRectangle(cornerRadius: 12)

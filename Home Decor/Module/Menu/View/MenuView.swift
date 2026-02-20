@@ -23,7 +23,7 @@ struct MenuView: View {
             // TabView for categories
             TabView(selection: $menuVM.indexTab) {
                 ForEach(menuVM.itemsTab.indices, id: \.self) { index in
-                    CategoryTabView(cateegoryVM: menuVM, id: index, title: menuVM.itemsTab[index]) { item in
+                    CategoryTabView(cateegoryVM: menuVM, id: index, title: menuVM.itemsTab[index], menuList: menuVM.menuList) { item in
                         selectedItem = item
                         isNavigationDetail = true
                     }
@@ -60,7 +60,7 @@ struct MenuView: View {
 extension MenuView {
     var headerView: some View {
         VStack(spacing: 0) {
-            CustomNavBar(title: "Bedroom", background: Color.clear, trailingBtnIcon: .search, isBack: false, actionTrailingIcon: {
+            CustomNavBar(title: "Bedroom", background: Color.clear, trailingBtnIcon: "magnifyingglass", isBack: false, actionTrailingIcon: {
                 isNavSearch = true
             })
             

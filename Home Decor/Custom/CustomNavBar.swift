@@ -11,7 +11,7 @@ struct CustomNavBar: View {
     var title: String = ""
     var tinhColor: Color?
     var background: Color? = Color.clear
-    var trailingBtnIcon: ImageResource?
+    var trailingBtnIcon: String?
     var isBack: Bool = true
     var isBGImg: Bool = false
     var isScaleTitle: Bool = false
@@ -43,7 +43,7 @@ struct CustomNavBar: View {
                     Button {
                         actionTrailingIcon?()
                     } label: {
-                        Image(trailing)
+                        Image(systemName: trailing)
                             .resizable()
                             .frame(width: 24, height: 24)
                     }
@@ -52,7 +52,7 @@ struct CustomNavBar: View {
             .overlay(
                 TextSwifUI(title: title,
                             size: .large,
-                            color: tinhColor ?? Color.commonText,
+                            color: tinhColor ?? Color.authBg,
                             weight: .bold, lineLimit: 1, isScale: isScaleTitle)
                 .padding(.horizontal, 50)
             )

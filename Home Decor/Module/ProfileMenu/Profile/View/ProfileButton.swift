@@ -20,8 +20,9 @@ struct Profilebutton: View {
                     Image(systemName: buttonImage)
                         .resizable()
                         .scaledToFit()
+                        .foregroundColor(.authBg)
                         .frame(width: 24, height: 24)
-                    TextSwifUI(title: buttonTitle, color: buttonTitle == "Logout" ? .red : .commonText, weight: buttonTitle == "Logout" ? .bold: .regular)
+                    TextSwifUI(title: buttonTitle, color: buttonTitle == "Logout" ? .red : .authBg, weight: buttonTitle == "Logout" ? .bold: .regular)
                     Spacer()
                     if buttonTitle == "Language" {
                         TextSwifUI(title: selectedlanguage, size: .small, weight: .light)
