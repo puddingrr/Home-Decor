@@ -63,17 +63,19 @@ extension MenuView {
                 isNavSearch = true
             })
             
-            HStack(spacing: 16) {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    CustomMenuTab(index: $menuVM.indexTab, items: menuVM.itemsTab)
+            VStack(spacing: 0) {
+                HStack(spacing: 16) {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        CustomMenuTab(index: $menuVM.indexTab, items: menuVM.itemsTab)
+                    }
                 }
+                .padding(.horizontal, 16)
+                
+                RoundedRectangle(cornerRadius: 0)
+                    .frame(height: 1)
+                    .foregroundColor(Color.gray.opacity(0.3))
             }
-            .padding(.horizontal, 16)
-            .padding(.top, 16)
-            
-            RoundedRectangle(cornerRadius: 0)
-                .frame(height: 1)
-                .foregroundColor(Color.gray.opacity(0.3))
+            .padding(.vertical, 8)
         }
     }
 }

@@ -7,11 +7,10 @@
 import SwiftUI
 
 struct CustomMenuTab: View {
-//    @Binding var isLoginRequired: Bool
     @Binding var index: Int?
     var items: [String]
     var textColor: Color = Color.gray
-    var textColorselected: Color = Color.selectPink
+    var textColorselected: Color = UserPreference.shared.highlightColor.color
     var body: some View {
         HStack(spacing: 16) {
             ForEach(0..<items.count, id: \.self) { i in
@@ -24,10 +23,12 @@ struct CustomMenuTab: View {
                         TextSwifUI(title: items[i], size: .other(16),
                                    color: index == i ? textColorselected : textColor, weight: index == i ? .bold : .medium)
                             .frame(maxWidth: .infinity)
+                            .padding(.trailing, 22)
                         if index == i {
                             Rectangle()
                                 .fill(textColorselected)
                                 .frame(width: 40, height: 2)
+                                .padding(.trailing, 22)
                         }
                     }
                 }

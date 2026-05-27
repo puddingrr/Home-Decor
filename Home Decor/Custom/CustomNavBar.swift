@@ -44,7 +44,7 @@ struct CustomNavBar: View {
                     Image(systemName: trailing)
                         .resizable()
                         .foregroundStyle(UserPreference.shared.highlightColor.color)
-                        .frame(width: 24, height: 24)
+                        .frame(width: 20, height: 20)
                 }
             }
         }
