@@ -41,7 +41,6 @@ struct TabItemModel {
 
 struct TabsLayoutView: View {
     
-    @EnvironmentObject var configData: ConfigurationDataManager
     @Binding var selectedTab: Tab
     @Namespace var namespace
     var action: (()-> Void)?
@@ -50,7 +49,6 @@ struct TabsLayoutView: View {
         HStack {
             ForEach(Tab.allCases) { tab in
                 TabButton(tab: tab, selectedTab: $selectedTab, namespace: namespace, action: {action?()})
-                    .environmentObject(configData)
             }
         }
         .padding(16)
@@ -63,7 +61,6 @@ struct TabsLayoutView: View {
     }
     
      struct TabButton: View {
-         @EnvironmentObject var configData: ConfigurationDataManager
         let tab: Tab
         @Binding var selectedTab: Tab
         var namespace: Namespace.ID
@@ -97,13 +94,13 @@ struct TabsLayoutView: View {
                 ZStack {
                     if isSelected {
                         Capsule()
-                            .fill(configData.highlightColor.color.opacity(0.2))
+                            .fill(UserPreference.shared.highlightColor.color.opacity(0.2))
                             .matchedGeometryEffect(id: "Selected Tab", in: namespace)
                     }
                     HStack(spacing: 10) {
                         Image(systemName: tab.icon)
                             .font(.system(size: 20, weight: .semibold, design: .rounded))
-                            .foregroundColor(isSelected ? configData.highlightColor.color : .black.opacity(0.6))
+                            .foregroundColor(isSelected ? UserPreference.shared.highlightColor.color : .black.opacity(0.6))
                             .rotationEffect(.degrees(rotationAngle))
                             .scaleEffect(isSelected ? 1 : 0.9)
                             .animation(.easeInOut, value: rotationAngle)
@@ -116,7 +113,7 @@ struct TabsLayoutView: View {
                         if isSelected {
                             Text(tab.title)
                                 .font(.system(size: 20, weight: .semibold, design: .rounded))
-                                .foregroundColor(configData.highlightColor.color)
+                                .foregroundColor(UserPreference.shared.highlightColor.color)
                                 .padding(.trailing, 20)
                         }
                     }

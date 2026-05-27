@@ -43,6 +43,7 @@ struct CustomNavBar: View {
                 } label: {
                     Image(systemName: trailing)
                         .resizable()
+                        .foregroundStyle(UserPreference.shared.highlightColor.color)
                         .frame(width: 24, height: 24)
                 }
             }

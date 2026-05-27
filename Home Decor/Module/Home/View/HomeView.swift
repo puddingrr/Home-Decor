@@ -12,7 +12,6 @@ struct HomeView: View {
     @StateObject var viewModel = HomeViewModel()
     @EnvironmentObject var menuVM: MenuViewModel
     @EnvironmentObject var cartVM: CartViewModel
-    @EnvironmentObject var configData: ConfigurationDataManager
     
     let columns = [
           GridItem(.flexible()),
@@ -25,8 +24,8 @@ struct HomeView: View {
         ZStack(alignment: .top) {
             Color.appBackground.ignoresSafeArea()
             ZStack(alignment: .top) {
-                configData.highlightColor.color.ignoresSafeArea()
-                    .frame(height: 150)
+                UserPreference.shared.highlightColor.color.ignoresSafeArea()
+                    .frame(height: 100)
                     .frame(maxWidth: .infinity)
                 VStack(spacing: 0) {
                     homeHeader
@@ -41,7 +40,7 @@ struct HomeView: View {
                             .frame(height: 0)
                             LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
                                 ZStack(alignment: .top) {
-                                    configData.highlightColor.color.ignoresSafeArea()
+                                    UserPreference.shared.highlightColor.color.ignoresSafeArea()
                                     BannerView(images: viewModel.animeList)
                                 }
                                 Section {
@@ -56,7 +55,7 @@ struct HomeView: View {
                                     .padding(.bottom, viewModel.isLoggedIn == false ? 60 : 16)
                                 } header: {
                                     VStack(spacing: 8) {
-                                        HomeCatecgoryView(viewModel: viewModel)
+//                                        HomeCatecgoryView(viewModel: viewModel)
                                         HStack(spacing: 20) {
                                             ScrollView(.horizontal, showsIndicators: false) {
                                                 CustomMenuTab(index: $viewModel.indexTab, items: viewModel.itemsTab, textColor: .cream.opacity(0.8),
@@ -66,7 +65,7 @@ struct HomeView: View {
                                     }
                                     .padding(.horizontal, 16)
                                     .padding(.vertical, 12)
-                                    .background(configData.highlightColor.color)
+                                    .background(UserPreference.shared.highlightColor.color)
                                 }
                             }
                             .scrollToOffset(contentOffset: $contentOffset)
@@ -122,7 +121,7 @@ extension HomeView {
         .padding(.horizontal, 16)
         .frame(width: UIScreen.main.bounds.width, height: 45)
         .frame(maxWidth: .infinity)
-        .background(configData.highlightColor.color)
+        .background(UserPreference.shared.highlightColor.color)
     }
     
     var bestCeller: some View {
@@ -157,7 +156,7 @@ extension HomeView {
                     .padding(12)
                     Spacer()
                 }
-                .background(configData.highlightColor.color.cornerRadius(12))
+                .background(UserPreference.shared.highlightColor.color.cornerRadius(12))
                 .frame(maxWidth: .infinity)
                 .frame(height: 100)
                 

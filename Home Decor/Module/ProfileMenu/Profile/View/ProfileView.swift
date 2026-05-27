@@ -11,7 +11,6 @@ struct ProfileView: View {
     
     @StateObject var profileVM = ProfileViewModel()
     @EnvironmentObject var mainVM: MainViewModel
-    @EnvironmentObject var configData: ConfigurationDataManager
     
     //State
     @State var isNavigated: Bool = false
@@ -68,7 +67,7 @@ struct ProfileView: View {
                 VStack(spacing: 8) {
                     Image(systemName: image)
                         .resizable()
-                        .foregroundColor(configData.highlightColor.color)
+                        .foregroundColor(UserPreference.shared.highlightColor.color)
                         .frame(width: 24, height: 24)
                     TextSwifUI(title: text, color: .authBg)
                 }
@@ -81,7 +80,7 @@ struct ProfileView: View {
 extension ProfileView {
     var navBarTop: some View {
         ZStack {
-            configData.highlightColor.color.ignoresSafeArea()
+            UserPreference.shared.highlightColor.color.ignoresSafeArea()
             VStack(spacing: 16) {
                 HStack(spacing: 16) {
                     if let image = profileVM.localProfileImage {

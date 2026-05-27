@@ -48,36 +48,29 @@ struct CardViewMenu: View {
     var actionAdd: (()-> Void)?
     var onClick: (()-> Void)?
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack {
             WebImage(url: URL(string: image ?? ""))
                 .resizable()
-                .frame(height: 142)
+                .indicator(.activity)
+                .scaledToFill()
+                .frame(height: 150)
                 .clipped()
                 .cornerRadius(10)
             
-            TextSwifUI(title: title, size: .large, weight: .medium)
-            TextSwifUI(title: subTitle, size: .small, weight: .light)
-            Divider()
-                .frame(height: 1)
-                .background(Color.main)
-            HStack {
-                TextSwifUI(title: price, size: .large, color: .selectPink, weight: .bold)
-                Spacer(minLength: 0)
-                Button {
-                    actionFav?()
-                } label: {
-                    Image(.iconFav)
-                        .frame(width: 20, height: 20)
-                }
-                Button {
-                    actionAdd?()
-                } label: {
-                    Image(.iconAdd)
-                        .frame(width: 20, height: 20)
+            VStack(alignment: .leading, spacing: 5) {
+                TextSwifUI(title: title, size: .medium, color: .authBg, weight: .medium)
+                TextSwifUI(title: subTitle, size: .small, color: .authBg, weight: .light, lineLimit: 1, isScale: false)
+                
+                HStack {
+                    TextSwifUI(title: "$\(price)", size: .large, color: .main, weight: .bold)
+                    Spacer()
                 }
             }
+            .padding(EdgeInsets(top: 0, leading: 10, bottom: 10, trailing: 10))
         }
-        .frame(maxWidth: .infinity)
+        .background(Color.darkCardBG.cornerRadius(10))
+        .shadow(color: .authBg.opacity(0.05),
+                radius: 2, x: 0, y: 2)
         .onTapGesture {
             onClick?()
         }
