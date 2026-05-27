@@ -43,7 +43,6 @@ struct MenuView: View {
                 await menuVM.fetchCategory(mapTabIndexToCategoryKey(0))
             }
         }
-        // Navigate to detail when an item is tapped
         .navigationDestination(isPresented: $isNavigationDetail) {
             if let item = selectedItem {
                 MenuDetailView(categoryVM: menuVM, title: selectedItem?.title ?? "", item: item)
@@ -84,11 +83,10 @@ extension MenuView {
     func mapTabIndexToCategoryKey(_ index: Int) -> String {
         switch index {
         case 0: return "bed"
-        case 1: return "sofa"
-        case 2: return "chair"
-        case 3: return "Table"
-        case 4: return "auxiliary"
-        case 5: return "desk"
+        case 1: return "chair"
+        case 2: return "desk"
+        case 3: return "sofa"
+        case 4: return "table"
         default: return "bed"
         }
     }

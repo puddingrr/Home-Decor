@@ -29,7 +29,7 @@ struct HomeCollectionView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            TextSwifUI(title: "New Collection", size: .medium, color: .black, weight: .bold)
+            TextSwifUI(title: "New Collection", size: .medium, color: Color.authBg, weight: .bold)
             LazyVGrid(columns: columns, spacing: 16) {
                 ForEach(menuList) { item in
                     VStack {
@@ -38,8 +38,8 @@ struct HomeCollectionView: View {
                             .indicator(.activity)
                             .scaledToFill()
                             .frame(height: 150)
-                            .cornerRadius(10, corners: [.topLeft, .topRight])
                             .clipped()
+                            .cornerRadius(10)
 
                         VStack(alignment: .leading, spacing: 5) {
                             TextSwifUI(title: item.title ?? "", size: .medium, color: .authBg, weight: .medium)

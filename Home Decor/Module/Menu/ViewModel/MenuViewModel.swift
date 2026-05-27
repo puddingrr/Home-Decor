@@ -25,7 +25,7 @@ class MenuViewModel: ObservableObject {
         isNavigated = true
     }
 
-    let itemsTab = ["Beds", "Sofa", "Chair", "Auxiliary furniture", "Dining Table"]
+    let itemsTab = ["Beds", "Chair", "desk", "sofa", "table"]
     
     private let db = Firestore.firestore()
     

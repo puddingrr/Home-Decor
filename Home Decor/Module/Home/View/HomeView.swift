@@ -127,7 +127,7 @@ extension HomeView {
     
     var bestCeller: some View {
         VStack(alignment: .leading) {
-            TextSwifUI(title: "Best Seller", size: .medium, color: .black, weight: .bold)
+            TextSwifUI(title: "Best Seller", size: .medium, color: Color.authBg, weight: .bold)
             ZStack(alignment: .topTrailing) {
                 HStack {
                     VStack(alignment: .leading, spacing: 12) {
