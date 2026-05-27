@@ -9,9 +9,9 @@ import SwiftUI
 
 struct TextSwifUI: View {
     var title: String
-    var size: CGFloat = 14
-    var color: Color = .primary
-    var weight: Font.Weight = .regular
+    var size: FontSize = .normal
+    var color: Color = .authBg
+    var weight: FontName = .regular
     var textAlignment: TextAlignment = .leading
     var isUnderline: Bool = false
     var lineLimit: Int? = nil
@@ -23,7 +23,7 @@ struct TextSwifUI: View {
         let displayText = isAsterisk ? "\(title)*" : title
 
         let text = Text(displayText)
-            .font(.system(size: size, weight: weight))
+            .font(.customFont(size: size.fontSize, weight: weight))
             .underline(isUnderline, color: gradientColor == nil ? color : .clear)
             .multilineTextAlignment(textAlignment)
             .lineLimit(lineLimit)
@@ -35,11 +35,13 @@ struct TextSwifUI: View {
                 .foregroundColor(.clear)
                 .overlay(gradient)
                 .mask(
-                    Text(displayText)
-                        .font(.system(size: size, weight: weight))
-                        .underline(isUnderline, color: .clear)
-                        .multilineTextAlignment(textAlignment)
+                    Text(title)
+                        .font(.customFont(size: size.fontSize, weight: weight))
+                        .underline(isUnderline, color: color)
+                        .lineLimit(lineLimit)
+                        .fixedSize(horizontal: false, vertical: true)
                         .minimumScaleFactor(isScale ? 0.5 : 1)
+                        .multilineTextAlignment(textAlignment)
                 )
         } else {
             text.foregroundColor(color)

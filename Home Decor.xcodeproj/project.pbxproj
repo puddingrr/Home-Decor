@@ -6,6 +6,17 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		FA05B9AE2F29CF8100F3980A /* DeviceKit in Frameworks */ = {isa = PBXBuildFile; productRef = FA05B9AD2F29CF8100F3980A /* DeviceKit */; };
+		FA5355292EF52AA9005DDE8B /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = FA5355282EF52AA9005DDE8B /* SDWebImageSwiftUI */; };
+		FA5C11092EF28A7B003D8DFA /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = FA5C11082EF28A7B003D8DFA /* FirebaseStorage */; };
+		FA5C110B2EF28B40003D8DFA /* FirebaseAppDistribution-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = FA5C110A2EF28B40003D8DFA /* FirebaseAppDistribution-Beta */; };
+		FAB1AAB82EE0132400E40D7F /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = FAB1AAB72EE0132400E40D7F /* FirebaseAnalytics */; };
+		FAB1AABA2EE0132400E40D7F /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = FAB1AAB92EE0132400E40D7F /* FirebaseAuth */; };
+		FAB1AABC2EE0132400E40D7F /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = FAB1AABB2EE0132400E40D7F /* FirebaseCore */; };
+		FAB1AABE2EE0132400E40D7F /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = FAB1AABD2EE0132400E40D7F /* FirebaseFirestore */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		FAF3B8792E5C4F2400FEC400 /* Home Decor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Home Decor.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +34,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA5355292EF52AA9005DDE8B /* SDWebImageSwiftUI in Frameworks */,
+				FA05B9AE2F29CF8100F3980A /* DeviceKit in Frameworks */,
+				FAB1AAB82EE0132400E40D7F /* FirebaseAnalytics in Frameworks */,
+				FAB1AABE2EE0132400E40D7F /* FirebaseFirestore in Frameworks */,
+				FAB1AABC2EE0132400E40D7F /* FirebaseCore in Frameworks */,
+				FA5C11092EF28A7B003D8DFA /* FirebaseStorage in Frameworks */,
+				FAB1AABA2EE0132400E40D7F /* FirebaseAuth in Frameworks */,
+				FA5C110B2EF28B40003D8DFA /* FirebaseAppDistribution-Beta in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -32,8 +51,8 @@
 		FAF3B8702E5C4F2400FEC400 = {
 			isa = PBXGroup;
 			children = (
-				FAF3B87B2E5C4F2400FEC400 /* Home Decor */,
 				FAF3B87A2E5C4F2400FEC400 /* Products */,
+				FAF3B87B2E5C4F2400FEC400 /* Home Decor */,
 			);
 			sourceTree = "<group>";
 		};
@@ -65,6 +84,14 @@
 			);
 			name = "Home Decor";
 			packageProductDependencies = (
+				FAB1AAB72EE0132400E40D7F /* FirebaseAnalytics */,
+				FAB1AAB92EE0132400E40D7F /* FirebaseAuth */,
+				FAB1AABB2EE0132400E40D7F /* FirebaseCore */,
+				FAB1AABD2EE0132400E40D7F /* FirebaseFirestore */,
+				FA5C11082EF28A7B003D8DFA /* FirebaseStorage */,
+				FA5C110A2EF28B40003D8DFA /* FirebaseAppDistribution-Beta */,
+				FA5355282EF52AA9005DDE8B /* SDWebImageSwiftUI */,
+				FA05B9AD2F29CF8100F3980A /* DeviceKit */,
 			);
 			productName = "Home Decor";
 			productReference = FAF3B8792E5C4F2400FEC400 /* Home Decor.app */;
@@ -94,6 +121,11 @@
 			);
 			mainGroup = FAF3B8702E5C4F2400FEC400;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				FAB1AAB62EE0132400E40D7F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				FA5355272EF52AA9005DDE8B /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
+				FA05B9AC2F29CF8100F3980A /* XCRemoteSwiftPackageReference "DeviceKit" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = FAF3B87A2E5C4F2400FEC400 /* Products */;
 			projectDirPath = "";
@@ -257,21 +289,23 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Home Decor/Preview Content\"";
-				DEVELOPMENT_TEAM = K6KHZK67R9;
+				DEVELOPMENT_TEAM = L8AZ2R74ZV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Home-Decor-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "self.Home-Decor";
+				PRODUCT_BUNDLE_IDENTIFIER = self.HomeDecor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -288,21 +322,23 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Home Decor/Preview Content\"";
-				DEVELOPMENT_TEAM = K6KHZK67R9;
+				DEVELOPMENT_TEAM = L8AZ2R74ZV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Home-Decor-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "self.Home-Decor";
+				PRODUCT_BUNDLE_IDENTIFIER = self.HomeDecor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -332,6 +368,76 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		FA05B9AC2F29CF8100F3980A /* XCRemoteSwiftPackageReference "DeviceKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/devicekit/DeviceKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.0;
+			};
+		};
+		FA5355272EF52AA9005DDE8B /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.4;
+			};
+		};
+		FAB1AAB62EE0132400E40D7F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.6.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		FA05B9AD2F29CF8100F3980A /* DeviceKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA05B9AC2F29CF8100F3980A /* XCRemoteSwiftPackageReference "DeviceKit" */;
+			productName = DeviceKit;
+		};
+		FA5355282EF52AA9005DDE8B /* SDWebImageSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA5355272EF52AA9005DDE8B /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
+			productName = SDWebImageSwiftUI;
+		};
+		FA5C11082EF28A7B003D8DFA /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FAB1AAB62EE0132400E40D7F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
+		FA5C110A2EF28B40003D8DFA /* FirebaseAppDistribution-Beta */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FAB1AAB62EE0132400E40D7F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = "FirebaseAppDistribution-Beta";
+		};
+		FAB1AAB72EE0132400E40D7F /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FAB1AAB62EE0132400E40D7F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		FAB1AAB92EE0132400E40D7F /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FAB1AAB62EE0132400E40D7F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		FAB1AABB2EE0132400E40D7F /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FAB1AAB62EE0132400E40D7F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		FAB1AABD2EE0132400E40D7F /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FAB1AAB62EE0132400E40D7F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = FAF3B8712E5C4F2400FEC400 /* Project object */;
 }

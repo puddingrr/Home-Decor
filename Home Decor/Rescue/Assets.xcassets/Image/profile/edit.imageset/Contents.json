@@ -1,18 +1,8 @@
 {
   "images" : [
     {
-      "filename" : "Bot-Edit.png",
-      "idiom" : "universal",
-      "scale" : "1x"
-    },
-    {
-      "filename" : "Bot-Edit@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename" : "Vector@3x.png",
+      "idiom" : "universal"
     }
   ],
   "info" : {

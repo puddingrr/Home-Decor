@@ -17,11 +17,11 @@ struct SearchFiltterView: View {
     let colorlist: [Color] = [.lightPurple, .lightBlue, .lightGreen, .orange, .black, .softPink]
     var body: some View {
         VStack {
-            TextSwifUI(title: "Filter", size: 20, color: .selectPink, weight: .bold)
+            TextSwifUI(title: "Filter", size: .huge, color: .selectPink, weight: .bold)
                 .padding(.vertical, 12)
             
             VStack(alignment: .leading, spacing: 12) {
-                TextSwifUI(title: "Price Range", size: 16, color: .selectPink, weight: .medium)
+                TextSwifUI(title: "Price Range", size: .medium, color: .selectPink, weight: .medium)
                 
                 BudgetSlider(value: $priceValue)
                 
@@ -31,7 +31,7 @@ struct SearchFiltterView: View {
                         .font(.system(size: 15, weight: .medium))
                         .foregroundColor(.gray)
                 }
-                TextSwifUI(title: "Categories", size: 16, color: .selectPink, weight: .medium)
+                TextSwifUI(title: "Categories", size: .medium, color: .selectPink, weight: .medium)
                 
                 FlowLayout(spacing: 12) {
                     ForEach(0..<list.count, id: \.self) { i in
@@ -45,7 +45,7 @@ struct SearchFiltterView: View {
                     }
                 }
                 
-                TextSwifUI(title: "Products", size: 16, color: .selectPink, weight: .medium)
+                TextSwifUI(title: "Products", size: .medium, color: .selectPink, weight: .medium)
                 FlowLayout(spacing: 12) {
                     ForEach(0..<listProduct.count, id: \.self) { i in
                         Button {
@@ -57,7 +57,7 @@ struct SearchFiltterView: View {
                         }
                     }
                 }
-                TextSwifUI(title: "Colors", size: 16, color: .selectPink, weight: .medium)
+                TextSwifUI(title: "Colors", size: .medium, color: .selectPink, weight: .medium)
                 HStack {
                     ForEach(colorlist.indices, id: \.self) { i in
                         Button {
@@ -84,7 +84,7 @@ struct SearchFiltterView: View {
             Button {
               
             } label: {
-                TextSwifUI(title: "Apply", size: 20, color: .selectPink, weight: .bold)
+                TextSwifUI(title: "Apply", size: .large, color: .selectPink, weight: .bold)
                     .frame(width: 175, height: 39)
                     .background(Color.main.cornerRadius(20))
                 

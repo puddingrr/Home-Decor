@@ -8,172 +8,165 @@
 import SwiftUI
 
 struct HomeView: View {
-    @State var pageIndex: Int = 0
     var isSelected: Bool = false
-    @State var search: Bool = false
     @StateObject var viewModel = HomeViewModel()
+    @EnvironmentObject var menuVM: MenuViewModel
+    @EnvironmentObject var cartVM: CartViewModel
+    @EnvironmentObject var configData: ConfigurationDataManager
+    
+    let columns = [
+          GridItem(.flexible()),
+          GridItem(.flexible())
+      ]
+    
+    @State var contentOffset: CGPoint?
+    
     var body: some View {
-        ScrollView(showsIndicators: false) {
-            VStack(alignment: .leading, spacing: 16) {
-                HStack {
-                    VStack(alignment: .leading) {
-                        TextSwifUI(title: "Hi, Welcome Back", size: 22, color: .main, weight: Font.Weight.bold)
-                        TextSwifUI(title: "Create spaces that bring joy", size: 13, color: .black)
-                    }
-                    Spacer()
-                    Button {
-                        search.toggle()
-                    } label: {
-                        Image(.search)
-                            .resizable()
-                            .frame(width: 31, height: 31)
-                    }
-                }
-                VStack {
-                    TabView(selection: $pageIndex) {
-                        ForEach(0..<viewModel.animeList.count, id: \.self) { i in
-                            HStack {
-                                Image(viewModel.animeList[i])
-                                    .resizable()
-                                    .frame(maxWidth: .infinity)
-                                    .frame(height: 140)
+        ZStack(alignment: .top) {
+            Color.appBackground.ignoresSafeArea()
+            ZStack(alignment: .top) {
+                configData.highlightColor.color.ignoresSafeArea()
+                    .frame(height: 150)
+                    .frame(maxWidth: .infinity)
+                VStack(spacing: 0) {
+                    homeHeader
+                    ScrollViewReader { proxy in
+                        ScrollView(showsIndicators: false) {
+                            GeometryReader { geo in
+                                Color.clear
+                                    .onChange(of: geo.frame(in: .global).minY) { scrollOffset in
+                                        contentOffset = nil // reset it to make action scroll to offset work
+                                    }
                             }
-                            .tag(i)
-                        }
-                    }
-                    .frame(height: 140)
-                    .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-                    .onReceive(Timer.publish(every: 2, on: .main, in: .common).autoconnect()) { _ in
-                        if pageIndex < viewModel.animeList.count - 1 {
-                            pageIndex += 1
-                        } else {
-                            pageIndex = 0
-                        }
-                    }
-                    HStack {
-                        ForEach(0..<viewModel.animeList.count, id: \.self) { i in
-                            Capsule()
-                                .fill(pageIndex == i ? Color.black : Color.main)
-                                .frame(width: pageIndex == i ? 25 : 25)
-                                .animation(.easeInOut(duration: 0.6), value: pageIndex)
-                        }
-                    }
-                    .frame(height: 6)
-                    .padding(.bottom, 8)
-                }
-                TextSwifUI(title: "Categories", size: 18, color: .selectPink, weight: .bold)
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 16) {
-                        ForEach(0..<viewModel.list.count, id: \.self) { i in
-                            menuList(icon: viewModel.list[i].icon,
-                                     activeIcon: viewModel.list[i].activeIcon,
-                                     isSelected: viewModel.selectedIndex == i) {
-                                viewModel.selectedIndex = i
-                            }
-                        }
-                    }
-                }
-                TextSwifUI(title: "Best Seller", size: 16, color: .selectPink, weight: .bold)
-                bestSeller
-                TextSwifUI(title: "New Collection", size: 16, color: .selectPink, weight: .bold)
-                collectionView
-            }
-            .padding(16)
-        }
-        .navigationDestination(isPresented: $search) {
-            SearchView()
-        }
-    }
-    @ViewBuilder
-    func menuList(icon: ImageResource, activeIcon: ImageResource, isSelected: Bool, action: (() -> Void)? = nil) -> some View {
-        Button {
-            action?()
-        } label: {
-            Rectangle()
-                .fill(isSelected ? Color.darkPink : Color.lightOrange)
-                .cornerRadius(10)
-                .frame(width: 65, height: 65)
-                .overlay {
-                    Image(isSelected ? activeIcon : icon)
-                        .resizable()
-                        .frame(width: 32, height: 32)
-                        .scaledToFit()
-                }
-        }
-    }
-    var bestSeller: some View {
-        ZStack(alignment: .topTrailing) {
-            HStack {
-                VStack(alignment: .leading, spacing: 12) {
-                    TextSwifUI(title: "Kitchen Cart", size: 17, color: .black)
-                    TextSwifUI(title: "Lorem ipsum dolor sit amet, \nconsectetur adipiscing elit", size: 14, color: .black)
-                    HStack {
-                        Rectangle()
-                            .fill(Color.white)
-                            .cornerRadius(10)
-                            .frame(width: 60, height: 20)
-                            .overlay {
-                                HStack(spacing: 8) {
-                                    Image(systemName: "star.fill")
-                                        .resizable()
-                                        .frame(width: 16, height: 16)
-                                        .foregroundColor(.darkPink)
-                                    
-                                    TextSwifUI(title: "4.5", color: .black, weight: .bold)
+                            .frame(height: 0)
+                            LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
+                                ZStack(alignment: .top) {
+                                    configData.highlightColor.color.ignoresSafeArea()
+                                    BannerView(images: viewModel.animeList)
+                                }
+                                Section {
+                                    VStack(spacing: 16) {
+                                        bestCeller
+                                        HomeCollectionView(viewModel: viewModel, menuList: menuVM.menuList)
+                                            .environmentObject(menuVM)
+                                            .environmentObject(cartVM)
+                                    }
+                                    .padding(.top, 16)
+                                    .padding(.horizontal, 16)
+                                    .padding(.bottom, viewModel.isLoggedIn == false ? 60 : 16)
+                                } header: {
+                                    VStack(spacing: 8) {
+                                        HomeCatecgoryView(viewModel: viewModel)
+                                        HStack(spacing: 20) {
+                                            ScrollView(.horizontal, showsIndicators: false) {
+                                                CustomMenuTab(index: $viewModel.indexTab, items: viewModel.itemsTab, textColor: .cream.opacity(0.8),
+                                                              textColorselected: .white)
+                                            }
+                                        }
+                                    }
+                                    .padding(.horizontal, 16)
+                                    .padding(.vertical, 12)
+                                    .background(configData.highlightColor.color)
                                 }
                             }
-                        TextSwifUI(title: "Shop Now", size: 10, color: .black)
-                            .padding(4)
-                            .background(Color.white.cornerRadius(8))
-                            .padding(.leading, 16)
+                            .scrollToOffset(contentOffset: $contentOffset)
+                        }
                     }
                 }
-                .padding(12)
+            }
+            VStack(spacing: 0) {
                 Spacer()
+                panelAuthView
             }
-            .background(Color.darkPink.cornerRadius(12))
-            .frame(maxWidth: .infinity)
-            .frame(height: 100)
-
-            Image(.bestSelling)
-                .resizable()
-                .frame(width: 171, height: 171)
-                .padding(.top, -60)
         }
-        .padding(.top, 25)
+        .onAppear {
+            if let _ = UserPreference.shared.getLoginData() {
+                viewModel.isLoggedIn = true
+            }
+        }
+        .navigationDestination(isPresented: $viewModel.isHomeNavigation) {
+            switch viewModel.navType {
+            case .serach:
+                SearchView()
+            case .login:
+                LoginView()
+            case .register:
+                RegisterView()
+            case .detailProduct:
+                HomeDetailView()
+            case .none:
+                EmptyView()
+            }
+        }
     }
-    var collectionView: some View {
-        HStack(spacing: 24) {
-            ForEach(0..<viewModel.collectList.count, id: \.self) { i in
-                VStack(alignment: .leading, spacing: 10) {
-                    Image(viewModel.collectList[i].image)
-                        .resizable()
-                        .frame(height: 142)
-                        .scaledToFill()
-                    TextSwifUI(title: viewModel.collectList[i].title, size: 15, weight: .medium)
-                    TextSwifUI(title: viewModel.collectList[i].subTitle, size: 12, weight: .light)
-                    Divider()
-                        .frame(height: 1)
-                        .background(Color.main)
-                    HStack {
-                        TextSwifUI(title: "$\(viewModel.collectList[i].price)", size: 15, color: .selectPink, weight: .bold)
-                        Spacer(minLength: 0)
-                        Button {
-                            
-                        } label: {
-                            Image(.iconFav)
-                                .frame(width: 20, height: 20)
-                        }
-                        Button {
-                            
-                        } label: {
-                            Image(.iconAdd)
-                                .frame(width: 20, height: 20)
+}
+
+extension HomeView {
+    var homeHeader: some View {
+        HStack {
+            VStack(alignment: .leading) {
+                TextSwifUI(title: "Hi, Welcome Back", size: .huge, color: .white, weight: .bold)
+                TextSwifUI(title: "Create spaces that bring joy", size: .small, color: .white)
+            }
+            Spacer()
+            Button {
+                viewModel.navType = .serach
+                viewModel.isHomeNavigation = true
+            } label: {
+                Image(systemName: "magnifyingglass")
+                    .resizable()
+                    .foregroundColor(.white)
+                    .frame(width: 24, height: 24)
+            }
+        }
+        .padding(.horizontal, 16)
+        .frame(width: UIScreen.main.bounds.width, height: 45)
+        .frame(maxWidth: .infinity)
+        .background(configData.highlightColor.color)
+    }
+    
+    var bestCeller: some View {
+        VStack(alignment: .leading) {
+            TextSwifUI(title: "Best Seller", size: .medium, color: Color.authBg, weight: .bold)
+            ZStack(alignment: .topTrailing) {
+                HStack {
+                    VStack(alignment: .leading, spacing: 12) {
+                        TextSwifUI(title: "Kitchen Cart", size: .large, color: .black)
+                        TextSwifUI(title: "Lorem ipsum dolor sit amet, \nconsectetur adipiscing elit", size: .medium, color: .black)
+                        HStack {
+                            Rectangle()
+                                .fill(Color.white)
+                                .cornerRadius(10)
+                                .frame(width: 60, height: 20)
+                                .overlay {
+                                    HStack(spacing: 8) {
+                                        Image(systemName: "star.fill")
+                                            .resizable()
+                                            .frame(width: 16, height: 16)
+                                            .foregroundColor(.darkPink)
+                                        
+                                        TextSwifUI(title: "4.5", color: .black, weight: .bold)
+                                    }
+                                }
+                            TextSwifUI(title: "Shop Now", size: .small, color: .black)
+                                .padding(4)
+                                .background(Color.white.cornerRadius(8))
+                                .padding(.leading, 16)
                         }
                     }
+                    .padding(12)
+                    Spacer()
                 }
+                .background(configData.highlightColor.color.cornerRadius(12))
                 .frame(maxWidth: .infinity)
+                .frame(height: 100)
+                
+                Image(.bestSelling)
+                    .resizable()
+                    .frame(width: 171, height: 171)
+                    .padding(.top, -60)
             }
+            .padding(.top, 25)
         }
     }
 }

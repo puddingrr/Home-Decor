@@ -10,10 +10,3 @@ import SwiftUI
 struct categoryList {
     let icon, activeIcon: ImageResource
 }
-
-struct collectionList {
-    let image: ImageResource
-    let title: String
-    let subTitle: String
-    let price: String
-}
