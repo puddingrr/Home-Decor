@@ -46,8 +46,8 @@ struct HomeView: View {
                                 Section {
                                     VStack(spacing: 16) {
                                         bestCeller
-                                        HomeCollectionView(viewModel: viewModel, menuList: menuVM.menuList)
-                                            .environmentObject(menuVM)
+                                        HomeCollectionView(featureProduct: viewModel.featuredProducts)
+                                            .environmentObject(viewModel)
                                             .environmentObject(cartVM)
                                     }
                                     .padding(.top, 16)
@@ -81,6 +81,9 @@ struct HomeView: View {
         .onAppear {
             if let _ = UserPreference.shared.getLoginData() {
                 viewModel.isLoggedIn = true
+            }
+            Task {
+                await viewModel.fetchFeaturedProducts()
             }
         }
         .navigationDestination(isPresented: $viewModel.isHomeNavigation) {

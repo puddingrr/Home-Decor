@@ -6,8 +6,11 @@
 //
 
 import Foundation
+import FirebaseFirestore
 
 class HomeViewModel : ObservableObject {
+    @Published var featuredProducts: [ProductModel] = []
+    private let db = Firestore.firestore()
     
     @Published var indexTab: Int? = 0
     @Published var selectedIndex: Int = 0
@@ -37,6 +40,31 @@ class HomeViewModel : ObservableObject {
 //        .init(image: .chair1, title: "Aluminum chair", subTitle: "Lorem ipsum dolor sit amet, consectetur adipiscing elit", price: "120.00"),
 //        .init(image: .chair2, title: "Stylish chair", subTitle: "Lorem ipsum dolor sit amet, consectetur adipiscing elit", price: "120.00")
 //    ]
+
+    func fetchFeaturedProducts() {
+        db.collection("featuredProducts")
+            .getDocuments { snapshot, error in
+                if let error = error {
+                    print(error.localizedDescription)
+                    return
+                }
+                guard let snapshot = snapshot else { return }
+                let products = snapshot.documents.compactMap { doc -> ProductModel? in
+                    let data = doc.data()
+                    return ProductModel(
+                        id: doc.documentID,
+                        name: data["name"] as? String ?? "",
+                        description: data["description"] as? String ?? "",
+                        price: data["price"] as? Double ?? 0,
+                        imageURL: data["imageURL"] as? String ?? "",
+                        category: data["category"] as? String ?? ""
+                    )
+                }
+                DispatchQueue.main.async {
+                    self.featuredProducts = products
+                }
+            }
+    }
 }
 enum HomeNavigationType {
     case serach

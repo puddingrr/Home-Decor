@@ -19,7 +19,7 @@ struct CustomButton: View {
     var width: CGFloat?
     var height: CGFloat = 45
     var radius: CGFloat = 12
-    var bgColor: Color = .main
+    var bgColor: Color = UserPreference.shared.highlightColor.color
     var isDisabled: Bool = false
     var isFromWebView: Bool = false
     var action: () -> Void = {Utilize.hideKeyboard()}
@@ -45,7 +45,7 @@ struct CustomButton: View {
                 RoundedRectangle(cornerRadius: radius)
                     .stroke(isOutline ? Color.main : Color.clear, lineWidth: 1)
             )
-            .background(isDisabled ? .selectPink.opacity(0.5) : .selectPink)
+            .background(isDisabled ? .selectPink.opacity(0.5) : bgColor)
             .cornerRadius(radius)
         }
         .disabled(isDisabled)

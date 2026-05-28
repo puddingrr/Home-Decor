@@ -14,6 +14,7 @@ struct HomeDetailView:View {
     @State var showAlreadyAddedAlert = false
 
     var item: ListMenu?
+    var itemProduct: ProductModel?
     var actionFav: (()-> Void)?
     var actionAdd: (()-> Void)?
         
@@ -29,9 +30,9 @@ struct HomeDetailView:View {
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
                                 .foregroundColor(Color.lightOrange)
-                            if  let image = item?.image {
+                            if !productImage.isEmpty {
                                 GeometryReader { geo in
-                                    WebImage(url: URL(string: image))
+                                    WebImage(url: URL(string: productImage))
                                         .resizable()
                                         .scaledToFill()
                                         .frame(width: geo.size.width, height: geo.size.height)
@@ -41,24 +42,17 @@ struct HomeDetailView:View {
                             }
                         }
                         .frame(height: 270)
-                        TextSwifUI(title: item?.title ?? "", size: .large, weight: .medium)
-                        TextSwifUI(title: item?.subTitle ?? "", size: .small, weight: .light)
-                        Divider()
+                        TextSwifUI(title: productTitle, size: .large, weight: .medium)
+                        TextSwifUI(title: productDescription, size: .small, weight: .light)
+                        Color.gray.opacity(0.3)
                             .frame(height: 1)
-                            .background(Color.main)
                         HStack {
-                            TextSwifUI(title: item?.price ?? "", size: .large, color: .selectPink, weight: .bold)
+                            TextSwifUI(title: productPrice, size: .large, color: .red, weight: .bold)
                             Spacer(minLength: 0)
                             Button {
                                 actionFav?()
                             } label: {
                                 Image(.iconFav)
-                                    .frame(width: 20, height: 20)
-                            }
-                            Button {
-                                actionAdd?()
-                            } label: {
-                                Image(.iconAdd)
                                     .frame(width: 20, height: 20)
                             }
                         }
@@ -69,17 +63,28 @@ struct HomeDetailView:View {
                         }
                         
                         CustomButton(title: "Add to Cart") {
-                            if let productItem = item {  
-                                   Task {
-                                       let added = await cartVM.addToCart(productItem)
-                                       if !added {
-                                           showAlreadyAddedAlert = true
-                                       }
-                                   }
-                               }
+                            Task {
+                                var cartItem: ListMenu?
+                                if let item = item {
+                                    cartItem = item
+                                } else if let product = itemProduct {
+                                    cartItem = ListMenu(
+                                        id: UUID(uuidString: product.id ?? "") ?? UUID(),
+                                        image: product.imageURL,
+                                        title: product.name,
+                                        subTitle: product.description,
+                                        price: "\(product.price ?? 0)"
+                                    )
+                                }
+                                guard let finalItem = cartItem else { return }
+                                let added = await cartVM.addToCart(finalItem)
+                                if !added {
+                                    showAlreadyAddedAlert = true
+                                }
+                            }
                         }
                         .padding(.top, 32)
-                        .alert("Already in Cart 💜", isPresented: $showAlreadyAddedAlert) {
+                        .alert("Already in Cart", isPresented: $showAlreadyAddedAlert) {
                             Button("OK", role: .cancel) { }
                         } message: {
                             Text("This product is already added to your cart.")
@@ -89,5 +94,43 @@ struct HomeDetailView:View {
                 }
                 Spacer()
             }
+    }
+}
+extension HomeDetailView {
+    var productTitle: String {
+        if let item = item {
+            return item.title ?? ""
+        }
+        if let product = itemProduct {
+            return product.name ?? ""
+        }
+        return ""
+    }
+    var productDescription: String {
+        if let item = item {
+            return item.subTitle ?? ""
+        }
+        if let product = itemProduct {
+            return product.description ?? ""
+        }
+        return ""
+    }
+    var productPrice: String {
+        if let item = item {
+            return item.price ?? ""
+        }
+        if let product = itemProduct {
+            return "$\(product.price ?? 0)"
+        }
+        return ""
+    }
+    var productImage: String {
+        if let item = item {
+            return item.image ?? ""
+        }
+        if let product = itemProduct {
+            return product.imageURL ?? ""
+        }
+        return ""
     }
 }

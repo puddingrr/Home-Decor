@@ -37,41 +37,57 @@ struct CartView: View {
                     VStack {
                         ForEach(cartVM.cartItems) { item in
                             HStack(alignment: .top, spacing: 10) {
-                                ZStack {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .frame(width: 89, height: 89)
-                                        .foregroundColor(Color.lightOrange)
-                                    if let image = item.image {
-                                        WebImage(url: URL(string: image))
-                                            .resizable()
-                                            .frame(width: 69, height: 69)
-                                            .cornerRadius(10)
-                                    }
+//                                ZStack {
+//                                    RoundedRectangle(cornerRadius: 10)
+//                                        .frame(width: 89, height: 89)
+//                                        .foregroundColor(Color.lightOrange)
+//                                    if let image = item.image {
+//                                        WebImage(url: URL(string: image))
+//                                            .resizable()
+//                                            .frame(width: 69, height: 69)
+//                                            .cornerRadius(10)
+//                                    }
+//                                }
+                                if let image = item.image {
+                                    WebImage(url: URL(string: image))
+                                        .resizable()
+                                        .frame(width: 90, height: 90)
+                                        .cornerRadius(10)
+                                        .overlay {
+                                            RoundedRectangle(cornerRadius: 10)
+                                                .stroke(Color.gray.opacity(0.5), lineWidth: 1)
+                                        }
                                 }
                                 
                                 VStack(alignment: .leading, spacing: 6) {
-                                    TextSwifUI(title: item.title ?? "", size: .other(16), color: .selectPink)
-                                    TextSwifUI(title: "$\(item.price ?? "")", size: .other(16))
-                                }
-                                
-                                Spacer()
-                                
-                                if editMode == .inactive {
-                                    HStack(spacing: 8) {
-                                        Button { decreaseItem(item) } label: {
-                                            Image(.dicrease).resizable().frame(width: 24, height: 24)
-                                        }
-                                        TextSwifUI(title: "\(item.quantity ?? 1)", weight: .bold)
-                                        Button { increaseItem(item) } label: {
-                                            Image(.increase).resizable().frame(width: 24, height: 24)
+                                    TextSwifUI(title: item.title ?? "", size: .other(18), weight: .bold)
+                                    TextSwifUI(title: "$\(item.price ?? "")", size: .other(16), color: .red, weight: .bold)
+                                    Spacer(minLength: 0)
+                                    if editMode == .inactive {
+                                        HStack(spacing: 8) {
+                                            Button { decreaseItem(item) } label: {
+                                                Image(.dicrease).resizable().frame(width: 24, height: 24)
+                                            }
+                                            TextSwifUI(title: "\(item.quantity ?? 1)", weight: .bold)
+                                            Button { increaseItem(item) } label: {
+                                                Image(.increase).resizable().frame(width: 24, height: 24)
+                                            }
                                         }
                                     }
                                 }
+                                Spacer()
                             }
                         }
                     }
-                    .padding(.horizontal, 16)
-                    .padding(.top, 30)
+                    .padding(12)
+                    .frame(maxWidth: .infinity)
+                    .background(.authTitle)
+                    .cornerRadius(10)
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.authBg.opacity(0.1), lineWidth: 1)
+                    }
+                    .padding(16)
                     .environment(\.editMode, .constant(editMode))
                 }
                 

@@ -33,7 +33,9 @@ struct Home_DecorApp: App {
                     MainTabView()
 //                        .task {
 //                            await ProductSeeder.seedMenu()
-//                        }
+//                            await FeaturedSeeder.seedFeaturedProducts()
+//                        }product
+                    
                 }
             }
             .navigationViewStyle(StackNavigationViewStyle())

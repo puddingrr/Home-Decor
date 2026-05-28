@@ -24,6 +24,9 @@ struct AppearanceView: View {
             
             VStack(spacing: 0) {
                 CustomNavBar(title: "App Appearance", isShadow: true)
+                RoundedRectangle(cornerRadius: 0)
+                    .frame(height: 1)
+                    .foregroundColor(Color.gray.opacity(0.3))
                 VStack(alignment: .leading) {
                     TextSwifUI(title: "Theme".uppercased(), size: .medium)
                     VStack(alignment: .leading, spacing: 16) {
