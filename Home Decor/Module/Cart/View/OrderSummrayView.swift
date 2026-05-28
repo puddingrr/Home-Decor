@@ -8,7 +8,7 @@
 import SwiftUI
 import SDWebImageSwiftUI
 
-struct SubmitOrderView: View {
+struct OrderSummrayView: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var cartVM: CartViewModel
 
@@ -39,7 +39,7 @@ struct SubmitOrderView: View {
                     AddressSection()
                     Divider().padding(.leading, 20)
                     InfoRow(label: "Delivery time", value: "ASAP") {
-                        isSheetDiliveryTime = true
+                        isSheetDiliveryTime.toggle()
                     }
                     Divider().padding(.leading, 20)
                     InfoRow(label: "Payment method", value: "Cash On Delivery")
@@ -158,6 +158,7 @@ struct InfoRow: View {
                     .font(.system(size: 12))
                     .foregroundColor(.secondary)
             }
+            .buttonStyle(.plain)
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 14)

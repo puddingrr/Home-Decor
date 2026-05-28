@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct OrderSummaryView: View {
+struct CustomSubmitOrderView: View {
     let total: Double
     let totalKHR: Double
     let saved: Double

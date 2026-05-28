@@ -13,6 +13,7 @@ struct CustomNavBar: View {
     var background: Color? = Color.appBackground
     var trailingBtnIcon: String?
     var isBack: Bool = true
+    var isbackhColor: Color = .authTitle
     var isScaleTitle: Bool = false
     var isShadow: Bool = false
     var action: (() -> Void)?
@@ -29,10 +30,9 @@ struct CustomNavBar: View {
                         action?()
                     }
                 }, label: {
-                    Image(.arrowLeft)
-                        .resizable()
-                        .contentShape(Rectangle())
-                        .frame(width: 30, height: 30)
+                    Image(systemName: "chevron.left")
+                        .font(.system(size: 17, weight: .semibold))
+                        .foregroundColor(isbackhColor)
                 })
             }
             Spacer(minLength: 0)
