@@ -28,6 +28,9 @@ struct CartView: View {
                     }
                 }
             )
+            RoundedRectangle(cornerRadius: 0)
+                .frame(height: 1)
+                .foregroundColor(Color.gray.opacity(0.3))
             
             if !cartVM.cartItems.isEmpty {
                 ScrollView(showsIndicators: false) {

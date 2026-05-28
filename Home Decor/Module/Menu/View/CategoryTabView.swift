@@ -34,6 +34,7 @@ struct CategoryTabView: View {
                         })
                     }
                 }
+                .padding(.bottom, 16)
             }
         }
     }

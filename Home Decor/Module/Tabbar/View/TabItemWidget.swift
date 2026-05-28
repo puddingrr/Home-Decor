@@ -117,7 +117,7 @@ struct TabsLayoutView: View {
                                 .padding(.trailing, 20)
                         }
                     }
-                    .padding(.vertical, 10)
+                    .padding(.vertical, 0)
                 }
             }
             .buttonStyle(.plain)

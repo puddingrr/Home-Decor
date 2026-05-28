@@ -59,7 +59,7 @@ struct CustomNavBar: View {
         .frame(width: UIScreen.main.bounds.width, height: 46)
         .frame(maxWidth: .infinity)
         .shadow(color: isShadow ? .black.opacity(0.1) : .clear, radius: 4, x: 0, y: 4)
-        .background(background.ignoresSafeArea())
+//        .background(background.ignoresSafeArea())
         .frame(width: UIScreen.main.bounds.width)
         .navigationBarBackButtonHidden(true)
     }

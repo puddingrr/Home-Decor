@@ -63,11 +63,13 @@ extension MenuView {
                 isNavSearch = true
             })
             
-            VStack(spacing: 0) {
+            VStack(alignment: .center, spacing: 0) {
                 HStack(spacing: 16) {
+                    Spacer()
                     ScrollView(.horizontal, showsIndicators: false) {
                         CustomMenuTab(index: $menuVM.indexTab, items: menuVM.itemsTab)
                     }
+                    Spacer()
                 }
                 .padding(.horizontal, 16)
                 
