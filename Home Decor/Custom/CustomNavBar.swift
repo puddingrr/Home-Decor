@@ -13,6 +13,7 @@ struct CustomNavBar: View {
     var background: Color? = Color.appBackground
     var trailingBtnIcon: String?
     var isBack: Bool = true
+    var isbackhColor: Color = .authTitle
     var isScaleTitle: Bool = false
     var isShadow: Bool = false
     var action: (() -> Void)?
@@ -29,10 +30,9 @@ struct CustomNavBar: View {
                         action?()
                     }
                 }, label: {
-                    Image(.arrowLeft)
-                        .resizable()
-                        .contentShape(Rectangle())
-                        .frame(width: 30, height: 30)
+                    Image(systemName: "chevron.left")
+                        .font(.system(size: 17, weight: .semibold))
+                        .foregroundColor(isbackhColor)
                 })
             }
             Spacer(minLength: 0)
@@ -43,7 +43,8 @@ struct CustomNavBar: View {
                 } label: {
                     Image(systemName: trailing)
                         .resizable()
-                        .frame(width: 24, height: 24)
+                        .foregroundStyle(UserPreference.shared.highlightColor.color)
+                        .frame(width: 20, height: 20)
                 }
             }
         }
@@ -58,7 +59,7 @@ struct CustomNavBar: View {
         .frame(width: UIScreen.main.bounds.width, height: 46)
         .frame(maxWidth: .infinity)
         .shadow(color: isShadow ? .black.opacity(0.1) : .clear, radius: 4, x: 0, y: 4)
-        .background(background.ignoresSafeArea())
+//        .background(background.ignoresSafeArea())
         .frame(width: UIScreen.main.bounds.width)
         .navigationBarBackButtonHidden(true)
     }

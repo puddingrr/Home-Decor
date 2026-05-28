@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct ListMenu: Identifiable, Codable, Hashable {
-    let id: UUID
+    let id: String?
     let image: String?
     let title: String?
     let subTitle: String?

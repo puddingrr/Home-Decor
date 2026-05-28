@@ -13,6 +13,7 @@ struct HomeCatecgoryView: View {
         HStack {
             ForEach(0..<viewModel.list.count, id: \.self) { i in
                 Button {
+                    viewModel.indexTab = 1
 //                    viewModel.selectedndex = i
                 } label: {
                     Rectangle()

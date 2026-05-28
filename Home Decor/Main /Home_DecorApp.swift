@@ -11,8 +11,8 @@ import Firebase
 class AppDelegate: NSObject, UIApplicationDelegate {
   func application(_ application: UIApplication,
                    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+    FirebaseConfiguration.shared.setLoggerLevel(.warning)
     FirebaseApp.configure()
-    FirebaseConfiguration.shared.setLoggerLevel(.debug)
     return true
   }
 }
@@ -24,6 +24,10 @@ struct Home_DecorApp: App {
     
     init() {
         LogWriter.shared.log("App launched")
+        FirebaseLog.shared.logFirebase(.fetch, collection: "featuredProducts")
+        FirebaseLog.shared.logFirebase(.success, collection: "featuredProducts", count: 6, elapsed: 0.312)
+        FirebaseLog.shared.logFirebase(.fetch, collection: "menu")
+        FirebaseLog.shared.logFirebase(.success, collection: "menu", count: 6, elapsed: 0.312)
     }
     
     var body: some Scene {
@@ -33,7 +37,9 @@ struct Home_DecorApp: App {
                     MainTabView()
 //                        .task {
 //                            await ProductSeeder.seedMenu()
-//                        }
+//                            await FeaturedSeeder.seedFeaturedProducts()
+//                        }product
+                    
                 }
             }
             .navigationViewStyle(StackNavigationViewStyle())

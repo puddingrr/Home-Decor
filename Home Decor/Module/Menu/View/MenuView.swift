@@ -40,12 +40,12 @@ struct MenuView: View {
         .onAppear {
             menuVM.indexTab = 0
             Task {
-                await menuVM.fetchCategory(mapTabIndexToCategoryKey(0))
+//                await menuVM.fetchCategory(mapTabIndexToCategoryKey(0))
             }
         }
         .navigationDestination(isPresented: $isNavigationDetail) {
             if let item = selectedItem {
-                MenuDetailView(categoryVM: menuVM, title: selectedItem?.title ?? "", item: item)
+                HomeDetailView(item: item)
                     .environmentObject(cartVM)
             }
         }
@@ -63,17 +63,21 @@ extension MenuView {
                 isNavSearch = true
             })
             
-            HStack(spacing: 16) {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    CustomMenuTab(index: $menuVM.indexTab, items: menuVM.itemsTab)
+            VStack(alignment: .center, spacing: 0) {
+                HStack(spacing: 16) {
+                    Spacer()
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        CustomMenuTab(index: $menuVM.indexTab, items: menuVM.itemsTab)
+                    }
+                    Spacer()
                 }
+                .padding(.horizontal, 16)
+                
+                RoundedRectangle(cornerRadius: 0)
+                    .frame(height: 1)
+                    .foregroundColor(Color.gray.opacity(0.3))
             }
-            .padding(.horizontal, 16)
-            .padding(.top, 16)
-            
-            RoundedRectangle(cornerRadius: 0)
-                .frame(height: 1)
-                .foregroundColor(Color.gray.opacity(0.3))
+            .padding(.vertical, 8)
         }
     }
 }

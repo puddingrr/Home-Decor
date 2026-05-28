@@ -11,6 +11,8 @@
 		<string>Roboto-Medium.ttf</string>
 		<string>Roboto-SemiBold.ttf</string>
 	</array>
+	<key>UIDesignRequiresCompatibility</key>
+	<true/>
 	<key>UILaunchScreen</key>
 	<dict>
 		<key>UILaunchScreen</key>

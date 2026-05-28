@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-class UserPreference {
+class UserPreference: ObservableObject {
     static let shared = UserPreference()
     private var defaults: UserDefaults = UserDefaults.standard
     
@@ -18,6 +18,14 @@ class UserPreference {
     private let loginKeyData = "LoginData"
     private let setToken = "setToken"
     private let appVersionKey = "app_version"
+    private init() {}
+    @AppStorage("highlightColor") private var highlightRaw: String = UIThemeColor.red.rawValue
+
+    var highlightColor: UIThemeColor {
+        get { UIThemeColor(rawValue: highlightRaw) ?? .red }
+        set { highlightRaw = newValue.rawValue
+            objectWillChange.send()}
+    }
     
     func saveAppVersion(_ version: String) {
         defaults.set(version, forKey: appVersionKey)

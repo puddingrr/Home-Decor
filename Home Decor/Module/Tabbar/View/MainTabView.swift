@@ -9,10 +9,10 @@ import SwiftUI
 
 struct MainTabView: View {
     
-    @StateObject var configData = ConfigurationDataManager.shared
     @StateObject var mainVM = MainViewModel()
     @StateObject var menuVM = MenuViewModel()
     @StateObject var cartVM = CartViewModel()
+    @StateObject var homeVM = HomeViewModel()
 
     @Namespace private var underlineAnimation
     @State private var showLogin = false
@@ -23,26 +23,22 @@ struct MainTabView: View {
             switch selectedTab {
             case .home:
                 HomeView()
+                    .environmentObject(homeVM)
                     .environmentObject(menuVM)
                     .environmentObject(cartVM)
-                    .environmentObject(configData)
             case .shop:
                 MenuView()
                     .environmentObject(cartVM)
-                    .environmentObject(configData)
             case .cart:
                 CartView()
                     .environmentObject(menuVM)
                     .environmentObject(cartVM)
-                    .environmentObject(configData)
             case .profile:
                 ProfileView()
                     .environmentObject(mainVM)
-                    .environmentObject(configData)
             }
             
             TabsLayoutView(selectedTab: $selectedTab)
-                .environmentObject(configData)
         }
         .edgesIgnoringSafeArea(.bottom)
         .navigationDestination(isPresented: $showLogin) {
@@ -51,7 +47,8 @@ struct MainTabView: View {
         .onAppear {
             mainVM.checkLogin()
             Task {
-                await menuVM.fetchCategory("chair")
+//                await menuVM.fetchCategory("chair")
+                await homeVM.fetchFeaturedProducts()
             }
         }
         .ignoresSafeArea(.keyboard, edges: .bottom)
