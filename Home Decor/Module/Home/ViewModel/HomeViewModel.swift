@@ -60,6 +60,19 @@ class HomeViewModel : ObservableObject {
                         category: data["category"] as? String ?? ""
                     )
                 }
+                let allSafeData = snapshot.documents.map { doc -> [String: Any] in
+                    doc.data().mapValues { value -> Any in
+                        switch value {
+                        case let ts as Timestamp: return ts.dateValue().description
+                        case let ref as DocumentReference: return ref.path
+                        default: return value
+                        }
+                    }
+                }
+                if let jsonData = try? JSONSerialization.data(withJSONObject: allSafeData, options: .prettyPrinted),
+                   let jsonStr = String(data: jsonData, encoding: .utf8) {
+                    FirebaseLog.shared.logResponse(url: "firestore://featuredProducts", responseBody: jsonStr)
+                }
                 DispatchQueue.main.async {
                     self.featuredProducts = products
                 }

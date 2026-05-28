@@ -27,21 +27,14 @@ struct HomeDetailView:View {
                 
                 ScrollView(showsIndicators: false) {
                     VStack(alignment: .leading, spacing: 16) {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 10)
-                                .foregroundColor(Color.lightOrange)
-                            if !productImage.isEmpty {
-                                GeometryReader { geo in
-                                    WebImage(url: URL(string: productImage))
-                                        .resizable()
-                                        .scaledToFill()
-                                        .frame(width: geo.size.width, height: geo.size.height)
-                                        .clipped()
-                                        .cornerRadius(10)
-                                }
-                            }
+                        if !productImage.isEmpty {
+                            WebImage(url: URL(string: productImage))
+                                .resizable()
+                                .scaledToFill()
+                                .frame(height: 230)
+                                .clipped()
+                                .cornerRadius(10)
                         }
-                        .frame(height: 270)
                         TextSwifUI(title: productTitle, size: .large, weight: .medium)
                         TextSwifUI(title: productDescription, size: .small, weight: .light)
                         Color.gray.opacity(0.3)
@@ -69,7 +62,7 @@ struct HomeDetailView:View {
                                     cartItem = item
                                 } else if let product = itemProduct {
                                     cartItem = ListMenu(
-                                        id: UUID(uuidString: product.id ?? "") ?? UUID(),
+                                        id: product.id ?? "",
                                         image: product.imageURL,
                                         title: product.name,
                                         subTitle: product.description,

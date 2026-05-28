@@ -32,6 +32,7 @@ class CartViewModel: ObservableObject {
             }
 
             cartItems.append(item)
+            FirebaseLog.shared.logFirebase(.fetch, collection: "carts/\(uid)", extra: "Adding: \(item.id ?? "")")
 
             do {
                 try await db.collection("carts")
@@ -46,13 +47,17 @@ class CartViewModel: ObservableObject {
 
     func fetchCart() {
           guard let uid = userID else { return }
-
+          FirebaseLog.shared.logFirebase(.fetch, collection: "carts/\(uid)")
           db.collection("carts").document(uid).addSnapshotListener { [weak self] snapshot, error in
               guard let self = self else { return }
               if let data = snapshot?.data(),
                  let itemsData = data["items"] as? [[String: Any]] {
                   self.cartItems = itemsData.compactMap { dict in
                       try? DictionaryDecoder.decode(ListMenu.self, from: dict)
+                  }
+                  if let jsonData = try? JSONSerialization.data(withJSONObject: itemsData, options: .prettyPrinted),
+                     let jsonStr = String(data: jsonData, encoding: .utf8) {
+                      FirebaseLog.shared.logResponse(url: "firestore://carts/\(uid)", responseBody: jsonStr)
                   }
               } else {
                   self.cartItems = []
@@ -65,6 +70,7 @@ class CartViewModel: ObservableObject {
         cartItems.removeAll()
         do {
             try await db.collection("carts").document(uid).setData(["items": []])
+            FirebaseLog.shared.logFirebase(.fetch, collection: "carts/\(uid)", extra: "Clearing cart")
         } catch {
             print("❌ Failed to clear cart: \(error.localizedDescription)")
         }

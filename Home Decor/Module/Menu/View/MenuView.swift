@@ -40,12 +40,12 @@ struct MenuView: View {
         .onAppear {
             menuVM.indexTab = 0
             Task {
-                await menuVM.fetchCategory(mapTabIndexToCategoryKey(0))
+//                await menuVM.fetchCategory(mapTabIndexToCategoryKey(0))
             }
         }
         .navigationDestination(isPresented: $isNavigationDetail) {
             if let item = selectedItem {
-                MenuDetailView(categoryVM: menuVM, title: selectedItem?.title ?? "", item: item)
+                HomeDetailView(item: item)
                     .environmentObject(cartVM)
             }
         }

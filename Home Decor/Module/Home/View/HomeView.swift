@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct HomeView: View {
-    var isSelected: Bool = false
-    @StateObject var viewModel = HomeViewModel()
+    @EnvironmentObject var viewModel: HomeViewModel
     @EnvironmentObject var menuVM: MenuViewModel
     @EnvironmentObject var cartVM: CartViewModel
     
@@ -20,6 +19,7 @@ struct HomeView: View {
     
     @State var contentOffset: CGPoint?
     
+    var isSelected: Bool = false
     var body: some View {
         ZStack(alignment: .top) {
             Color.appBackground.ignoresSafeArea()
@@ -81,9 +81,6 @@ struct HomeView: View {
         .onAppear {
             if let _ = UserPreference.shared.getLoginData() {
                 viewModel.isLoggedIn = true
-            }
-            Task {
-                await viewModel.fetchFeaturedProducts()
             }
         }
         .navigationDestination(isPresented: $viewModel.isHomeNavigation) {

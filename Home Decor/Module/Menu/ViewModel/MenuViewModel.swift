@@ -34,11 +34,14 @@ class MenuViewModel: ObservableObject {
             let doc = try await db.collection("menu").document(category).getDocument()
             if let data = doc.data(),
                let products = data["products"] as? [[String: Any]] {
-                
+                if let jsonData = try? JSONSerialization.data(withJSONObject: products, options: .prettyPrinted),
+                   let jsonStr = String(data: jsonData, encoding: .utf8) {
+                    FirebaseLog.shared.logResponse(url: "firestore://menu/\(category)", responseBody: jsonStr)
+                }
                 DispatchQueue.main.async {
                     self.menuList = products.map { item in
                         ListMenu(
-                            id: UUID(),
+                            id: item["id"] as? String ?? "",
                             image: item["imageURL"] as? String ?? "",
                             title: item["name"] as? String ?? "",
                             subTitle: item["description"] as? String ?? "",

@@ -12,6 +12,7 @@ struct MainTabView: View {
     @StateObject var mainVM = MainViewModel()
     @StateObject var menuVM = MenuViewModel()
     @StateObject var cartVM = CartViewModel()
+    @StateObject var homeVM = HomeViewModel()
 
     @Namespace private var underlineAnimation
     @State private var showLogin = false
@@ -22,6 +23,7 @@ struct MainTabView: View {
             switch selectedTab {
             case .home:
                 HomeView()
+                    .environmentObject(homeVM)
                     .environmentObject(menuVM)
                     .environmentObject(cartVM)
             case .shop:
@@ -45,7 +47,8 @@ struct MainTabView: View {
         .onAppear {
             mainVM.checkLogin()
             Task {
-                await menuVM.fetchCategory("chair")
+//                await menuVM.fetchCategory("chair")
+                await homeVM.fetchFeaturedProducts()
             }
         }
         .ignoresSafeArea(.keyboard, edges: .bottom)

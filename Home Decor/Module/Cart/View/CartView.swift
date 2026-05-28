@@ -34,7 +34,7 @@ struct CartView: View {
             
             if !cartVM.cartItems.isEmpty {
                 ScrollView(showsIndicators: false) {
-                    VStack {
+                    VStack(spacing: 12) {
                         ForEach(cartVM.cartItems) { item in
                             HStack(alignment: .top, spacing: 10) {
 //                                ZStack {
@@ -77,15 +77,15 @@ struct CartView: View {
                                 }
                                 Spacer()
                             }
+                            .padding(12)
+                            .frame(maxWidth: .infinity)
+                            .background(.authTitle)
+                            .cornerRadius(10)
+                            .overlay {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(Color.authBg.opacity(0.1), lineWidth: 1)
+                            }
                         }
-                    }
-                    .padding(12)
-                    .frame(maxWidth: .infinity)
-                    .background(.authTitle)
-                    .cornerRadius(10)
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color.authBg.opacity(0.1), lineWidth: 1)
                     }
                     .padding(16)
                     .environment(\.editMode, .constant(editMode))
