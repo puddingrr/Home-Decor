@@ -12,6 +12,7 @@ struct HomeDetailView:View {
     @EnvironmentObject var cartVM: CartViewModel
     
     @State var showAlreadyAddedAlert = false
+    @State var showToast = false
 
     var item: ListMenu?
     var itemProduct: ProductModel?
@@ -20,7 +21,7 @@ struct HomeDetailView:View {
         
     var body: some View {
             VStack(spacing: 0) {
-                CustomNavBar(title: "Product Detail")
+                CustomNavBar(title: "Product Detail", isBack: true)
                 RoundedRectangle(cornerRadius: 0)
                     .frame(height: 1)
                     .foregroundColor(Color.gray.opacity(0.3))
@@ -71,9 +72,10 @@ struct HomeDetailView:View {
                             }
 
                             guard let finalItem = cartItem else { return }
-
                             let added = cartVM.addToCart(finalItem)
-                            if !added {
+                            if added {
+                                showToast = true
+                            } else {
                                 showAlreadyAddedAlert = true
                             }
                         }
@@ -88,6 +90,18 @@ struct HomeDetailView:View {
                 }
                 Spacer()
             }
+            .overlay {
+                if showToast {
+                    SuccessToast(isPresented: $showToast)
+                        .transition(.scale(scale: 0.8).combined(with: .opacity))
+                        .onAppear {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+                                withAnimation(.spring()) { showToast = false }
+                            }
+                        }
+                }
+            }
+            .animation(.spring(response: 0.38, dampingFraction: 0.75), value: showToast)
     }
 }
 extension HomeDetailView {
