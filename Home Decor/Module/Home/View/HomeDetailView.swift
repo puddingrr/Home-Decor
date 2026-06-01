@@ -56,24 +56,25 @@ struct HomeDetailView:View {
                         }
                         
                         CustomButton(title: "Add to Cart") {
-                            Task {
-                                var cartItem: ListMenu?
-                                if let item = item {
-                                    cartItem = item
-                                } else if let product = itemProduct {
-                                    cartItem = ListMenu(
-                                        id: product.id ?? "",
-                                        image: product.imageURL,
-                                        title: product.name,
-                                        subTitle: product.description,
-                                        price: "\(product.price ?? 0)"
-                                    )
-                                }
-                                guard let finalItem = cartItem else { return }
-                                let added = await cartVM.addToCart(finalItem)
-                                if !added {
-                                    showAlreadyAddedAlert = true
-                                }
+                            var cartItem: ListMenu?
+
+                            if let item = item {
+                                cartItem = item
+                            } else if let product = itemProduct {
+                                cartItem = ListMenu(
+                                    id: product.id ?? "",
+                                    image: product.imageURL,
+                                    title: product.name,
+                                    subTitle: product.description,
+                                    price: "\(product.price ?? 0)"
+                                )
+                            }
+
+                            guard let finalItem = cartItem else { return }
+
+                            let added = cartVM.addToCart(finalItem)
+                            if !added {
+                                showAlreadyAddedAlert = true
                             }
                         }
                         .padding(.top, 32)

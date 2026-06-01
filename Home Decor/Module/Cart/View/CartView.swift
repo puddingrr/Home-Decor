@@ -10,9 +10,13 @@ import SDWebImageSwiftUI
 
 struct CartView: View {
     @EnvironmentObject var cartVM: CartViewModel
-    
-    @State private var isOder: Bool = false
-    
+    @EnvironmentObject var orderVM: OrderViewModel
+
+    @State private var isOrdering: Bool = false
+    @State private var navigateToSummary: Bool = false
+    @State private var showErrorAlert: Bool = false
+    @State private var errorMessage: String = ""
+
     var body: some View {
         VStack(spacing: 0) {
             CustomNavBar(title: "My Cart", isBack: false, isShadow: true)
@@ -21,119 +25,134 @@ struct CartView: View {
                 .foregroundColor(Color.gray.opacity(0.3))
             
             if !cartVM.cartItems.isEmpty {
-                ScrollView(showsIndicators: false) {
-                    VStack(spacing: 12) {
-                        ForEach(cartVM.cartItems) { item in
-                            HStack(alignment: .top, spacing: 10) {
-//                                ZStack {
-//                                    RoundedRectangle(cornerRadius: 10)
-//                                        .frame(width: 89, height: 89)
-//                                        .foregroundColor(Color.lightOrange)
-//                                    if let image = item.image {
-//                                        WebImage(url: URL(string: image))
-//                                            .resizable()
-//                                            .frame(width: 69, height: 69)
-//                                            .cornerRadius(10)
-//                                    }
-//                                }
-                                if let image = item.image {
-                                    WebImage(url: URL(string: image))
-                                        .resizable()
-                                        .frame(width: 90, height: 90)
-                                        .cornerRadius(10)
-                                        .overlay {
-                                            RoundedRectangle(cornerRadius: 10)
-                                                .stroke(Color.gray.opacity(0.5), lineWidth: 1)
+                ZStack {
+                    VStack {
+                        ScrollView(showsIndicators: false) {
+                            VStack(spacing: 12) {
+                                ForEach(cartVM.cartItems) { item in
+                                    HStack(alignment: .top, spacing: 10) {
+                                        if let image = item.image {
+                                            WebImage(url: URL(string: image))
+                                                .resizable()
+                                                .frame(width: 90, height: 90)
+                                                .cornerRadius(10)
+                                                .overlay {
+                                                    RoundedRectangle(cornerRadius: 10)
+                                                        .stroke(Color.gray.opacity(0.5), lineWidth: 1)
+                                                }
                                         }
-                                }
-                                
-                                VStack(alignment: .leading, spacing: 6) {
-                                    TextSwifUI(title: item.title ?? "", size: .other(18), weight: .bold)
-                                    TextSwifUI(title: "$\(item.price ?? "")", size: .other(16), color: .red, weight: .bold)
-                                    Spacer(minLength: 0)
-                                    HStack(spacing: 8) {
-                                        Button { decreaseItem(item) } label: {
-                                            Image(.dicrease).resizable().frame(width: 24, height: 24)
+                                        
+                                        VStack(alignment: .leading, spacing: 6) {
+                                            TextSwifUI(title: item.title ?? "", size: .other(18), weight: .bold)
+                                            TextSwifUI(title: "$\(item.price ?? "")", size: .other(16), color: .red, weight: .bold)
+                                            Spacer(minLength: 0)
+                                            HStack(spacing: 8) {
+                                                Button { decreaseItem(item) } label: {
+                                                    Image(.dicrease).resizable().frame(width: 24, height: 24)
+                                                }
+                                                TextSwifUI(title: "\(item.quantity ?? 1)", weight: .bold)
+                                                Button { increaseItem(item) } label: {
+                                                    Image(.increase).resizable().frame(width: 24, height: 24)
+                                                }
+                                            }
                                         }
-                                        TextSwifUI(title: "\(item.quantity ?? 1)", weight: .bold)
-                                        Button { increaseItem(item) } label: {
-                                            Image(.increase).resizable().frame(width: 24, height: 24)
-                                        }
+                                        Spacer()
+                                    }
+                                    .padding(12)
+                                    .frame(maxWidth: .infinity)
+                                    .background(.authTitle)
+                                    .cornerRadius(10)
+                                    .overlay {
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .stroke(Color.authBg.opacity(0.1), lineWidth: 1)
                                     }
                                 }
-                                Spacer()
                             }
-                            .padding(12)
-                            .frame(maxWidth: .infinity)
-                            .background(.authTitle)
-                            .cornerRadius(10)
-                            .overlay {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .stroke(Color.authBg.opacity(0.1), lineWidth: 1)
-                            }
+                            .padding(16)
                         }
+                        Spacer()
+                        CustomSubmitOrderView(total: totalPrice, totalKHR: totalPrice * 4100, saved: savedAmount,
+                                              onOrder: { handlePlaceOrder() }
+                        )
+                        .disabled(isOrdering)
+                        .padding(.vertical, 12)
                     }
-                    .padding(16)
+                    if  isOrdering {
+                        ProgressView()
+                            .tint(.white)
+                            .padding()
+                            .background(Color.black.opacity(0.3))
+                            .cornerRadius(10)
+                    }
                 }
-                Spacer()
-                CustomSubmitOrderView(total: totalPrice, totalKHR: totalPrice * 4100, saved: savedAmount, onOrder: {
-                    isOder.toggle()
-                })
-                .padding(.vertical, 12)
             } else {
                 NoDataView()
             }
         }
-        .navigationDestination(isPresented: $isOder) {
+        .navigationDestination(isPresented: $navigateToSummary) {
             OrderSummrayView()
                 .environmentObject(cartVM)
+                .environmentObject(orderVM)
+        }
+        .alert("Order Failed", isPresented: $showErrorAlert) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(errorMessage)
+        }
+    }
+    
+    private func handlePlaceOrder() {
+        isOrdering = true
+        Task {
+            await orderVM.placeOrder(
+                items: cartVM.cartItems,
+                totalUSD: totalPrice,
+                totalKHR: totalPrice * 4100,
+                savedAmount: savedAmount,
+                onSuccess: {
+//                    cartVM.clearCart()
+                    isOrdering = false
+                    navigateToSummary = true
+                },
+                onFailure: { message in
+                    isOrdering = false
+                    errorMessage = message
+                    showErrorAlert = true
+                }
+            )
         }
     }
 }
+
+// MARK: - Computed Properties
 extension CartView {
-    // MARK: - Helper Functions
     private func increaseItem(_ item: ListMenu) {
         guard let index = cartVM.cartItems.firstIndex(where: { $0.id == item.id }) else { return }
         let currentQty = cartVM.cartItems[index].quantity ?? 1
         cartVM.cartItems[index].quantity = currentQty + 1
-        Task { await cartVM.updateItem(cartVM.cartItems[index]) }
     }
-    
     private func decreaseItem(_ item: ListMenu) {
         guard let index = cartVM.cartItems.firstIndex(where: { $0.id == item.id }) else { return }
         let currentQty = cartVM.cartItems[index].quantity ?? 1
-
         if currentQty > 1 {
             cartVM.cartItems[index].quantity = currentQty - 1
-            Task { await cartVM.updateItem(cartVM.cartItems[index]) }
         } else {
-            Task {
-                await cartVM.removeFromCart(cartVM.cartItems[index])
-            }
-        }
-    }
-    
-    private func deleteItem(at offsets: IndexSet) {
-        for index in offsets {
-            let item = cartVM.cartItems[index]
-            Task { await cartVM.removeFromCart(item) }
+            cartVM.removeFromCart(cartVM.cartItems[index])
         }
     }
     var totalPrice: Double {
         cartVM.cartItems.reduce(0) { result, item in
             let price = Double(item.price ?? "0") ?? 0
             let qty = item.quantity ?? 1
-               return result + (price * Double(qty))
-           }
-       }
-
-       var savedAmount: Double {
-           totalPrice * 0.1
-       }
-
-       var finalTotal: Double {
-           totalPrice - savedAmount
-       }
+            return result + (price * Double(qty))
+        }
+    }
+    var savedAmount: Double {
+        totalPrice * 0.1
+    }
+    var finalTotal: Double {
+        totalPrice - savedAmount
+    }
 }
 struct NoDataView: View {
     var body: some View {
@@ -148,7 +167,6 @@ struct NoDataView: View {
     }
 }
 // MARK: - Cart Bottom Bar
-
 struct CartBottomBar: View {
     let isEmpty: Bool
     let subtotal: Double
@@ -157,7 +175,6 @@ struct CartBottomBar: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            // Delivery icon
             ZStack {
                 Circle()
                     .fill(Color.white.opacity(0.1))
