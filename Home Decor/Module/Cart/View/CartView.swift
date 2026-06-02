@@ -94,15 +94,10 @@ struct CartView: View {
                 .environmentObject(cartVM)
                 .environmentObject(orderVM)
         }
-        .alert("Order Failed", isPresented: $showErrorAlert) {
-            Button("OK", role: .cancel) {}
-        } message: {
-            Text(errorMessage)
-        }
     }
     
     private func handlePlaceOrder() {
-        isOrdering = true
+        LoadingManager.shared.show()
         Task {
             await orderVM.placeOrder(
                 items: cartVM.cartItems,
@@ -110,14 +105,12 @@ struct CartView: View {
                 totalKHR: totalPrice * 4100,
                 savedAmount: savedAmount,
                 onSuccess: {
-//                    cartVM.clearCart()
-                    isOrdering = false
+                    LoadingManager.shared.hide()
                     navigateToSummary = true
                 },
                 onFailure: { message in
-                    isOrdering = false
                     errorMessage = message
-                    showErrorAlert = true
+                    LoadingManager.shared.hide()
                 }
             )
         }
@@ -166,7 +159,6 @@ struct NoDataView: View {
         }
     }
 }
-// MARK: - Cart Bottom Bar
 struct CartBottomBar: View {
     let isEmpty: Bool
     let subtotal: Double
@@ -204,7 +196,7 @@ struct CartBottomBar: View {
                         Text(String(format: "$%.2f", subtotal))
                             .font(.system(size: 14, weight: .semibold))
                             .foregroundColor(.white)
-                        Text("₭\(String(format: "%.2f", subtotal * khrRate))")
+                        Text("៛\(String(format: "%.2f", subtotal * khrRate))")
                             .font(.system(size: 12))
                             .foregroundColor(.gray)
                     }

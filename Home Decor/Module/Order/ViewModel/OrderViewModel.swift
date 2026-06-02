@@ -64,7 +64,7 @@ class OrderViewModel: ObservableObject {
             totalUSD: totalUSD,
             totalKHR: totalKHR,
             savedAmount: savedAmount,
-            status: "pending",
+            status: "success",
             createdAt: Date()
         )
 
@@ -83,7 +83,7 @@ class OrderViewModel: ObservableObject {
                 "totalUSD": totalUSD,
                 "totalKHR": totalKHR,
                 "savedAmount": savedAmount,
-                "status": "pending",
+                "status": "success",
                 "createdAt": Timestamp(date: order.createdAt)
             ]
 

@@ -135,14 +135,9 @@ struct OrderSummrayView: View {
                         }
                     }
                     
-                    OrderBottomBar(total: total, totalKHR: total * khrRate, saved: saved, isLoading: isOrdering) {
+                    OrderBottomBar(total: total, totalKHR: total * khrRate, saved: saved) {
                         handlePlaceOrder()
                     } 
-                }
-                if isOrdering {
-                    ProgressView()
-                        .tint(.white)
-                        .frame(width: 120, height: 50)
                 }
             }
         }
@@ -153,11 +148,6 @@ struct OrderSummrayView: View {
         }
         .navigationDestination(isPresented: $navigateToOrderSuccess) {
             OrderView()
-        }
-        .alert("Order Failed", isPresented: $showErrorAlert) {
-            Button("OK", role: .cancel) {}
-        } message: {
-            Text(errorMessage)
         }
         .bottomSheet(
             isPresented: $isSheetDiliveryTime,
@@ -190,7 +180,7 @@ struct OrderSummrayView: View {
     }
 
     private func handlePlaceOrder() {
-        isOrdering = true
+        LoadingManager.shared.show()
         Task {
             await orderVM.placeOrder(
                 items: cartVM.cartItems,
@@ -199,11 +189,11 @@ struct OrderSummrayView: View {
                 savedAmount: saved,
                 onSuccess: {
                     cartVM.clearCart()
-                    isOrdering = false
+                    LoadingManager.shared.hide()
                     navigateToOrderSuccess = true
                 },
                 onFailure: { message in
-                    isOrdering = false
+                    LoadingManager.shared.show()
                     errorMessage = message
                     showErrorAlert = true
                 }

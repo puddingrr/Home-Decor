@@ -21,7 +21,7 @@ struct HomeDetailView:View {
         
     var body: some View {
             VStack(spacing: 0) {
-                CustomNavBar(title: "Product Detail", isBack: true)
+                CustomNavBar(title: "Product Detail")
                 RoundedRectangle(cornerRadius: 0)
                     .frame(height: 1)
                     .foregroundColor(Color.gray.opacity(0.3))
@@ -74,34 +74,17 @@ struct HomeDetailView:View {
                             guard let finalItem = cartItem else { return }
                             let added = cartVM.addToCart(finalItem)
                             if added {
-                                showToast = true
+                                ToastManager.shared.showPositive(title: "Done", message: "Item Added to Cart!")
                             } else {
-                                showAlreadyAddedAlert = true
+                                ToastManager.shared.showNegative(title: "Already in Cart", message: "This item is already in your cart.")
                             }
                         }
                         .padding(.top, 32)
-                        .alert("Already in Cart", isPresented: $showAlreadyAddedAlert) {
-                            Button("OK", role: .cancel) { }
-                        } message: {
-                            Text("This product is already added to your cart.")
-                        }
                     }
                     .padding(16)
                 }
                 Spacer()
             }
-            .overlay {
-                if showToast {
-                    SuccessToast(isPresented: $showToast)
-                        .transition(.scale(scale: 0.8).combined(with: .opacity))
-                        .onAppear {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-                                withAnimation(.spring()) { showToast = false }
-                            }
-                        }
-                }
-            }
-            .animation(.spring(response: 0.38, dampingFraction: 0.75), value: showToast)
     }
 }
 extension HomeDetailView {

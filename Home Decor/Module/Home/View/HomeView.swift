@@ -34,7 +34,7 @@ struct HomeView: View {
                             GeometryReader { geo in
                                 Color.clear
                                     .onChange(of: geo.frame(in: .global).minY) { scrollOffset in
-                                        contentOffset = nil // reset it to make action scroll to offset work
+                                        contentOffset = nil
                                     }
                             }
                             .frame(height: 0)
@@ -57,11 +57,14 @@ struct HomeView: View {
                                     VStack(spacing: 8) {
 //                                        HomeCatecgoryView(viewModel: viewModel)
                                         HStack(spacing: 20) {
+                                            Spacer()
                                             ScrollView(.horizontal, showsIndicators: false) {
                                                 CustomMenuTab(index: $viewModel.indexTab, items: viewModel.itemsTab, textColor: .cream.opacity(0.8),
                                                               textColorselected: .white)
                                             }
+                                            Spacer()
                                         }
+                                        .padding(.leading, 16)
                                     }
                                     .padding(.horizontal, 16)
                                     .padding(.vertical, 12)

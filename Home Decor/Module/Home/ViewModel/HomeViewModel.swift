@@ -26,7 +26,7 @@ class HomeViewModel : ObservableObject {
 
     let animeList: [String] = ["animeList" , "banner1" , "banner2" ]
     
-    let itemsTab = ["Explore", "Fashion", "Trendy Toys", "Home", "Sports & Outdoors"]
+    let itemsTab = ["Explore", "Shop", "Carts", "Orders"]
     
     let list: [categoryList] = [
         .init(icon: .sofa, activeIcon: .sofaActive),
