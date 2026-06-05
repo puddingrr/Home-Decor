@@ -9,7 +9,7 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct OrderView: View {
-    @StateObject var orderVM = OrderViewModel()
+    @EnvironmentObject var orderVM: OrderViewModel
 
     var body: some View {
         VStack(spacing: 0) {

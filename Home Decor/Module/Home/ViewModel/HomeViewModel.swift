@@ -23,6 +23,7 @@ class HomeViewModel : ObservableObject {
     @Published var isNavLogin: Bool = false
     @Published var isNavRegister: Bool = false
     @Published var isLoggedIn: Bool = false
+    @Published var isNavOrder: Bool = false
 
     let animeList: [String] = ["animeList" , "banner1" , "banner2" ]
     

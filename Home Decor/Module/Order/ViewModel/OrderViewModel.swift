@@ -94,7 +94,6 @@ class OrderViewModel: ObservableObject {
                 .document(orderID)
                 .setData(orderData)
 
-            ordersList.append(order)
             isLoading = false
             onSuccess()
 

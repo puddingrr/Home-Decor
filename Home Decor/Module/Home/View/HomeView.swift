@@ -61,6 +61,12 @@ struct HomeView: View {
                                             ScrollView(.horizontal, showsIndicators: false) {
                                                 CustomMenuTab(index: $viewModel.indexTab, items: viewModel.itemsTab, textColor: .cream.opacity(0.8),
                                                               textColorselected: .white)
+                                                .onChange(of: viewModel.indexTab) { newIndex in
+                                                    if newIndex == 3 {
+                                                        viewModel.isNavOrder = true
+//                                                        viewModel.indexTab = 0
+                                                    }
+                                                }
                                             }
                                             Spacer()
                                         }
@@ -85,6 +91,9 @@ struct HomeView: View {
             if let _ = UserPreference.shared.getLoginData() {
                 viewModel.isLoggedIn = true
             }
+        }
+        .navigationDestination(isPresented: $viewModel.isNavOrder) {
+           OrderView()
         }
         .navigationDestination(isPresented: $viewModel.isHomeNavigation) {
             switch viewModel.navType {

@@ -148,6 +148,7 @@ struct OrderSummrayView: View {
         }
         .navigationDestination(isPresented: $navigateToOrderSuccess) {
             OrderView()
+                .environmentObject(orderVM)
         }
         .bottomSheet(
             isPresented: $isSheetDiliveryTime,
@@ -180,6 +181,8 @@ struct OrderSummrayView: View {
     }
 
     private func handlePlaceOrder() {
+        guard !isOrdering else { return }
+        isOrdering = true
         LoadingManager.shared.show()
         Task {
             await orderVM.placeOrder(
@@ -191,11 +194,13 @@ struct OrderSummrayView: View {
                     cartVM.clearCart()
                     LoadingManager.shared.hide()
                     navigateToOrderSuccess = true
+                    isOrdering = false
                 },
                 onFailure: { message in
-                    LoadingManager.shared.show()
+                    LoadingManager.shared.hide()
                     errorMessage = message
                     showErrorAlert = true
+                    isOrdering = false
                 }
             )
         }

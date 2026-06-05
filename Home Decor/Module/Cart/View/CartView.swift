@@ -72,7 +72,10 @@ struct CartView: View {
                         }
                         Spacer()
                         CustomSubmitOrderView(total: totalPrice, totalKHR: totalPrice * 4100, saved: savedAmount,
-                                              onOrder: { handlePlaceOrder() }
+                                              onOrder: {
+                            LoadingManager.shared.show()
+                            navigateToSummary = true
+                        }
                         )
                         .disabled(isOrdering)
                         .padding(.vertical, 12)
@@ -94,25 +97,8 @@ struct CartView: View {
                 .environmentObject(cartVM)
                 .environmentObject(orderVM)
         }
-    }
-    
-    private func handlePlaceOrder() {
-        LoadingManager.shared.show()
-        Task {
-            await orderVM.placeOrder(
-                items: cartVM.cartItems,
-                totalUSD: totalPrice,
-                totalKHR: totalPrice * 4100,
-                savedAmount: savedAmount,
-                onSuccess: {
-                    LoadingManager.shared.hide()
-                    navigateToSummary = true
-                },
-                onFailure: { message in
-                    errorMessage = message
-                    LoadingManager.shared.hide()
-                }
-            )
+        .onDisappear {
+            LoadingManager.shared.hide()
         }
     }
 }
