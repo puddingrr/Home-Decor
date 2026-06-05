@@ -148,7 +148,6 @@ struct OrderSummrayView: View {
         }
         .navigationDestination(isPresented: $navigateToOrderSuccess) {
             OrderView()
-                .environmentObject(orderVM)
         }
         .bottomSheet(
             isPresented: $isSheetDiliveryTime,

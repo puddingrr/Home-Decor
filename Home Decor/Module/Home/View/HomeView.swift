@@ -88,6 +88,7 @@ struct HomeView: View {
             }
         }
         .onAppear {
+            viewModel.indexTab = 0
             if let _ = UserPreference.shared.getLoginData() {
                 viewModel.isLoggedIn = true
             }
