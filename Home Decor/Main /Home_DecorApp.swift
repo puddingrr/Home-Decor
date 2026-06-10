@@ -38,14 +38,15 @@ struct Home_DecorApp: App {
 //                        .task {
 //                            await ProductSeeder.seedMenu()
 //                            await FeaturedSeeder.seedFeaturedProducts()
-//                        }product
-                    
+//                        }
                 }
             }
             .navigationViewStyle(StackNavigationViewStyle())
             .preferredColorScheme(
                 appTheme == 0 ? nil : (appTheme == 1 ? .light : .dark)
             )
+            .withToast()
+            .withLoading()
         }
     }
 }

@@ -12,6 +12,7 @@ struct HomeDetailView:View {
     @EnvironmentObject var cartVM: CartViewModel
     
     @State var showAlreadyAddedAlert = false
+    @State var showToast = false
 
     var item: ListMenu?
     var itemProduct: ProductModel?
@@ -56,32 +57,29 @@ struct HomeDetailView:View {
                         }
                         
                         CustomButton(title: "Add to Cart") {
-                            Task {
-                                var cartItem: ListMenu?
-                                if let item = item {
-                                    cartItem = item
-                                } else if let product = itemProduct {
-                                    cartItem = ListMenu(
-                                        id: product.id ?? "",
-                                        image: product.imageURL,
-                                        title: product.name,
-                                        subTitle: product.description,
-                                        price: "\(product.price ?? 0)"
-                                    )
-                                }
-                                guard let finalItem = cartItem else { return }
-                                let added = await cartVM.addToCart(finalItem)
-                                if !added {
-                                    showAlreadyAddedAlert = true
-                                }
+                            var cartItem: ListMenu?
+
+                            if let item = item {
+                                cartItem = item
+                            } else if let product = itemProduct {
+                                cartItem = ListMenu(
+                                    id: product.id ?? "",
+                                    image: product.imageURL,
+                                    title: product.name,
+                                    subTitle: product.description,
+                                    price: "\(product.price ?? 0)"
+                                )
+                            }
+
+                            guard let finalItem = cartItem else { return }
+                            let added = cartVM.addToCart(finalItem)
+                            if added {
+                                ToastManager.shared.showPositive(title: "Done", message: "Item Added to Cart!")
+                            } else {
+                                ToastManager.shared.showNegative(title: "Already in Cart", message: "This item is already in your cart.")
                             }
                         }
                         .padding(.top, 32)
-                        .alert("Already in Cart", isPresented: $showAlreadyAddedAlert) {
-                            Button("OK", role: .cancel) { }
-                        } message: {
-                            Text("This product is already added to your cart.")
-                        }
                     }
                     .padding(16)
                 }

@@ -13,6 +13,7 @@ struct MainTabView: View {
     @StateObject var menuVM = MenuViewModel()
     @StateObject var cartVM = CartViewModel()
     @StateObject var homeVM = HomeViewModel()
+    @StateObject var orderVM = OrderViewModel()
 
     @Namespace private var underlineAnimation
     @State private var showLogin = false
@@ -33,6 +34,7 @@ struct MainTabView: View {
                 CartView()
                     .environmentObject(menuVM)
                     .environmentObject(cartVM)
+                    .environmentObject(orderVM)
             case .profile:
                 ProfileView()
                     .environmentObject(mainVM)

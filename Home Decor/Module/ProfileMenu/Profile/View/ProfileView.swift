@@ -46,7 +46,7 @@ struct ProfileView: View {
             profileVM.loadUser()
         }
         .navigationDestination(isPresented: $profileVM.isOrder) {
-            MyOrderView(viewModel: profileVM)
+            OrderView()
         }
         .navigationDestination(isPresented: $profileVM.isSelectedEdit) {
             EditProfileView(viewModel: profileVM)
@@ -123,15 +123,6 @@ extension ProfileView {
                         }
                     }
                 }
-//                HStack(spacing: 8) {
-//                    TextSwifUI(title: "My Orders", size: .medium)
-//                    Spacer(minLength: 0)
-//                    TextSwifUI(title: "View")
-//                    Image(.arrowRight)
-//                        .resizable()
-//                        .scaledToFit()
-//                        .frame(width: 8, height: 14)
-//                }
                 HStack {
                     menuCard(image: "wallet.bifold", text: "Pay") {}
                     menuCard(image: "shippingbox", text: "Ship") {}

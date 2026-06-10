@@ -23,10 +23,11 @@ class HomeViewModel : ObservableObject {
     @Published var isNavLogin: Bool = false
     @Published var isNavRegister: Bool = false
     @Published var isLoggedIn: Bool = false
+    @Published var isNavOrder: Bool = false
 
     let animeList: [String] = ["animeList" , "banner1" , "banner2" ]
     
-    let itemsTab = ["Explore", "Fashion", "Trendy Toys", "Home", "Sports & Outdoors"]
+    let itemsTab = ["Explore", "Shop", "Carts", "Orders"]
     
     let list: [categoryList] = [
         .init(icon: .sofa, activeIcon: .sofaActive),
